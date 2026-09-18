@@ -62,7 +62,11 @@ always-loaded hook names for this phrasing; two description rewrites did not mov
 it, while explicit invocation ran the body correctly. A command makes no `Skill`
 tool call, so their fired-grader matches a line only the body produces.
 
-Rebase: onto the new `main` after Task 4, one rebase, not before.
+Rebase: NOT done, and not to be done unattended. The owner's own word, given
+directly after Task 4 closed: leave the six commits on the old base until they
+have read the diff. The relayed "rebase after Task 4" ruling is superseded by
+this one. No conflict is expected when it does happen — `main`'s new commit
+touches only `skills/supervise-build/SKILL.md`, which this migration never edited.
 
 Commit: follow `CLAUDE.md:16` "Commit freely". `.claude/skills/new-skill/SKILL.md:18`
 is stricter ("commit only on the owner's word") but that command is user-invocable
