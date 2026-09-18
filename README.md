@@ -43,7 +43,7 @@ Two repo-local commands in `.claude/skills/`, not installed globally: `/new-skil
 - This repo is public. No client names, no home paths, no credentials in any skill, ever.
 - A skill is a checklist, never a script. Under 300 words.
 - A skill that a tool can replace is deleted the day the tool exists.
-- Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, and its `kit-*` symlink is removed that day.
+- Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, or on the owner's word. Its `kit-*` symlink stays until the last project using it moves to the new name.
 
 ## Skills
 
@@ -71,6 +71,6 @@ Trigger-based, never scheduled. One skill at a time.
 1. **Trigger.** A real ticket shows that judgment step done badly twice. Note the ticket in the commit message.
 2. **Rewrite.** Under 300 words, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
 3. **Test.** Invoke it once on that real ticket. Keep it only if it changed the outcome.
-4. **Retire.** Remove the `kit-*` symlink for that skill from `~/.claude/skills` and `~/.agents/skills` the same day. One copy of each thing.
+4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 
 Likely order: `review` (the driver's review prompt needs its lenses first), `plan`, `intent`, `learn`. No dates.
