@@ -33,12 +33,12 @@ Source: kit-consult + kit-adr.
 
 ### Task 3 — `intent`
 Source: kit-idea + kit-setup's interview.
-- [ ] source read
-- [ ] draft
-- [ ] eval case
-- [ ] /eval-skill green
-- [ ] README row
-- [ ] commit
+- [x] source read
+- [x] draft
+- [x] eval case
+- [x] /eval-skill green
+- [x] README row
+- [x] commit
 
 ### Task 4 — `learn`
 Source: kit-doc-sync's judgment.

@@ -49,6 +49,7 @@ Two repo-local commands in `.claude/skills/`, not installed globally: `/new-skil
 
 | Skill | Use |
 |---|---|
+| `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
 | `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
 | `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |
