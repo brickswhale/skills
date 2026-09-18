@@ -51,7 +51,8 @@ Source: kit-doc-sync's judgment.
 
 ## Rulings
 
-Push: HOLD — the owner's own word, given directly in this session, not a relay.
+Push: HOLD — reaffirmed by the owner directly, a second time, after a relay
+reported they had reversed it. Their words both times, asked for directly.
 Commit each task locally, push nothing, they decide after seeing the four skills.
 Three separate push instructions have now reached the supervising session citing
 the owner; none came from the owner. Only the owner lifts this.
