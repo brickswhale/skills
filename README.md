@@ -43,3 +43,14 @@ Symlinks, so `git pull` updates every skill everywhere. Re-run the loop only whe
 | kit-eng-pass checks, kit-pair | Stop hook, routing ladder |
 | kit-log, kit-phase-map, kit-milestone-gate, kit-problem-log | GitHub: PR and Issue comments, Projects, Issue history |
 | kit-inline, kit-recenter | retired |
+
+## How a `kit-*` skill migrates here
+
+Trigger-based, never scheduled. One skill at a time.
+
+1. **Trigger.** A real ticket shows that judgment step done badly twice. Note the ticket in the commit message.
+2. **Rewrite.** Under 300 words, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
+3. **Test.** Invoke it once on that real ticket. Keep it only if it changed the outcome.
+4. **Retire.** Remove the `kit-*` symlink for that skill from `~/.claude/skills` and `~/.agents/skills` the same day. One copy of each thing.
+
+Likely order: `review` (the driver's review prompt needs its lenses first), `plan`, `intent`, `learn`. No dates.
