@@ -1,7 +1,6 @@
 ---
 name: eval-skill
 description: Run one skill's eval case by hand until `claude plugin eval` leaves early access. Use for "/eval-skill <name>", "eval this skill", "does the skill fire".
-disable-model-invocation: true
 arguments: [name]
 ---
 
