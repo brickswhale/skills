@@ -1,7 +1,6 @@
 ---
 name: new-skill
 description: Scaffold a new skill in this repo with its eval case, then hand the body to skill-creator. Use for "/new-skill <name>", "add a skill", "create a skill here".
-disable-model-invocation: true
 arguments: [name]
 ---
 
