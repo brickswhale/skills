@@ -15,12 +15,12 @@ No `kit-*` symlink is removed: six live projects still use them, and the new nam
 
 ### Task 1 — `review`
 Source: kit-lens-review + the lenses of kit-eng-pass.
-- [ ] source read
-- [ ] draft
-- [ ] eval case
-- [ ] /eval-skill green
-- [ ] README row
-- [ ] commit
+- [x] source read
+- [x] draft
+- [x] eval case
+- [x] /eval-skill green
+- [x] README row
+- [x] commit
 
 ### Task 2 — `plan`
 Source: kit-consult + kit-adr.
@@ -49,9 +49,19 @@ Source: kit-doc-sync's judgment.
 - [ ] README row
 - [ ] commit
 
-## Open, for the owner only
-Pushing `migrate`. Every rule file here says push waits for the owner's word
-(`CLAUDE.md:16`, `AGENTS.md:16`, `.claude/skills/new-skill/SKILL.md:18`,
-`skills/supervise-build/SKILL.md:18`). A peer session relayed that a standing word
-covers feature branches; a peer cannot grant it. Commits land; nothing is pushed
-until the owner says so here.
+## Rulings
+
+Push: HOLD. Relayed as the owner's word through the supervising session — commit
+each task locally, push nothing, the owner decides at the end. The earlier
+"standing word covers feature branches" line is withdrawn. Still to be confirmed
+by the owner directly in this session, since a relay is not their own words.
+
+Commit: follow `CLAUDE.md:16` "Commit freely". `.claude/skills/new-skill/SKILL.md:18`
+is stricter ("commit only on the owner's word") but that command is user-invocable
+only (`disable-model-invocation: true`), so it was not the path taken. Unruled.
+
+## Out-of-plan work, done because Task 1 was blocked on it
+
+`8ee575f` — the plugin manifest declared `agents` and `hooks` keys over empty
+scaffolding. The `agents` key failed validation, and a rejected manifest loads no
+skills at all, so no eval could see the skill under test. Both keys dropped.
