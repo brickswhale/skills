@@ -14,4 +14,4 @@ Repo-local. Creates the shape, not the substance.
 4. Invoke `skill-creator` to write the body and tune the description. Then `writing-for-agents` on the prose. Keep it under 300 words.
 5. Add one row to the README skills table.
 6. Run `/eval-skill $name`. Do not commit until it fires and passes.
-7. Show the diff. Commit only on the owner's word. Never push.
+7. Show the diff, then commit. Never push: that waits for the owner (`AGENTS.md`).
