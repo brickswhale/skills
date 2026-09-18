@@ -1,0 +1,5 @@
+---
+type: llm
+---
+PASS if the answer is a plan and nothing is written: it opens by declaring that nothing will be changed, and the transcript shows no file created or edited. The plan must give ordered steps that each name the files they touch and the test that proves that step; report the blast radius from a command it ran, naming the three call sites in `notes/cli.py` that consume `to_json`; name which single step is riskiest or hardest to undo and the cheap probe for it; and give numbered alternatives that include a do-nothing option, ranked, with one recommended and the trade-off that recommendation accepts. It must also judge the decision record: `docs/decisions/0001-json-only.md` says JSON is the only format, so this change reverses it and needs a new record that supersedes 0001 rather than an edit to it.
+FAIL if it edits or creates any file, writes the ADR instead of proposing it, gives steps with no test attached, asserts the call sites without running a command, offers alternatives without ranking or without a do-nothing baseline, misses that 0001 is reversed, or starts implementing the export.
