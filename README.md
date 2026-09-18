@@ -18,6 +18,26 @@ for d in ~/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skill
 
 Symlinks, so `git pull` updates every skill everywhere. Re-run the loop only when a skill is added or removed. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
 
+## Structure
+
+Flat. One folder per skill under `skills/`. No category folders: the plugin manifest can list several skill directories, and the install loop reads one level, so a category, when there are enough skills to need one, becomes a second directory listed in `plugin.json`, never a nested path. Until then the table below groups skills by SDLC stage. A command is a skill with `disable-model-invocation: true`; there is no `commands/` folder.
+
+Frontmatter keys Claude Code reads: `name`, `description`, `disable-model-invocation`, `user-invocable`, `allowed-tools`, `context: fork`, `arguments`. Nothing else.
+
+## Evals
+
+Every skill has at least one eval case under `evals/<skill>-<case>/`, in the layout `claude plugin eval` reads: `prompt.md` with frontmatter, `graders/*.md`, optional `case.yaml` with a `scaffold_script` that builds a self-contained fixture. Two graders minimum: a `tool_used: Skill` grader proving the skill fired, and an `llm` grader with a PASS/FAIL rubric for the outcome. Run before a skill is merged:
+
+```sh
+claude plugin eval . --case '<skill>*' --runs 1
+```
+
+Results land in `evals/results/`, ignored by git. `claude plugin eval` is in early access and may refuse to run; until it opens, `/eval-skill <name>` runs the same case by hand with `claude -p` and grades it. Same files, same verdict. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval.
+
+## Working on this repo
+
+Two repo-local commands in `.claude/skills/`, not installed globally: `/new-skill <name>` scaffolds a skill and its eval case, `/eval-skill <name>` runs the eval. Their job is to make sure every skill here is well made. They never leave this repo.
+
 ## Rules
 
 - This repo is public. No client names, no home paths, no credentials in any skill, ever.
