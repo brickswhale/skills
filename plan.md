@@ -42,12 +42,12 @@ Source: kit-idea + kit-setup's interview.
 
 ### Task 4 — `learn`
 Source: kit-doc-sync's judgment.
-- [ ] source read
-- [ ] draft
-- [ ] eval case
-- [ ] /eval-skill green
-- [ ] README row
-- [ ] commit
+- [x] source read
+- [x] draft
+- [x] eval case
+- [x] /eval-skill green
+- [x] README row
+- [x] commit
 
 ## Rulings
 
