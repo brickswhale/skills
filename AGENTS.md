@@ -10,6 +10,7 @@ Rules:
 3. Generic. No project names, no home paths, no client names, no credentials. Public.
 4. Nothing copied from agent-kit verbatim. Migration rules and table in README.
 5. A skill a tool can replace is deleted the day the tool exists.
-6. Test a new skill by invoking it once on a real task before commit. Say what it did.
+6. Every skill has an eval under `evals/<skill>-<case>/` in the `claude plugin eval` layout, run green once before commit. See README.
+7. To add a skill: `/new-skill <name>`, then `/eval-skill <name>`. Both live in this repo's `.claude/skills/`, not global. Inside them: `skill-creator` writes the body and tunes the description, `writing-for-agents` for the prose. Nothing else.
 
 Commit freely. Never push without the owner's word.
