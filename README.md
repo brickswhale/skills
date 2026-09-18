@@ -32,11 +32,11 @@ Every skill has at least one eval case under `evals/<skill>-<case>/`, in the lay
 claude plugin eval . --case '<skill>*' --runs 1
 ```
 
-Results land in `evals/results/`, ignored by git. `claude plugin eval` is in early access and may refuse to run; until it opens, `/eval-skill <name>` runs the same case by hand with `claude -p` and grades it. Same files, same verdict. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval.
+Results land in `evals/results/`, ignored by git. `claude plugin eval` is in early access and may refuse to run; until it opens, `/eval-skill <name>` runs the same case by hand with `claude -p` and grades it. Same files, same verdict. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval. `/eval-skill` runs in a temp dir outside the repo with messaging tools blocked, after an eval once reached a live session; `skill-creator`'s own runner does neither and uses a different case format, so it writes skills here and does not grade them.
 
 ## Working on this repo
 
-Two repo-local commands in `.claude/skills/`, not installed globally: `/new-skill <name>` scaffolds a skill and its eval case, `/eval-skill <name>` runs the eval. Their job is to make sure every skill here is well made. They never leave this repo.
+Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill <name>` scaffolds a skill and its eval case, `/eval-skill <name>` runs the eval. Not commands — both dropped `disable-model-invocation` so an agent can run them, which is what rule 7 asks for. Their job is to make sure every skill here is well made. They never leave this repo.
 
 ## Rules
 
