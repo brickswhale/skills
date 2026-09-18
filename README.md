@@ -12,14 +12,15 @@ hooks/hooks.json             shared hooks, when earned
 ## Install, once per machine
 
 ```sh
-git clone https://github.com/brickswhale/skills.git ~/Documents/shj/projects/skills
-for d in ~/Documents/shj/projects/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skills/$n; ln -sfn "$d" ~/.agents/skills/$n; done
+git clone https://github.com/brickswhale/skills.git ~/skills
+for d in ~/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skills/$n; ln -sfn "$d" ~/.agents/skills/$n; done
 ```
 
 Symlinks, so `git pull` updates every skill everywhere. Re-run the loop only when a skill is added or removed. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
 
 ## Rules
 
+- This repo is public. No client names, no home paths, no credentials in any skill, ever.
 - A skill is a checklist, never a script. Under 300 words.
 - A skill that a tool can replace is deleted the day the tool exists.
 - Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, and its `kit-*` symlink is removed that day.
