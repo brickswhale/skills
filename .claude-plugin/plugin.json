@@ -3,7 +3,5 @@
   "description": "SHJing's own plugin: skills, agents, hooks reused across every project and both harnesses.",
   "version": "0.1.0",
   "author": { "name": "SHJing" },
-  "skills": "./skills",
-  "agents": "./agents",
-  "hooks": "./hooks/hooks.json"
+  "skills": "./skills"
 }

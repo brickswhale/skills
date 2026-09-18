@@ -26,7 +26,7 @@ Frontmatter keys Claude Code reads: `name`, `description`, `disable-model-invoca
 
 ## Evals
 
-Every skill has at least one eval case under `evals/<skill>-<case>/`, in the layout `claude plugin eval` reads: `prompt.md` with frontmatter, `graders/*.md`, optional `case.yaml` with a `scaffold_script` that builds a self-contained fixture. Two graders minimum: a `tool_used: Skill` grader proving the skill fired, and an `llm` grader with a PASS/FAIL rubric for the outcome. Run before a skill is merged:
+Every skill has at least one eval case under `evals/<skill>-<case>/`, in the layout `claude plugin eval` reads: `prompt.md` with frontmatter, `graders/*.md`, optional `case.yaml` with a `scaffold_script` that builds a self-contained fixture. Two graders minimum: one proving the skill fired, and an `llm` grader with a PASS/FAIL rubric for the outcome. For a model-invoked skill the first is `tool_used: Skill`; a command makes no `Skill` call, so its case invokes it by slash name and the grader is an `llm` one matching a line only its body produces. Under `--plugin-dir` a slash name is namespaced `/<plugin>:<name>`. Run before a skill is merged:
 
 ```sh
 claude plugin eval . --case '<skill>*' --runs 1
@@ -43,12 +43,16 @@ Two repo-local commands in `.claude/skills/`, not installed globally: `/new-skil
 - This repo is public. No client names, no home paths, no credentials in any skill, ever.
 - A skill is a checklist, never a script. Under 300 words.
 - A skill that a tool can replace is deleted the day the tool exists.
-- Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, and its `kit-*` symlink is removed that day.
+- Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, or on the owner's word. Its `kit-*` symlink stays until the last project using it moves to the new name.
 
 ## Skills
 
 | Skill | Use |
 |---|---|
+| `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
+| `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
+| `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
+| `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |
 
 ## agent-kit skills, where each one goes
@@ -71,6 +75,6 @@ Trigger-based, never scheduled. One skill at a time.
 1. **Trigger.** A real ticket shows that judgment step done badly twice. Note the ticket in the commit message.
 2. **Rewrite.** Under 300 words, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
 3. **Test.** Invoke it once on that real ticket. Keep it only if it changed the outcome.
-4. **Retire.** Remove the `kit-*` symlink for that skill from `~/.claude/skills` and `~/.agents/skills` the same day. One copy of each thing.
+4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 
 Likely order: `review` (the driver's review prompt needs its lenses first), `plan`, `intent`, `learn`. No dates.
