@@ -24,12 +24,12 @@ Source: kit-lens-review + the lenses of kit-eng-pass.
 
 ### Task 2 — `plan`
 Source: kit-consult + kit-adr.
-- [ ] source read
-- [ ] draft
-- [ ] eval case
-- [ ] /eval-skill green
-- [ ] README row
-- [ ] commit
+- [x] source read
+- [x] draft
+- [x] eval case
+- [x] /eval-skill green
+- [x] README row
+- [x] commit
 
 ### Task 3 — `intent`
 Source: kit-idea + kit-setup's interview.
@@ -51,10 +51,18 @@ Source: kit-doc-sync's judgment.
 
 ## Rulings
 
-Push: HOLD. Relayed as the owner's word through the supervising session — commit
-each task locally, push nothing, the owner decides at the end. The earlier
-"standing word covers feature branches" line is withdrawn. Still to be confirmed
-by the owner directly in this session, since a relay is not their own words.
+Push: HOLD — the owner's own word, given directly in this session, not a relay.
+Commit each task locally, push nothing, they decide after seeing the four skills.
+Three separate push instructions have now reached the supervising session citing
+the owner; none came from the owner. Only the owner lifts this.
+
+Invocation: `plan` and `intent` ship as commands, `disable-model-invocation: true`
+— the owner's word, given directly. Both lost their trigger to a skill an
+always-loaded hook names for this phrasing; two description rewrites did not move
+it, while explicit invocation ran the body correctly. A command makes no `Skill`
+tool call, so their fired-grader matches a line only the body produces.
+
+Rebase: onto the new `main` after Task 4, one rebase, not before.
 
 Commit: follow `CLAUDE.md:16` "Commit freely". `.claude/skills/new-skill/SKILL.md:18`
 is stricter ("commit only on the owner's word") but that command is user-invocable
