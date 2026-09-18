@@ -29,10 +29,10 @@ Frontmatter keys Claude Code reads: `name`, `description`, `disable-model-invoca
 Every skill has at least one eval case under `evals/<skill>-<case>/`, in the layout `claude plugin eval` reads: `prompt.md` with frontmatter, `graders/*.md`, optional `case.yaml` with a `scaffold_script` that builds a self-contained fixture. Two graders minimum: one proving the skill fired, and an `llm` grader with a PASS/FAIL rubric for the outcome. For a model-invoked skill the first is `tool_used: Skill`; a command makes no `Skill` call, so its case invokes it by slash name and the grader is an `llm` one matching a line only its body produces. Under `--plugin-dir` a slash name is namespaced `/<plugin>:<name>`. Run before a skill is merged:
 
 ```sh
-claude plugin eval . --case '<skill>*' --runs 1
+claude plugin eval . --case '<skill>*' --runs 5
 ```
 
-Results land in `evals/results/`, ignored by git. `claude plugin eval` is in early access and may refuse to run; until it opens, `/eval-skill <name>` runs the same case by hand with `claude -p` and grades it. Same files, same verdict. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval. `/eval-skill` runs in a temp dir outside the repo with messaging tools blocked, after an eval once reached a live session; `skill-creator`'s own runner does neither and uses a different case format, so it writes skills here and does not grade them.
+Green is **three of five**, not one. A fifteen-run ablation on one collection line — the same instruction as buried prose, as a bare tick-box, and as a tick-box naming the method — scored 4/5, 3/5 and 3/5. The wording made no difference the runs could show; the base rate was about seventy percent either way. So a single green is a dice roll, and a rule that accepts one is satisfied by re-running until it lands. Results go to `evals/results/`, ignored by git. `claude plugin eval` is in early access and may refuse to run; until it opens, `/eval-skill <name>` runs the same case by hand with `claude -p` and grades it. Same files, same verdict. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval. `/eval-skill` runs in a temp dir outside the repo with messaging tools blocked, after an eval once reached a live session; `skill-creator`'s own runner does neither and uses a different case format, so it writes skills here and does not grade them.
 
 ## Working on this repo
 
