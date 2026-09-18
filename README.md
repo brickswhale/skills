@@ -49,6 +49,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 
 | Skill | Use |
 |---|---|
+| `consult` | an idea gets pressure-tested before anyone builds it — its real terms, the assumptions, the strongest objection, a verdict that may be "don't". Writes nothing, produces no plan. `/consult`, or any "what if we" |
 | `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
 | `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
 | `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
