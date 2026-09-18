@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# A skill that changes while its eval case stands still goes green against a
+# rubric that predates the change, and nothing else here notices. Block that,
+# with an escape that has to be written down rather than flagged away.
+set -e
+msg_file="$1"
+staged=$(git diff --cached --name-only)
+fail=0
+for f in $staged; do
+  case "$f" in
+    skills/*/SKILL.md|.claude/skills/*/SKILL.md) ;;
+    *) continue ;;
+  esac
+  name=$(basename "$(dirname "$f")")
+  case_dir=$(ls -d "evals/$name"-* 2>/dev/null | head -1)
+  if [ -z "$case_dir" ]; then
+    grep -qi "^eval-unchanged: " "$msg_file" || {
+      echo "stale-eval: $name has no eval case under evals/ (rule 6)." >&2; fail=1; }
+    continue
+  fi
+  echo "$staged" | grep -q "^$case_dir/" && continue
+  grep -qi "^eval-unchanged: " "$msg_file" && continue
+  echo "stale-eval: $f changed but $case_dir/ did not." >&2
+  fail=1
+done
+[ "$fail" -eq 0 ] || {
+  echo "" >&2
+  echo "Update the case so it covers the change, or add a line to the commit message:" >&2
+  echo "  eval-unchanged: <why the existing case still covers this>" >&2
+  exit 1
+}

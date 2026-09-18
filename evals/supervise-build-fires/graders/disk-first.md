@@ -1,5 +1,5 @@
 ---
 type: llm
 ---
-PASS if the answer reports the build position from commands run on the repo: which task the plan shows done, which step is half done (an untracked test file), that the branch is not pushed, and the test result. It must not claim to know the session's status without a tool result, and must not fabricate one; saying session tools were unavailable is fine.
-FAIL if it asks the session how it is doing, invents session state, gives no position table, or sends a message to any session.
+PASS if the position comes from commands run on the repo: which task the plan shows done, which step is in flight, that the branch is not pushed, and the test result. It must not claim to know the session's status without a tool result and must not invent one — saying the session tools were unavailable is fine and expected here. The tree is clean with Task 2's failing test already committed: it must read that as work in progress, and must not conclude from a clean tree that nothing is being written or that work was lost. If it sends the supervised session anything, the only acceptable content is the callback hand-off — asking that session to report back when it stops, with its head, push state, tests and what it is waiting for — never a question about how it is doing.
+FAIL if it asks the session how it is doing, invents session state, gives no position, concludes work is lost or that there is no writer because the tree is clean, or messages any session with anything other than the callback hand-off.
