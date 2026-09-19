@@ -52,7 +52,12 @@ errs = init.get("plugin_errors") or []
 if errs:
     print(f"INVALID: plugin_errors {errs[0][:90]} — a rejected manifest loads zero skills"); sys.exit(1)
 skills = init.get("skills") or []
-if not any(name in s for s in skills):
+# exact match, or the plugin-namespaced form. A substring test certifies a
+# baseline as loaded off code-review, writing-plans or a stale kit-consult
+# symlink, which is how a bare-model run reads as a real one.
+def same(entry, want):
+    return entry == want or entry.rsplit(":", 1)[-1] == want
+if not any(same(s, name) for s in skills):
     print(f"INVALID: {name} not in the session's skills — it graded the bare model"); sys.exit(1)
 if result is None:
     print(f"INVALID: no result event after {assistant} assistant turns — killed mid-run"); sys.exit(1)
