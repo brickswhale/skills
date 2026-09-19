@@ -67,17 +67,30 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 
 | kit skill | goes to |
 |---|---|
-| kit-lens-review, kit-eng-pass | `review` — done |
+| kit-lens-review, kit-eng-pass | `review` — judgment only; `kit-eng-pass` ran the tests and mapped coverage, `review` runs nothing |
 | kit-adr, kit-consult's ranking | `plan` — done |
 | kit-consult's advisory mode | `consult` — done |
-| kit-idea, kit-setup's interview | `intent` — done |
-| kit-doc-sync | `learn` — done |
+| kit-idea, kit-setup's interview | `intent` — judgment only; `kit-idea` appended one dated line and left, `intent` interrogates until each field is concrete |
+| kit-doc-sync | `learn` — judgment only; the per-commit sweep over every doc surface did not come across |
 | kit-milestone-gate | `gate` — done |
 | kit-recenter | attempted, rejected — see below |
 | kit-report, kit-problem-log, kit-pause | wrappers round a CLI that does not exist here |
 | kit-log, kit-phase-map | git and the issue tracker already hold this |
 | kit-batch, kit-prompt-cycle, kit-inline | the framework's own orchestration; it retires with it |
 | kit-pair | `pair` — done, on the owner's word; the catalog came too, the machine-local record did not |
+
+**"Done" means the judgment came across, not the job.** Three rows above say so
+explicitly, because a reader migrating a project off these names will otherwise
+swap `kit-doc-sync` for `learn` and silently lose a commit gate. Checked against
+the skills as written: `learn` carries nothing about reconciling a doc surface,
+`review` never runs a test, and `intent` has no one-line capture. `kit-adr`'s
+decision record did come across, as `plan` step 6. A cross-model review found
+this and it was verified before being believed; the table had read "done" for
+all six since the migration closed.
+
+A project cannot be migrated by renaming. Each reference has to be read for what
+it obliges, and an obligation with no new home is either restated in the project
+or deliberately retired.
 
 ## How a `kit-*` skill migrates here
 
