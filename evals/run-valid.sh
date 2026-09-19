@@ -9,6 +9,22 @@
 # INVALID is void, not red. A void run says nothing about the skill: fix the
 # harness and run again, and never fold it into a pass or fail count.
 #
+# KNOWN HOLE, measured. This checks the skill is LISTED in the session. For a
+# command (disable-model-invocation), being listed does not mean its body
+# loaded — that happens only on slash invocation, and under --plugin-dir the
+# name is namespaced /<plugin>:<name>. A case invoking the bare name gets a
+# fluent answer from the model alone and passes every check here.
+#
+# A marker check was tried and rejected on the evidence: asked for an issue,
+# the bare model produced all five of intent's field names unprompted, so
+# markers scored 5/5 on a run that measured nothing. Nothing in one answer
+# separates a skill from a capable model imitating it.
+#
+# What does separate them is a baseline arm: the same fixture and prompt with
+# no skill, compared. That is the only method that has worked here, and it
+# costs double the runs. Until a case has one, a green means the model-plus-
+# skill performed, not that the skill contributed.
+#
 # usage: run-valid.sh <skill-name> <run.jsonl> [scaffold-exit-code]
 set -u
 name="$1"; run="$2"; scaf="${3:-0}"
