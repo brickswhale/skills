@@ -7,6 +7,7 @@ One place for every custom skill, agent, and hook. Reused across every project, 
 skills/<name>/SKILL.md       skills; a user-invoked one is a command (`disable-model-invocation: true`)
 agents/<name>.md             subagent definitions, when earned
 hooks/hooks.json             shared hooks, when earned
+reviews/<topic>.md           what a review left unsettled, when one was run
 ```
 
 ## Install, once per machine
