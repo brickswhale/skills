@@ -23,6 +23,32 @@ for f in $staged; do
   echo "stale-eval: $f changed but $case_dir/ did not." >&2
   fail=1
 done
+# Rule 1: under 300 words. Rule 3: generic — no home paths, no project names,
+# no credentials. Both were habits until a commit went four words over and
+# nothing noticed. A bare word like "secret" is not a leak: review's security
+# lens says the word legitimately, so credentials are matched as an assignment
+# carrying a value, not as vocabulary.
+for f in $staged; do
+  case "$f" in
+    skills/*/SKILL.md|.claude/skills/*/SKILL.md) ;;
+    *) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  w=$(wc -w < "$f" | tr -d ' ')
+  if [ "$w" -gt 300 ]; then
+    echo "cap: $f is $w words, over 300 (rule 1)." >&2; fail=1
+  fi
+  if grep -qE '/Users/|/home/[a-z]' "$f"; then
+    echo "generic: $f contains a home path (rule 3)." >&2; fail=1
+  fi
+  if grep -qEi 'brickswhale|prismplan|motion-core' "$f"; then
+    echo "generic: $f names a project (rule 3)." >&2; fail=1
+  fi
+  if grep -qEi '(api[_-]?key|secret|password|token)[[:space:]]*[:=][[:space:]]*.?[A-Za-z0-9_-]{8,}' "$f"; then
+    echo "generic: $f looks like it carries a credential (rule 3)." >&2; fail=1
+  fi
+done
+
 [ "$fail" -eq 0 ] || {
   echo "" >&2
   echo "Update the case so it covers the change, or add a line to the commit message:" >&2
