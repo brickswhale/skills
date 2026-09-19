@@ -60,14 +60,17 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 
 | kit skill | goes to |
 |---|---|
-| kit-consult, kit-adr | `plan` skill, here, when earned |
-| kit-idea, kit-setup interview | `intent` skill, here, when earned |
-| kit-lens-review, kit-eng-pass lenses | `review` skill, here, when earned |
-| kit-doc-sync judgment | `learn` skill, here, when earned |
-| kit-setup, kit-prompt-cycle, kit-batch, kit-report, kit-pause | driver commands: init, next, auto gates, status, next |
-| kit-eng-pass checks, kit-pair | Stop hook, routing ladder |
-| kit-log, kit-phase-map, kit-milestone-gate, kit-problem-log | GitHub: PR and Issue comments, Projects, Issue history |
-| kit-inline, kit-recenter | retired |
+| kit-lens-review, kit-eng-pass | `review` — done |
+| kit-adr, kit-consult's ranking | `plan` — done |
+| kit-consult's advisory mode | `consult` — done |
+| kit-idea, kit-setup's interview | `intent` — done |
+| kit-doc-sync | `learn` — done |
+| kit-milestone-gate | `gate` — done |
+| kit-recenter | attempted, rejected — see below |
+| kit-report, kit-problem-log, kit-pause | wrappers round a CLI that does not exist here |
+| kit-log, kit-phase-map | git and the issue tracker already hold this |
+| kit-batch, kit-prompt-cycle, kit-inline | the framework's own orchestration; it retires with it |
+| kit-pair | judgment worth keeping, but its value is a machine-local transport record with no home here |
 
 ## How a `kit-*` skill migrates here
 
@@ -75,7 +78,11 @@ Trigger-based, never scheduled. One skill at a time.
 
 1. **Trigger.** A real ticket shows that judgment step done badly twice. Note the ticket in the commit message.
 2. **Rewrite.** Under 300 words, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
-3. **Test.** Invoke it once on that real ticket. Keep it only if it changed the outcome.
+3. **Test.** Five runs on a scaffolded fixture, green three of five. Keep it only if it changed the outcome against a bare-model run on the same fixture.
 4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 
-Likely order: `review` (the driver's review prompt needs its lenses first), `plan`, `intent`, `learn`. No dates.
+**Closed at six.** `review`, `plan`, `intent`, `learn`, `consult`, `gate` came across. Of the eighteen, eight were absorbed into those six and ten are not coming: four are wrappers round a CLI or a document layout this repo does not have, three are the old framework's own orchestration and retire with it, and one is the pairing skill, whose judgment is real but whose working parts are a machine-local transport record and a catalog of sharp edges — neither belongs in a flat directory of generic checklists.
+
+`kit-recenter` is the one that was attempted and rejected, and the reason is worth keeping. It audits a session's own recent turns against its standing rules. Built here and evaluated, it twice raised a drift finding against a rule that appeared nowhere in its context, and when the rubric was tightened to demand a source, it invented the source too. A session cannot reliably tell a rule it was given from one it believes it was given, and the eval regime makes it worse: a fresh subprocess has no prior turns, so the fixture must hand it a transcript, which is a different skill from the one intended. Do not rebuild it without a way to verify a cited rule against a file the run actually read.
+
+Reopening needs the trigger in step 1, not a tidy-up impulse. The `kit-*` symlinks stay until the last project using each one moves across.
