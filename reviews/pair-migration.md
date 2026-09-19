@@ -7,7 +7,7 @@ position. Their findings changed the work; this file is only the part that did
 
 **Scope, and what it is not.** The reviews were written against an earlier
 snapshot, and later commits changed it. Every item below was re-checked against
-the tree at `a27965e` before being listed, and nine further findings were dropped
+the tree at `3bd270e` before being listed, and nine further findings were dropped
 because the check showed them already fixed. These are open questions, not a
 fresh audit and not a defect list. One item is marked verified because it was
 reproduced; the rest are unverified review allegations.
@@ -16,10 +16,10 @@ reproduced; the rest are unverified review allegations.
 
 Reasoning lives in the commits, not here:
 
-- `fe76aa6` — the catalog was brought into the repo rather than left pointed at
-- `ef5f464` — four partner-safety rules restored to the catalog
-- `eaa71d5` — the word cap enforced at the boundary the rule states
-- `a27965e` — the skills table completed
+- `e5a3135` — the catalog was brought into the repo rather than left pointed at
+- `3a30014` — four partner-safety rules restored to the catalog
+- `e540cce` — the word cap enforced at the boundary the rule states
+- `3bd270e` — the skills table completed
 
 ## Verification backlog
 
@@ -37,7 +37,7 @@ Reasoning lives in the commits, not here:
 | 10 | "The control fails" does not say how repeated control runs aggregate. Applies to every skill here, not just this one. | Fable | unverified |
 | 11 | The commit hook word-counts the working tree, not the staged blob. | GPT | **fixed** |
 
-On 11: reproduced against `a27965e`, then fixed. A 481-word blob staged while a
+On 11: reproduced against `3bd270e`, then fixed. A 481-word blob staged while a
 282-word working tree sat on disk passed the hook, because every check opened the
 file instead of asking git what was about to be recorded — the home-path,
 project-name and credential checks the same way, so all four were bypassable.
