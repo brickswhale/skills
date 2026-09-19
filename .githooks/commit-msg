@@ -23,9 +23,11 @@ for f in $staged; do
   echo "stale-eval: $f changed but $case_dir/ did not." >&2
   fail=1
 done
-# Rule 1: under 300 words. Rule 3: generic — no home paths, no project names,
-# no credentials. Both were habits until a commit went four words over and
-# nothing noticed. A bare word like "secret" is not a leak: review's security
+# Rule 1: under 300 words — so 300 itself fails. This tested -gt for a while,
+# which is one word looser than the rule, and three skills settled on exactly
+# 300 and passed. A cap that admits its own boundary is where files come to
+# rest. Rule 3: generic — no home paths, no project names, no credentials. Both
+# were habits until a commit went four words over and nothing noticed. A bare word like "secret" is not a leak: review's security
 # lens says the word legitimately, so credentials are matched as an assignment
 # carrying a value, not as vocabulary.
 for f in $staged; do
@@ -35,8 +37,8 @@ for f in $staged; do
   esac
   [ -f "$f" ] || continue
   w=$(wc -w < "$f" | tr -d ' ')
-  if [ "$w" -gt 300 ]; then
-    echo "cap: $f is $w words, over 300 (rule 1)." >&2; fail=1
+  if [ "$w" -ge 300 ]; then
+    echo "cap: $f is $w words; rule 1 says under 300." >&2; fail=1
   fi
   if grep -qE '/Users/|/home/[a-z]' "$f"; then
     echo "generic: $f contains a home path (rule 3)." >&2; fail=1
