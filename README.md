@@ -20,7 +20,7 @@ Symlinks, so `git pull` updates every skill everywhere. Re-run the loop only whe
 
 ## Structure
 
-Flat. One folder per skill under `skills/`. No category folders: the plugin manifest can list several skill directories, and the install loop reads one level, so a category, when there are enough skills to need one, becomes a second directory listed in `plugin.json`, never a nested path. Until then the table below groups skills by SDLC stage. A command is a skill with `disable-model-invocation: true`; there is no `commands/` folder.
+Flat. One folder per skill under `skills/`, holding `SKILL.md` and, where a skill needs reference data too long to inline, a `references/` beside it — the hook word-caps and genericity-checks `SKILL.md` alone, so anything else there is scrubbed by hand or not committed. No category folders: the plugin manifest can list several skill directories, and the install loop reads one level, so a category, when there are enough skills to need one, becomes a second directory listed in `plugin.json`, never a nested path. Until then the table below groups skills by SDLC stage. A command is a skill with `disable-model-invocation: true`; there is no `commands/` folder.
 
 Frontmatter keys Claude Code reads: `name`, `description`, `disable-model-invocation`, `user-invocable`, `allowed-tools`, `context: fork`, `arguments`. Nothing else.
 
@@ -32,7 +32,7 @@ Every skill has at least one eval case under `evals/<skill>-<case>/`, in the lay
 claude plugin eval . --case '<skill>*' --runs 5
 ```
 
-All seven skills have now been run five times against a no-plugin baseline on their own fixture, with `Skill` disallowed in the baseline because six of them have a retired `kit-*` ancestor still installed — one of which answered in its skill's place before that was caught. Findings rarely separate a skill from the model: the bare model reported every one of `review`'s, and `gate`'s version disagreement, unaided. What separates them is the contract — a JSON verdict with provenance, a ruling with its waiver named, a judgement that may be "don't".
+All eight skills have now been run five times against a no-plugin baseline on their own fixture, with `Skill` disallowed in the baseline because seven of them have a retired `kit-*` ancestor still installed — one of which answered in its skill's place before that was caught. Findings rarely separate a skill from the model: the bare model reported every one of `review`'s, and `gate`'s version disagreement, unaided. What separates them is the contract — a JSON verdict with provenance, a ruling with its waiver named, a judgement that may be "don't".
 
 Green is **three of five**, not one. A fifteen-run ablation on one collection line — the same instruction as buried prose, as a bare tick-box, and as a tick-box naming the method — scored 4/5, 3/5 and 3/5. The wording made no difference the runs could show; the base rate was about seventy percent either way. So a single green is a dice roll, and a rule that accepts one is satisfied by re-running until it lands. Results go to `evals/results/`, ignored by git. `claude plugin eval` refuses as early access; no timeline is known, so nothing here is planned around it opening. Meanwhile `/eval-skill <name>` runs the same case by hand with `claude -p`. A skill with no eval is a draft. A skill whose eval never fires gets its `description` fixed, not its eval.
 
@@ -56,6 +56,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | `consult` | an idea gets pressure-tested before anyone builds it — its real terms, the assumptions, the strongest objection, a verdict that may be "don't". Writes nothing, produces no plan. `/consult`, or any "what if we" |
 | `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
 | `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
+| `pair` | a second opinion from another model on one question — your own position written first, the ask put blind, both views attributed and the dissent kept rather than averaged. `/pair`, or "second model opinion" |
 | `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
 | `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |
@@ -74,7 +75,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | kit-report, kit-problem-log, kit-pause | wrappers round a CLI that does not exist here |
 | kit-log, kit-phase-map | git and the issue tracker already hold this |
 | kit-batch, kit-prompt-cycle, kit-inline | the framework's own orchestration; it retires with it |
-| kit-pair | judgment worth keeping, but its value is a machine-local transport record with no home here |
+| kit-pair | `pair` — done, on the owner's word; the catalog came too, the machine-local record did not |
 
 ## How a `kit-*` skill migrates here
 
@@ -85,7 +86,19 @@ Trigger-based, never scheduled. One skill at a time.
 3. **Test.** Five runs on a scaffolded fixture, green three of five. Keep it only if it changed the outcome against a bare-model run on the same fixture.
 4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 
-**Closed at six.** `review`, `plan`, `intent`, `learn`, `consult`, `gate` came across. Of the eighteen, eight were absorbed into those six and ten are not coming: four are wrappers round a CLI or a document layout this repo does not have, three are the old framework's own orchestration and retire with it, and one is the pairing skill, whose judgment is real but whose working parts are a machine-local transport record and a catalog of sharp edges — neither belongs in a flat directory of generic checklists.
+**Seven, after one reopening.** `review`, `plan`, `intent`, `learn`, `consult` and `gate` came
+across, and the migration was declared closed at six. `pair` reopened it on the owner's word,
+against the line this file used to carry — that its value was a machine-local transport record and
+a catalog of sharp edges, with no home here. Half of that objection held. The record is genuinely
+machine-local and stays there; the skill names only the filename it looks for and the lines that
+file must carry. The catalog was the half that did not hold: it is generic knowledge about public
+CLIs, it costs nothing against the word cap because the hook reads only `SKILL.md`, and a skill
+pointing at a catalog it cannot name is worse than either keeping it out or bringing it in. It was
+rewritten, scrubbed and now sits at `skills/pair/references/transports.md`. Of the eighteen kit
+skills, nine were absorbed into these seven and the other nine are not coming: three are wrappers
+round a CLI this repo does not have, two are document layouts git and the issue tracker already
+hold, three are the old framework's own orchestration and retire with it, and one was attempted and
+rejected.
 
 `kit-recenter` is the one that was attempted and rejected, and the reason is worth keeping. It audits a session's own recent turns against its standing rules. Built here and evaluated, it twice raised a drift finding against a rule that appeared nowhere in its context, and when the rubric was tightened to demand a source, it invented the source too. A session cannot reliably tell a rule it was given from one it believes it was given, and the eval regime makes it worse: a fresh subprocess has no prior turns, so the fixture must hand it a transcript, which is a different skill from the one intended. Do not rebuild it without a way to verify a cited rule against a file the run actually read.
 
