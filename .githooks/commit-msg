@@ -30,23 +30,30 @@ done
 # were habits until a commit went four words over and nothing noticed. A bare word like "secret" is not a leak: review's security
 # lens says the word legitimately, so credentials are matched as an assignment
 # carrying a value, not as vocabulary.
+# All four read the STAGED BLOB, never the working tree. git commits the index,
+# so the working tree is not what ships: staging a 481-word blob and then
+# trimming the file on disk to 282 words passed every check here, because each
+# one opened the file instead of asking git what was about to be recorded. The
+# cap fix before this corrected the boundary and left the source it read alone.
 for f in $staged; do
   case "$f" in
     skills/*/SKILL.md|.claude/skills/*/SKILL.md) ;;
     *) continue ;;
   esac
-  [ -f "$f" ] || continue
-  w=$(wc -w < "$f" | tr -d ' ')
+  # Deleted in the index: nothing to check. Not the same as absent on disk.
+  git cat-file -e ":$f" 2>/dev/null || continue
+  blob=$(git show ":$f")
+  w=$(printf '%s\n' "$blob" | wc -w | tr -d ' ')
   if [ "$w" -ge 300 ]; then
-    echo "cap: $f is $w words; rule 1 says under 300." >&2; fail=1
+    echo "cap: $f is $w words staged; rule 1 says under 300." >&2; fail=1
   fi
-  if grep -qE '/Users/|/home/[a-z]' "$f"; then
+  if printf '%s\n' "$blob" | grep -qE '/Users/|/home/[a-z]'; then
     echo "generic: $f contains a home path (rule 3)." >&2; fail=1
   fi
-  if grep -qEi 'brickswhale|prismplan|motion-core' "$f"; then
+  if printf '%s\n' "$blob" | grep -qEi 'brickswhale|prismplan|motion-core'; then
     echo "generic: $f names a project (rule 3)." >&2; fail=1
   fi
-  if grep -qEi '(api[_-]?key|secret|password|token)[[:space:]]*[:=][[:space:]]*.?[A-Za-z0-9_-]{8,}' "$f"; then
+  if printf '%s\n' "$blob" | grep -qEi '(api[_-]?key|secret|password|token)[[:space:]]*[:=][[:space:]]*.?[A-Za-z0-9_-]{8,}'; then
     echo "generic: $f looks like it carries a credential (rule 3)." >&2; fail=1
   fi
 done

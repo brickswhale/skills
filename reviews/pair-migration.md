@@ -35,18 +35,21 @@ Reasoning lives in the commits, not here:
 | 8 | The fixture's partner is canned, so the case measures conduct, never whether a useful second opinion was obtained. | both | unverified |
 | 9 | Disallowing `Skill` in the control blocks an invocation route, not file reads, so the arms may differ by more than the skill. | Fable | unverified |
 | 10 | "The control fails" does not say how repeated control runs aggregate. Applies to every skill here, not just this one. | Fable | unverified |
-| 11 | The commit hook word-counts the working tree, not the staged blob. | GPT | **verified** |
+| 11 | The commit hook word-counts the working tree, not the staged blob. | GPT | **fixed** |
 
-On 11: reproduced against `a27965e`. A 481-word blob staged while a 282-word
-working tree sat on disk passed the hook, because it inspects the file rather
-than what git would commit. The same applies to the home-path, project-name and
-credential checks, which read the working tree too. A fix reads the staged blob.
+On 11: reproduced against `a27965e`, then fixed. A 481-word blob staged while a
+282-word working tree sat on disk passed the hook, because every check opened the
+file instead of asking git what was about to be recorded — the home-path,
+project-name and credential checks the same way, so all four were bypassable.
+All of them now read the staged blob, and `.githooks/commit-msg.test.sh` holds
+the eight cases. Run against the pre-fix hook it fails five of them, which is how
+it was shown to catch the defect rather than merely describe it.
 
 ## Reading this later
 
 Nothing here is owned or scheduled. Items 1 to 6 bear on execution safety and
 would matter before supporting a new transport. Items 7 to 10 bear on how much
-the green eval result actually establishes. Item 11 is a live gap in the hook.
+the green eval result actually establishes. Item 11 is closed.
 
 The raw reviews were not kept: they carry names and paths from a private
 framework that this public repo may not hold, and their actionable content is
