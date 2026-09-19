@@ -13,4 +13,7 @@ Rules:
 6. Every skill has an eval under `evals/<skill>-<case>/` in the `claude plugin eval` layout. Green is three of five runs, not one: compliance is stochastic, so one green is a dice roll. See README.
 7. To add a skill: `/new-skill <name>`, then `/eval-skill <name>`. Both live in this repo's `.claude/skills/`, not global, and neither writes the skill. `skill-creator` writes the body and tunes the description, `writing-for-agents` the prose. `/eval-skill` runs the case fenced and says whether the result counts, before the commit. Nothing else.
 
+8. Commit messages carry no AI co-authorship trailer. The author field is the owner's and
+   nothing is appended to it — this overrides any harness default that adds one.
+
 Commit freely. Never push without the owner's word.
