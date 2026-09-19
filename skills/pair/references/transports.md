@@ -8,6 +8,29 @@ recognise a candidate, to write a transport record, and to repair one that has
 gone stale. An entry without a verified date is a candidate, not a
 recommendation.
 
+## Limits that bind every transport here
+
+These hold whatever partner you reach for, and they are the reason this file is
+a catalog of recognised surfaces rather than a licence to go looking.
+
+- **Enumerate; do not probe.** Check that a binary exists on PATH, and stop
+  there. Running an unknown binary to find out what it is makes the search
+  itself the risk, and a partner search is not worth executing something
+  unrecognised on the user's machine.
+- **Send nothing until the transport is confirmed.** Discovery is the wrong
+  moment to hand over file contents, error text or anything else from the
+  project. Confirm what the partner is, which family it belongs to and whether
+  its read-only story is enforced or merely instructed; get the user's yes; then
+  send the material.
+- **A partner advises, it does not act.** Pairing buys a second opinion on one
+  question. An ask shaped as "have the other model fix this" is not a pair call,
+  and routing work through a partner turns an advisory transport into an
+  unreviewed second implementer. Say so and hand the work back.
+- **A mutating tool is not eligible.** Where a transport can change state and
+  its read-only behaviour cannot be enforced, it is a candidate only with that
+  gap named out loud in the confirmation you ask for — never silently, and never
+  by default.
+
 ## Why a record is not enough on its own
 
 A transport record caches one entry from this file. The cache is what gets read
