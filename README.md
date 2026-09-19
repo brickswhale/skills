@@ -54,6 +54,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | Skill | Use |
 |---|---|
 | `consult` | an idea gets pressure-tested before anyone builds it — its real terms, the assumptions, the strongest objection, a verdict that may be "don't". Writes nothing, produces no plan. `/consult`, or any "what if we" |
+| `gate` | a phase boundary gets a go or no-go — every criterion labelled against an artifact that was actually run, never a note asserting it, and "not yet" is a real verdict carrying what would flip it. `/gate`, or "are we ready for the next phase" |
 | `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
 | `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
 | `pair` | a second opinion from another model on one question — your own position written first, the ask put blind, both views attributed and the dissent kept rather than averaged. `/pair`, or "second model opinion" |
