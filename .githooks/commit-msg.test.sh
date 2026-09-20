@@ -47,8 +47,25 @@ check() { # name expected_rc
   else fail=$((fail+1)); printf 'FAIL %s (expected rc=%s, got %s)\n     %s\n' "$1" "$2" "$rc" "$(echo "$out" | head -2 | tr '\n' ' ')"; fi
 }
 
+# Length REPORTS since the 2026-09-20 ruling, so rc alone cannot tell a silent
+# pass from a reported one. says/quiet assert the output too: a check that only
+# reads rc would go green if the report were deleted.
+check_says() { # name expected_rc substring
+  local out rc
+  out=$(bash "$HOOK" "$MSG" 2>&1); rc=$?
+  if [ "$rc" = "$2" ] && printf '%s' "$out" | grep -q "$3"; then pass=$((pass+1)); printf 'ok   %s\n' "$1"
+  else fail=$((fail+1)); printf 'FAIL %s (expected rc=%s + %s, got %s)\n     %s\n' "$1" "$2" "$3" "$rc" "$(echo "$out" | head -2 | tr '\n' ' ')"; fi
+}
+
+check_quiet() { # name
+  local out rc
+  out=$(bash "$HOOK" "$MSG" 2>&1); rc=$?
+  if [ "$rc" = 0 ] && ! printf '%s' "$out" | grep -q 'length:'; then pass=$((pass+1)); printf 'ok   %s\n' "$1"
+  else fail=$((fail+1)); printf 'FAIL %s (expected rc=0 and no length line, got %s)\n     %s\n' "$1" "$rc" "$(echo "$out" | head -2 | tr '\n' ' ')"; fi
+}
+
 reset; pad $((481-BASE)); git add "$F"; untouch
-check "over-cap blob staged, tidy working tree is refused" 1
+check_says "over-cap blob staged is REPORTED with its delta, not refused" 0 "284 -> 481 words (+197)"
 
 reset; pad 1; git add "$F"; pad 400
 check "compliant blob staged, bloated working tree is allowed" 0
@@ -63,10 +80,10 @@ reset; printf '\napi_key = AKIAsomethinglong123\n' >> "$F"; git add "$F"; untouc
 check "credential assignment in the staged blob is refused" 1
 
 reset; pad $((299-BASE)); git add "$F"
-check "299 words staged is allowed" 0
+check_quiet "299 words staged, small delta: allowed AND silent"
 
 reset; pad $((300-BASE)); git add "$F"
-check "300 words staged is refused, rule 1 says under 300" 1
+check_says "300 words staged is reported, not refused — the cap is a target" 0 "length:"
 
 reset; git rm -q "$F"
 check "staged deletion raises nothing" 0

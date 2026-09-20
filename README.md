@@ -46,7 +46,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 ## Rules
 
 - This repo is public. No client names, no home paths, no credentials in any skill, ever.
-- A skill is a checklist, never a script. Under 300 words.
+- A skill is a checklist, never a script. Target under 300 words — a target, not a blocker. Exceed it when the extra lines change what the agent does.
 - A skill that a tool can replace is deleted the day the tool exists.
 - Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, or on the owner's word. Its `kit-*` symlink stays until the last project using it moves to the new name.
 

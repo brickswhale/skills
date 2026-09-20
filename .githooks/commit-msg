@@ -23,10 +23,25 @@ for f in $staged; do
   echo "stale-eval: $f changed but $case_dir/ did not." >&2
   fail=1
 done
-# Rule 1: under 300 words — so 300 itself fails. This tested -gt for a while,
-# which is one word looser than the rule, and three skills settled on exactly
-# 300 and passed. A cap that admits its own boundary is where files come to
-# rest. Rule 3: generic — no home paths, no project names, no credentials. Both
+# Rule 1 REPORTS, it does not block (owner's ruling 2026-09-20: "quality
+# matters more than the cap; the cap is a reference we target, not a blocker").
+# It blocked at >=300 until a 118-word addition to supervise-build — judged
+# worth its words — was refused on a file already 297 words, 3 under. The
+# history stays on the record because it is the argument AGAINST this change:
+# the check once tested -gt, one word looser than the rule, and three skills
+# promptly settled on exactly 300 and passed. Authors optimise to whatever the
+# boundary is, so removing it removes the thing that forced compression, and
+# drift is the expected cost. It is accepted deliberately. A cross-model pair
+# (2026-09-20) also killed the obvious middle road, a mandatory
+# "cap-waiver: <why>" line: that still blocks on length, which is a limit with
+# exceptions rather than a target, and written waivers decay into boilerplate
+# the hook can only confirm the existence of, never the truth of.
+# What replaces it is not an enforcement trick, because none exists: the delta
+# is PRINTED so growth is visible in review, and whether 118 words earned their
+# place is settled by the eval (rule 6, still blocking) and by someone reading
+# the diff. Unnecessary content is grounds for revision; length alone is not.
+# Watch the corpus trend, not the single file.
+# Rule 3: generic — no home paths, no project names, no credentials. Both
 # were habits until a commit went four words over and nothing noticed. A bare word like "secret" is not a leak: review's security
 # lens says the word legitimately, so credentials are matched as an assignment
 # carrying a value, not as vocabulary.
@@ -44,8 +59,17 @@ for f in $staged; do
   git cat-file -e ":$f" 2>/dev/null || continue
   blob=$(git show ":$f")
   w=$(printf '%s\n' "$blob" | wc -w | tr -d ' ')
-  if [ "$w" -ge 300 ]; then
-    echo "cap: $f is $w words staged; rule 1 says under 300." >&2; fail=1
+  # Reported, never fatal. Previous count comes from HEAD; a new skill has none.
+  if git cat-file -e "HEAD:$f" 2>/dev/null; then
+    prev=$(git show "HEAD:$f" | wc -w | tr -d ' ')
+    delta=$((w - prev))
+    [ "$delta" -gt 0 ] && delta="+$delta"
+  else
+    prev=new; delta="+$w"
+  fi
+  if [ "$w" -ge 300 ] || [ "${delta#+}" -ge 50 ] 2>/dev/null; then
+    echo "length: $f  $prev -> $w words ($delta). Rule 1 targets under 300 — not a blocker." >&2
+    echo "        Does each added line change what the agent does? If not, cut it." >&2
   fi
   if printf '%s\n' "$blob" | grep -qE '/Users/|/home/[a-z]'; then
     echo "generic: $f contains a home path (rule 3)." >&2; fail=1

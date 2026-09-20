@@ -5,7 +5,7 @@ What this is: SHJing's own plugin. Skills, agents, hooks, reused across every pr
 Layout: `.claude-plugin/plugin.json`, `skills/<name>/SKILL.md`, `agents/`, `hooks/hooks.json`. Installed by symlink, see README.
 
 Rules:
-1. A skill is a checklist, never a script. Under 300 words. `wc -w` before commit.
+1. A skill is a checklist, never a script. Target under 300 words — a target, not a blocker (owner's ruling 2026-09-20). Exceed it when the extra lines change what the agent DOES; the hook prints the delta so growth is visible, and rule 6's eval is what says the words earned their place.
 2. Frontmatter: `name` equals the folder, `description` says when to use it, with the trigger phrases. A command is a skill with `disable-model-invocation: true`.
 3. Generic. No project names, no home paths, no client names, no credentials. Public.
 4. Nothing copied from agent-kit verbatim. Migration rules and table in README.
