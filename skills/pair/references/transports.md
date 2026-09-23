@@ -47,8 +47,45 @@ that line rather than reconstruct one. If the record has no `call=`, or its
 `call=` no longer matches the entry here, rewrite the record from this file
 before calling.
 
+## Codex plugin for Claude Code (`codex@openai-codex`) — verified 2026-09-23
+
+OpenAI's own Claude Code plugin. It drives the same local `codex` binary under
+the same sign-in: signed in with ChatGPT, every call counts against the plan's
+Codex limits, with no API billing. On a Claude Code host that has it installed,
+prefer it to the bare CLI.
+
+- **One-shot call:** `node "<plugin-root>/scripts/codex-companion.mjs" task --fresh "<prompt>" < /dev/null`
+- **`<plugin-root>`** is the `installPath` of `codex@openai-codex` in
+  `claude plugin list --json`. Resolve it when you write the record, so the
+  record's `call=` keeps `"<prompt>"` as its only hole; `node` stays bare. The
+  path carries the plugin version and moves on every update. Check the script
+  exists before you call: a missing path is a stale record to rewrite, not the
+  rung's one attempt.
+- **Call `task` directly.** The plugin's rescue command and its forwarding
+  subagent are the wrong door for a pair. They add `--write` by default, may
+  rewrite the prompt before sending it, and may offer to resume an old thread.
+  Each of those breaks a rule of this skill.
+- `--fresh` is what keeps the partner blind. `--resume` and `--resume-last`
+  reopen an earlier thread with its context, so refuse them as you would
+  `codex exec resume`. Never add `--write`.
+- Only the answer comes back on stdout; progress lines go to stderr. With a
+  prompt argument present, stdin is not read, but keep the redirection.
+- The first call starts a shared background app server that outlives the call.
+  The plugin's session-end hook stops it only when the shell carries the
+  plugin's `CLAUDE_PLUGIN_DATA`, which its session-start hook exports. A session
+  that began before the plugin was installed lacks it, and the process stays:
+  look for a leftover `codex app-server` after the pair.
+- **Read-only:** enforced by the Codex sandbox. A write attempt returns
+  "operation not permitted" and nothing lands.
+- **Family:** OpenAI GPT. The model is whatever the Codex config names.
+- **Verified 2026-09-23**, plugin 1.0.6 on Codex CLI 0.154.0: the write was
+  denied, a second `--fresh` call knew nothing of a word planted by the first,
+  stdout held the answer alone, and the session-end hook left no process.
+
 ## Codex CLI (`codex`) — verified, field use
 
+- **Where it fits:** every host other than Claude Code, and a Claude Code host
+  without the plugin. Re-verified 2026-09-23 on Codex CLI 0.154.0.
 - **One-shot call:** `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`
 - `< /dev/null` is **mandatory** in a non-interactive shell. With a prompt
   argument and stdin still open, the command waits to append stdin to the prompt
@@ -62,13 +99,13 @@ before calling.
 - **Read-only:** enforced by the CLI through `--sandbox read-only`.
 - **Family:** OpenAI GPT.
 
-## Codex over MCP — verified, with a caveat
+## Codex over MCP — removed
 
-- A session-connected tool that opens a Codex conversation; a second tool
-  continues it by thread id.
-- **Caveat:** a long ask exceeds the MCP transport timeout. Observed, more than
-  once. Prefer the CLI for anything substantial; MCP is fine for short asks.
-- **Read-only:** through a `sandbox` parameter set to read-only.
+Codex CLI 0.154.0 (2026-09) dropped the `codex mcp-server` entry point. A host
+config that still launches it gets the interactive UI instead, which exits with
+`stdin is not a terminal`, so the tools never connect. Not a candidate. Kept
+only so an old record or an old habit is recognised: use the plugin or the CLI
+entry above.
 
 ## Claude Code CLI (`claude`) — unverified as a partner
 
