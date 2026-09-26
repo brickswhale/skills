@@ -14,10 +14,11 @@ reviews/<topic>.md           what a review left unsettled, when one was run
 
 ```sh
 git clone https://github.com/brickswhale/skills.git ~/skills
+mkdir -p ~/.claude/skills ~/.agents/skills
 for d in ~/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skills/$n; ln -sfn "$d" ~/.agents/skills/$n; done
 ```
 
-Symlinks, so `git pull` updates every skill everywhere. Re-run the loop only when a skill is added or removed. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
+Symlinks, so `git pull` updates every skill everywhere. Re-run the loop when a skill is added. When one is removed, the loop leaves its old link behind: delete it from both folders by hand. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
 
 ## Structure
 
