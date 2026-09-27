@@ -71,6 +71,11 @@ skill is designed against that record, not against theory.
    trying) is re-issued with an attempt number, not silently replaced.
 10. **The reviewer is never weaker than the builder** survives the coordinator
     change; the registry's `tier=` key is what makes it checkable.
+11. **The registry is a file named `route-registry`** in the directory that
+    holds the `pair-transport.<host-family>` record (owner, 2026-09-28). The
+    skill names the file and that relation, never a path. Setup looks there
+    first; a missing file is the setup trigger, a `confirmed=` older than the
+    installed tools is the staleness trigger.
 
 ## The plan, as corrected by the plan review
 
@@ -116,7 +121,7 @@ Trade accepted: a procedural aid whose reliability is measured, never enforced.
 
 | # | Question | From | Status |
 |---|---|---|---|
-| 1 | Name and location of the registry record. Proposed: `route-registry`, in the directory that holds the `pair-transport.<host-family>` record. Same open item as `pair-migration.md` #1. | plan review | open, owner's call |
+| 1 | Name and location of the registry record. | plan review | ruled, see ruling 11. How a fresh install finds the pair record's directory is still `pair-migration.md` #1 |
 | 2 | Setup (registry missing or stale; policy missing) ships untested in v1. A second case `route-setup` is owed. | plan review | owed |
 | 3 | A policy must be able to carry everything the consuming project's doc obliges today (effort floors, pre-checks, audit order, failure handling, manual-lane limits), or retire each one on purpose. The template is judged against that list at step 7. | plan review | open |
 | 4 | Operational branches with no rule yet: malformed or contradictory policy; no eligible candidate; exhausted cumulative review; reviewer failure after build; an unauthorised waiver. | plan review | open |
