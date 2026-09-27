@@ -54,7 +54,7 @@ the same sign-in: signed in with ChatGPT, every call counts against the plan's
 Codex limits, with no API billing. On a Claude Code host that has it installed,
 prefer it to the bare CLI.
 
-- **One-shot call:** `node "<plugin-root>/scripts/codex-companion.mjs" task --fresh "<prompt>" < /dev/null`
+- **One-shot call:** `node "<plugin-root>/scripts/codex-companion.mjs" task --fresh --effort medium "<prompt>" < /dev/null`
 - **`<plugin-root>`** is the `installPath` of `codex@openai-codex` in
   `claude plugin list --json`. Resolve it when you write the record, so the
   record's `call=` keeps `"<prompt>"` as its only hole; `node` stays bare. The
