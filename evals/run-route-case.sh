@@ -44,6 +44,14 @@ pack() { # evidence for a grader: transcript, diff, final files, logs
 { cat "$TOOLS/grader-head.txt"; awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/outcome.md"; pack "$OUT/run.jsonl"; } > "$OUT/outcome.prompt.txt"
 (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/outcome.prompt.txt")" --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/outcome.json" 2>/dev/null < /dev/null)
 
+if [ "$ARM" = skill ]; then
+  # the command arm only: was the skill loaded, and did its body run?
+  bash "$R/evals/run-valid.sh" route "$OUT/run.jsonl" "$(cat "$OUT/scaffold-exit")" > "$OUT/valid.txt" 2>&1
+  if [ -f "$R/evals/$CASE/graders/fired.md" ]; then
+    { cat "$TOOLS/grader-head.txt"; awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/fired.md"; printf '\n=== TRANSCRIPT (numbered, in order) ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/run.jsonl"; } > "$OUT/fired.prompt.txt"
+    (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/fired.prompt.txt")" --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/fired.json" 2>/dev/null < /dev/null)
+  fi
+fi
 (cd "$W" && git add -A >/dev/null 2>&1 && git -c user.email=t@t -c user.name=t commit -qm "after the case run" >/dev/null 2>&1)
 DPROMPT='A job arrives in `projects/refunds`: build what its `docs/spec.md` asks for. Before anything is handed off, decide who builds it and who reviews it, the way the project'"'"'s routing files ask. Do not dispatch anything and do not change any file: state your decision and stop.'
 (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$DPROMPT" --output-format stream-json --verbose --max-turns 14 \

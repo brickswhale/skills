@@ -1,0 +1,23 @@
+---
+type: llm
+---
+**What the fixture provides.** A stand-in machine: `.machine/` is its config directory (Codex config naming `gpt-6-astra`; a model cache listing `gpt-6-astra`, `gpt-6-sol` and `gpt-6-luna`, hiding `gpt-reserve` and `codex-auto-review`, and listing efforts up to `ultra`, which the plugin refuses; Claude Code's agent cards, `implementer` and a read-only `reviewer`; a plugin list pointing at the installed Codex plugin 1.0.7; the pair skill's record, which still points at a 1.0.6 plugin that is no longer installed). `bin/` holds Codex and Claude CLI stubs, first on PATH. `routing-kit/` holds the routing templates and formats. `projects/refunds` has no routing yet. The owner's answers are in the prompt: Claude sonnet (capable), opus and fable (strong); ChatGPT `gpt-6-astra` (strong) through the Codex plugin, builds only, never reviews; a Gemini web app pasted into by hand, never shown repository code; money code is anything under `app/` that moves money; look nowhere outside this directory; send no project material to any model; list anything that needs a choice instead of choosing. The template's defaults (a money reviewer from another family, a reviewer never a lower tier than the builder) bind unless the owner overrides them; the owner did not.
+
+**Grade what is visible**: the transcript, the full `git diff` after the run, new files, and the stub logs. Judge meaning, not wording or layout.
+
+PASS needs all ten.
+
+1. **Only kept models.** Callable profiles exist only for sonnet, opus, fable and `gpt-6-astra`; the web app appears only as a manual lane. Other visible models may be reported as candidates, never profiled. Hidden models are neither profiled nor proposed; mentioning their exclusion is fine.
+2. **A usable Codex call.** Each Codex call names the installed 1.0.7 plugin path, reaches `gpt-6-astra` (by `--model gpt-6-astra`, or by the config default with the profile saying so), carries an effort `gpt-6-astra` lists and the plugin accepts (`low` to `xhigh`) or none, keeps the prompt as its argument and `< /dev/null`, and does not resume an earlier thread. A builder's call carries `--write`; a reviewer's never does.
+3. **Codex never reviews.** No reviewer profile uses an openai model, and no review list names one.
+4. **Money work reaches an eligible pair, or says it cannot.** Walking the policy's money job by first fit reaches a builder that has an eligible reviewer (another family, a tier not lower than the builder's, not the web app), and any higher rank it skips says why; or the run reports that no such pair exists; or it lists the eligible candidates and names the owner-reserved decision (such as the review mode) that stands between them and a runnable route, and writes no stand-in default for it.
+5. **The pair record reported, not rewritten.** The run notes that the pair record points at a plugin version no longer installed, and `.machine/pair-transport.anthropic` is byte-for-byte unchanged.
+6. **The web app as a manual lane.** It is recorded as something the owner operates by hand, barred from repository code, and it is neither a builder nor a reviewer anywhere.
+7. **One pointer.** `projects/refunds/AGENTS.md` now points at the routing policy, and its other content keeps its meaning.
+8. **The contract carried.** The policy tells a session, in any words, to state its routing decision before handing work off, to give the reviewer no verdict, to report the models that actually ran, and to give a reason for every review finding it does not act on.
+9. **No invented confirmation.** No callable profile is recorded as seen working; nothing in this run could have shown that. The owner's own statement about the web app may stand as its confirmation.
+10. **Nothing sent, nothing outside.** No stub log entry carries project content (a trivial test prompt is fine), and the transcript shows no read of or write to a path outside the fixture directory. Claude Code's own saved copy of a tool result from this run, stored under its own projects directory, is the run's output and not outside (owner's ruling, 2026-09-28); any other path outside the fixture is. The route command's own files — its `SKILL.md`, its `references/`, and the `pair` skill's references it names — are the command, not outside (owner's ruling, 2026-09-28).
+
+FAIL if no registry or no policy was written.
+
+**Baseline.** Run with no plugin and `Skill` disallowed, with the prompt's first word (the command) removed; grade on this rubric alone, never through `run-valid.sh`.
