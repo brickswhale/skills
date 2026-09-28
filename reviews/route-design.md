@@ -92,7 +92,50 @@ skill is designed against that record, not against theory.
     skill and its evals the advisor stays off, so attribution has one fewer
     moving part. The `pair` catalog carries the matching exclusion.
 
-## The plan, as corrected by the plan review
+13. **The pivot: `route` is an owner-started setup-and-update command, not a
+    dispatch-time checklist** (owner, 2026-09-28, on the step-3 and settling
+    evidence below). The skills repo holds no routing feature: it holds
+    `/route` and the templates it writes from. `/route` generates the routing
+    feature in the consuming project (the policy file, carrying the contract,
+    and one briefing line pointing at it) and the machine's `route-registry`.
+    Nothing from this repo runs when work is handed off; the session reads the
+    policy. One command, not two: it picks setup or update by what exists. The
+    registry stays on the machine (ruling 11), shared by every project there.
+    `disable-model-invocation: true`: setup needs the owner's answers, so a
+    coordinator that finds no registry reports a blocked prerequisite and names
+    `/route` rather than starting an inventory mid-build. Supersedes the parts
+    of rulings 2 and 9 that put the ranked walk and the two lines in a skill;
+    both rulings still hold, carried by the policy's text.
+
+## The plan after the pivot
+
+| # | Step | Proof |
+|---|---|---|
+| 1 | Ruling 13 recorded; the retired dispatch case kept reproducible under `route-fires-2026-09-28/` | scrub clean |
+| 2 | Grading fixes before any run: paths accepted in the hand-off; an in-hand fix always FAIL; a silently ignored finding is a missing disposition; clause 1 split into "declared before dispatch, user-facing" and "coordinator model named"; the six stored runs re-graded | flips reported |
+| 3 | References: `policy-template.md` gains a Contract section (the settling arm's four lines, verbatim) and a Roles section; `registry-format.md` gains file states, the model-selector rule, the effort overlap, what `confirmed=` means, discovery precedence, and the check rules | scrub; no copied runs |
+| 4 | Paper probe: the new downstream grader must pass three hand-made outputs (Codex-first with a Claude reviewer; an explicit "job waits"; a correct policy in another format) | 3 verdicts |
+| 5 | Two fixtures, `route-update` (primary: a shared registry, two project policies, a moved plugin path, a model gone, a model new) and `route-setup`; both arms get the same references, so the only difference is the command; baseline before the body | scaffolds exit 0; baseline graded |
+| 6 | The body, near 300 words: locate and classify both files; read before drafting; inventory candidates, never probe; ask what no scan shows; draft registry, policy and pointer and check them together; show each transport's family and read-only story; update reports every rank a change touches, per project, and never reroutes | hook delta |
+| 7 | Five runs per case; the same run must pass outcome and downstream; three of five per case | as stated |
+| 8 | README row and the command's grading line; commit | hook passes |
+| 9 | The consuming project runs `/route` in its own session; step 7 of the old plan below moves here | its gates |
+
+Pair round 7 (blind, GPT, on the first draft of this plan), claims checked
+before adoption: the draft's downstream stage rewrote call lines into a stub,
+parsed only this format, and graded against the old policy's fixed answers;
+the body wrote files before checking them; the fixture left a web-only lane's
+eligibility and the owner's tiers unstated; the plugin's recorded pair call has
+no model selector, so two profiles on it reach the same model (the plugin does
+accept `--model`, and only efforts `none` to `xhigh`, where the model cache
+lists `max` and `ultra` too); and the grading fixes were scheduled after the
+runs although this record owed them before. All adopted. Kept as dissent: the
+partner wanted every downstream call executed at a fake transport boundary;
+adopted for Codex calls only, because in-process subagent calls cannot run
+inside the fence, so the downstream coordinator states its decision instead of
+dispatching, and live transport compatibility stays unmeasured.
+
+## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
 |---|---|---|

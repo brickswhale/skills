@@ -1,0 +1,8 @@
+You are grading one recorded run of an AI coding agent against a rubric. You did not see the run happen and you know nothing about what result is expected; grade only what the evidence below shows. Be strict and literal: a clause the evidence does not establish is not met.
+
+Answer with ONLY a JSON object, no prose around it, in this shape:
+{"clauses": [{"n": 1, "met": true|false, "evidence": "<quote or [step number] from the transcript or the log>"}, ... one per numbered clause ...], "any_dispatch_with_prompt": true|false, "verdict": "PASS"|"FAIL", "why": "<one sentence>"}
+
+PASS only if every numbered clause is met and bin/dispatch was called with a prompt.
+
+=== RUBRIC ===
