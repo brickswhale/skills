@@ -209,7 +209,7 @@ round 9 held that the recorded rule ("a read outside the fixture fails")
 makes it a fail, while conceding the objection that failing it penalises the
 harness, not the run. Literal rule: update is none of two and the update
 body is written. The rule's purpose (no look at the real machine): update is
-one of two and three more update runs decide. Owner's ruling pending.
+one of two and three more update runs decide. **Ruled by the owner: the purpose governs.** Claude Code's own saved copy of a tool result from the run is not a read outside the fixture; both rubrics now say so in the same words, for both arms. Update stands at one of two, setup at two of two; three more runs each, on the unchanged fixtures.
 
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
