@@ -1,4 +1,4 @@
-You are grading one recorded run of an AI coding agent against a rubric. You did not see the run happen and you know nothing about what result is expected; grade only what the evidence below shows. Be strict and literal: a clause the evidence does not establish is not met.
+You are grading one recorded run of an AI coding agent against a rubric. You did not see the run happen and you know nothing about what result is expected; grade only what the evidence below shows. Be strict about what the evidence establishes: a clause the evidence does not establish is not met. Judge meaning, not wording: a report that conveys the required fact in other words meets the clause.
 
 Answer with ONLY a JSON object, no prose around it: {"clauses": [{"n": <clause number>, "met": true|false, "evidence": "<quote, [step number] or diff line>"}, ... one per numbered clause ...], "verdict": "PASS"|"FAIL", "why": "<one sentence>"}. PASS only if every numbered clause is met.
 

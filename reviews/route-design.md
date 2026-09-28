@@ -211,6 +211,31 @@ harness, not the run. Literal rule: update is none of two and the update
 body is written. The rule's purpose (no look at the real machine): update is
 one of two and three more update runs decide. **Ruled by the owner: the purpose governs.** Claude Code's own saved copy of a tool result from the run is not a read outside the fixture; both rubrics now say so in the same words, for both arms. Update stands at one of two, setup at two of two; three more runs each, on the unchanged fixtures.
 
+**Baseline, five runs per case, 2026-09-28.** Setup five of five joint
+passes: by the rule, `/route` carries no setup checklist; the references do
+that job. Update two of five (runs 1 and 4 pass): the update part of the
+command is written. Update misses: a gone block's call left on the removed
+plugin path, twice (runs 2, 3), once with a report claiming it was fixed while
+its own check printed the old path missing; old confirmations not tied to the
+old installation (run 3); a visible model with no profile offered only inside a
+replacement list that also held a profiled model, so the owner could not tell
+it was unprofiled (run 5). Pair round 10 (blind, checked): the run-5 grade that
+decides the count stands; run 3's clause 3 is overturned to a pass (its report
+named the three ranks by meaning), which does not change that run's verdict;
+run 3's clause 7 stands on a corrected reason (the report did state both
+version changes).
+
+**Before any further grading or command run, fixed now.** The grader preamble
+told graders to be "strict and literal" while every rubric says "judge
+meaning, not wording": a conflict that produced at least one false failure.
+The preamble now says to be strict about what the evidence establishes and to
+judge meaning. All ten baseline outcomes are re-graded with it, and the
+command arm is graded with it; the re-grade decides the baseline of record.
+**Acceptance for the command:** on `route-update`, three of five command-arm
+runs pass outcome and downstream together while the baseline of record stays
+under three; on `route-setup`, where the command adds no checklist, four of
+five, so the command does not make setup worse than the references alone.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
