@@ -88,6 +88,17 @@ check_says "300 words staged is reported, not refused — the cap is a target" 0
 reset; git rm -q "$F"
 check "staged deletion raises nothing" 0
 
+# Rule 8 reads the MESSAGE, so these stage nothing: the check must fire on any
+# commit, not only one that touches a SKILL.md.
+reset
+printf 'probe\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n' > "$MSG"
+check_says "an AI co-author trailer is refused, with nothing staged" 1 "rule 8"
+printf 'probe\n\n\xf0\x9f\xa4\x96 Generated with [Claude Code](https://claude.com/claude-code)\n' > "$MSG"
+check_says "a generated-with line is refused" 1 "rule 8"
+printf 'probe\n\nThe hook now refuses a Co-Authored-By: line at the start of a line.\n' > "$MSG"
+check "a message that only mentions the trailer mid-line is allowed" 0
+printf 'probe\n\neval-unchanged: isolating rule 1 and rule 3\n' > "$MSG"
+
 reset
 printf '\n%s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

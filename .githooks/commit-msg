@@ -82,9 +82,22 @@ for f in $staged; do
   fi
 done
 
+# Rule 8: no AI co-authorship line. It reads the MESSAGE, so it runs on every
+# commit, not only one that stages a SKILL.md. The harness appends a trailer by
+# default and re-sends that instruction after every model switch; one landed
+# on 2026-09-28, right after a switch, and only a reread of the log caught it.
+# Anchored to the start of a line so a message may still talk about the rule.
+attr=0
+if grep -qiE '^co-authored-by:|generated with \[?claude code' "$msg_file"; then
+  echo "attribution: the message carries a co-author or generated-with line (rule 8)." >&2
+  echo "        The author field is the owner's; remove the line and commit again." >&2
+  attr=1
+fi
+
 [ "$fail" -eq 0 ] || {
   echo "" >&2
   echo "Update the case so it covers the change, or add a line to the commit message:" >&2
   echo "  eval-unchanged: <why the existing case still covers this>" >&2
   exit 1
 }
+[ "$attr" -eq 0 ] || exit 1
