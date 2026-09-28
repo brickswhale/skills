@@ -161,6 +161,30 @@ twice per case: six of six passed. In these decision-only runs the coordinator
 named its own model six of six, against none of six in the dispatch runs, so
 that miss looks tied to the moment of dispatch rather than to the wording.
 
+**Step 5, fixtures reviewed before any run (pair round 8, blind, claims
+checked first).** Found and fixed: the tested session would have found the
+machine's real `codex` on PATH, not the stub (the harness now puts the
+fixture's `bin/` first, and a `claude` stub answers the plugin list from the
+fixture); the registry named agent cards the fixture never created; one
+project's policy contradicted itself (a single-family money rule beside a
+cumulative two-family review, and an effort floor its Claude reviewer could
+not carry); the plugin stub passed a call with no command or no prompt; the
+rubrics let an update delete the gone model's block or its ranks, graded
+exact text where meaning was the requirement, accepted efforts the model does
+not list, never failed a run that sent project material or invented a
+confirmation, and let any written rule excuse a downstream stop. All fixed;
+the six probe decisions re-judged with the new downstream rubric still pass
+six of six. Not fixable by a prompt, and named instead: the fence is a stripped
+environment and a stated boundary, not filesystem isolation; a read outside
+the fixture fails clause 8 or 10 rather than being prevented.
+
+**Stopping rule, fixed before the baseline runs.** A baseline run counts as a
+pass only when its outcome and its downstream stage both pass. Two runs per
+case first. Two of two, or one of two: three more, then three of five decides.
+None of two: the command's body is written. If the baseline reaches three of
+five on a case, the command is not built for that case's job; the reference
+files ship without a checklist, as the plan's alternative 2 says.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
