@@ -135,6 +135,16 @@ adopted for Codex calls only, because in-process subagent calls cannot run
 inside the fence, so the downstream coordinator states its decision instead of
 dispatching, and live transport compatibility stays unmeasured.
 
+**Step 2 done, 2026-09-28.** The six stored runs re-graded with the fixed
+rubric and a transcript that keeps visible progress notes. No verdict flipped;
+three clauses did. The settling arm's pre-dispatch declaration went 0 → 3 of 3
+(it was in progress notes the old transcript dropped). The baseline's
+dispositions went 3 → 0 of 3 (each left the nit silently alone). Naming the
+coordinator's own model is 0 of 6 in both arms, although the settling policy
+asked for it: the one contract line that no run followed. Whether a progress
+note counts as user-facing stays open; the downstream grader reports the
+channel.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
