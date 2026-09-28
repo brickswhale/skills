@@ -305,6 +305,15 @@ re-graded with the corrected downstream judge. That judge is stricter, and it
 now applies to the fixed command arm only, so the loss can only work against
 the command. Future evidence is kept outside the temporary store.
 
+**The fixed package, five command runs per case, 2026-09-28.** Update five of
+five, setup four of five, outcome and downstream together; every run valid
+and fired. Both clear ruling 14's bars. The one failure: a setup run checked
+that a web assistant's CLI exists with `which`, which searched the real
+machine's `PATH` and printed a real path. It stands as a fence failure. On a
+real machine that lookup is what the command asks for; only the stand-in
+machine makes it a leak. One run of ten, so not a class, and not a change to
+the command. This is the result `route` is committed on.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
