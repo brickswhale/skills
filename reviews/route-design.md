@@ -111,6 +111,40 @@ Alternatives ranked by both readers: this plan; fix the consuming project's doc
 only; skill without references; do nothing; unfreeze the deterministic picker.
 Trade accepted: a procedural aid whose reliability is measured, never enforced.
 
+## Step 3 result, 2026-09-28 — the central claim did not separate
+
+Three baseline runs (no plugin, `Skill` disallowed, fenced, `claude-opus-5-5`),
+graded by three fresh fenced graders that saw only the rubric, the ordered
+transcript and `dispatch.log`. All three FAIL overall, but the clause the
+fixture was built for passed every time:
+
+| Clause | Bare model |
+|---|---|
+| 2 — rank 1 refused before the build, for the eligibility reason | 3 of 3 |
+| 5 — the correct finding sent back to a builder, not fixed in hand | 3 of 3 |
+| 1 — a decision line before the first dispatch, coordinator and skipped ranks named | 0 of 3 |
+| 3 — a blind reviewer hand-off: spec, code, tests, no builder verdict | 0 of 3 |
+| 4 — a receipt with honest observed models | 0 of 3 |
+
+Each run read the policy and reasoned it out unaided: both reviewers are one
+family, so that family's builder cannot be reviewed on a money job. The plan's
+stop rule fired: step 4 waits. What the bare model missed is the contract, not
+the judgment, which is where the README says skills here earn their place,
+and where the plan review's strongest objection said the risk was: a policy
+and a registry may do the routing on their own, leaving the skill only
+"standardised narration". Two caveats on the grading: clause 3 as written also
+failed runs that handed the reviewer file paths rather than the files' text,
+which may be too strict when a reviewer can read the repository (one run did
+forward the builder's claim, a real breach); and three runs of one fixture
+share one policy, so they are not three independent trials.
+
+The settling experiment the plan review named is now cheap: the same fixture
+with the policy itself carrying the contract (print a decision line first,
+hand the reviewer no verdict, report observed models) and no skill. If that
+arm passes clauses 1, 3 and 4, the skill is not needed and its content belongs
+in the policy template; if it fails where a skill arm passes, the skill earns
+its place as the contract.
+
 ## Dissent kept
 
 - **Registry format.** The partner preferred JSON for the registry (arrays,
