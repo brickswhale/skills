@@ -314,6 +314,40 @@ real machine that lookup is what the command asks for; only the stand-in
 machine makes it a leak. One run of ten, so not a class, and not a change to
 the command. This is the result `route` is committed on.
 
+**The live test, and a hazard in how a command is named, 2026-09-29.** The
+owner asked to watch `/route` run and to review the quality of the skill and
+its outcome. The first live test was void: it called `/brickswhale:route`, and
+the install link made the day before (`~/.claude/skills/route`) shadowed the
+plugin's namespaced command, so the session answered "not installed" and did
+the work from the fixture's copy of the references. A throwaway command that
+existed only in the plugin resolved under both names; `route`, present both in
+the plugin and as a user-level link, resolved only as `/route`. The ten
+command-arm runs above predate the link, read the references as the command's
+step 1 does, printed the `ROUTE` line that exists only in the command, and
+never read `SKILL.md` from disk: the command loaded in them, and their counts
+stand. (A first diagnosis here, that those runs never loaded the command, was
+wrong: it rested on a detector that looked for the command's text in a stream
+that never echoes the opening prompt. It reached the owner in chat and was
+withdrawn after the throwaway probe.) Every command prompt in `evals/` now uses
+the bare name, which resolves with or without a link; README and
+`run-valid.sh` say so. The `plan` and `intent` cases used the namespaced name
+too, and every skill here is now linked, so their recorded results should be
+re-run before they are relied on.
+
+The second live test, with `/route`, loaded the command: setup, a changed
+machine (plugin moved, client updated, a new model), then update adding a
+light model and dropping the web assistant. Pair round 12 (blind, rung 1,
+claims checked): fit with named fixes, not as shipped. Release-blocking: the
+report said "nothing failed" while both jobs were still blocked by owner
+choices, since a placeholder rank was never counted as unresolved. Also
+found: nine separate owner questions where one proposed policy and a few real
+choices would do; the policy told read-only reviewers to run the tests;
+security work had no risk class though the defaults name it; the update's
+list of unprofiled models left out two of three; a session inference was
+labelled the owner's; a known default effort was written `unknown`. Kept as
+the partner's correction of mine: the web assistant's "never receives code"
+line is not stale after the owner stops using it.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |

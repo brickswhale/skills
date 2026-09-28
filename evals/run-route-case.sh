@@ -24,7 +24,7 @@ cp "$R/evals/$CASE/scaffold.sh" "$W/" && (cd "$W" && bash scaffold.sh > /dev/nul
 BODY=$(awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/prompt.md")
 MAXT=$(sed -n 's/^max_turns: *//p' "$R/evals/$CASE/prompt.md")
 if [ "$ARM" = base ]; then
-  PROMPT="${BODY#/brickswhale:route }"
+  PROMPT="${BODY#/route }"
   (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$PROMPT" --output-format stream-json --verbose --max-turns "$MAXT" \
      --allowedTools "Read,Write,Edit,Bash,Glob,Grep" \
      --disallowedTools "Skill,SendMessage,ListAgents,mcp__ccd_session_mgmt__send_message" > "$OUT/run.jsonl" 2> "$OUT/run.err" < /dev/null)

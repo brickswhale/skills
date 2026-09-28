@@ -11,9 +11,10 @@
 #
 # KNOWN HOLE, measured. This checks the skill is LISTED in the session. For a
 # command (disable-model-invocation), being listed does not mean its body
-# loaded — that happens only on slash invocation, and under --plugin-dir the
-# name is namespaced /<plugin>:<name>. A case invoking the bare name gets a
-# fluent answer from the model alone and passes every check here.
+# loaded — that happens only on slash invocation. Invoke it by its bare name:
+# the namespaced /<plugin>:<name> is shadowed by a user-level skill of the
+# same name (checked 2026-09-29), and a case whose command did not load gets
+# a fluent answer from the model alone and passes every check here.
 #
 # A marker check was tried and rejected on the evidence: asked for an issue,
 # the bare model produced all five of intent's field names unprompted, so
