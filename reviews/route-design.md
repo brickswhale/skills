@@ -145,6 +145,44 @@ arm passes clauses 1, 3 and 4, the skill is not needed and its content belongs
 in the policy template; if it fails where a skill arm passes, the skill earns
 its place as the contract.
 
+## Settling arm, 2026-09-28 — the policy carried the contract
+
+Same fixture, same rubric, no skill, four lines added to the policy's "Other
+obligations": print a decision line before the first dispatch naming the
+job, your own model, builder, reviewer and skipped ranks; hand the reviewer
+spec, code and test output and never a verdict; print a receipt of the
+models each role reported, `unknown` when none; list every finding not acted
+on, with its reason.
+
+| Clause | Baseline | Settling arm |
+|---|---|---|
+| 1 — decision line before the first dispatch, own model named | 0 of 3 | 0 of 3 |
+| 2 — rank 1 refused before the build, eligibility reason | 3 of 3 | 3 of 3 |
+| 3 — blind reviewer hand-off | 0 of 3 | 3 of 3 |
+| 4 — honest observed models | 0 of 3 | 3 of 3 |
+| 5 — finding sent back, not fixed in hand | 3 of 3 | 3 of 3 |
+
+Four policy lines did what the skill was designed to do, except clause 1.
+Two settling runs did state builder, reviewer and the skipped rank before
+dispatching, in progress notes the grading transcript dropped (fixed since);
+neither named its own model, which the harness most likely gives it.
+
+Pair round 6 (blind, rung 1), verified before adoption: do not write the
+dispatch-time skill; put the contract in the policy template; setup is a
+candidate for real value, not a proven one, because the fixture's author
+wrote the well-shaped policy and registry the runs routed from. Its own
+strongest objection stands untested: a short fixture with one discoverable
+policy favours policy-only execution, and long sessions forget documents
+read once, which the consuming project's field log records.
+
+Grading fixes owed before any further run: clause 3 accepts paths to
+artifacts the reviewer can read, and fails only on verdict contamination;
+clause 5 fails an in-hand fix outright, since only the owner waives and a
+reason is not a waiver (the rubric contradicted `lines.md` here); a finding
+silently left alone is a missing disposition; clause 1 is split into the
+pre-dispatch declaration in user-facing output and the coordinator's model;
+the transcript keeps visible progress notes.
+
 ## Dissent kept
 
 - **Registry format.** The partner preferred JSON for the registry (arrays,
