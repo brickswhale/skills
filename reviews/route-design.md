@@ -236,6 +236,16 @@ runs pass outcome and downstream together while the baseline of record stays
 under three; on `route-setup`, where the command adds no checklist, four of
 five, so the command does not make setup worse than the references alone.
 
+**The re-grade, 2026-09-28, and what it decided.** All ten baseline outcomes
+re-graded with the fixed preamble on the same evidence. One verdict flipped:
+update run 5, clause 5, to a pass ("offers `gpt-6-sol` … as a model for a new
+builder profile" read as reporting it unprofiled). The baseline of record is
+therefore setup five of five and update **three of five**, and by the rule
+recorded above neither case earns a checklist. The margin is one clause on
+which the judges split: the first grader and pair round 10 failed it, the
+re-grade passed it. Recorded as it came out, not averaged; the owner rules on
+what follows.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
