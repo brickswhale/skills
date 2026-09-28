@@ -35,6 +35,42 @@ else
      --disallowedTools "SendMessage,ListAgents,mcp__ccd_session_mgmt__send_message" > "$OUT/run.jsonl" 2> "$OUT/run.err" < /dev/null)
 fi
 
+# Runtime proof of loading, both arms. Claude Code's own session transcript
+# records a slash command's first user turn with <command-name> and the
+# command's full text; stream-json never echoes that turn, and a marker line in
+# the output proves nothing (a run can load the command and skip the marker, or
+# imitate it without loading). Found by session id: the downstream stage below
+# runs in the same directory and writes its own transcript there too.
+python3 - "$OUT/run.jsonl" "$W" "$R/skills/route/SKILL.md" > "$OUT/loaded.txt" <<'PYEOF'
+import json, os, re, sys
+run, ws, skill = sys.argv[1:4]
+sid = None
+for line in open(run):
+    try: d = json.loads(line)
+    except ValueError: continue
+    if d.get("type") == "system" and d.get("subtype") == "init":
+        sid = d.get("session_id"); break
+body = open(skill).read().split("\n# route\n", 1)[1]
+mark = next(l.strip() for l in body.splitlines() if l.strip())
+path = os.path.join(os.path.expanduser("~/.claude/projects"), re.sub(r"[/.]", "-", ws), f"{sid}.jsonl")
+if not sid or not os.path.exists(path):
+    print(f"NO TRANSCRIPT: {'no session id' if not sid else 'missing ' + os.path.basename(path)}"); sys.exit()
+# The expansion spans the user turns before the first reply: the command's
+# name in one, its text in the next.
+opening = []
+for line in open(path):
+    try: d = json.loads(line)
+    except ValueError: continue
+    if d.get("type") == "assistant": break
+    if d.get("type") == "user":
+        c = d.get("message", {}).get("content")
+        opening.append(c if isinstance(c, str) else json.dumps(c))
+s = "\n".join(opening)
+tag = "<command-name>/route</command-name>" in s
+print("LOADED: /route expanded, its text before the first reply" if tag and mark in s else
+      f"NOT LOADED: {'/route named but its text absent' if tag else 'no /route command'} before the first reply")
+PYEOF
+
 pack() { # evidence for a grader: transcript, diff, final files, logs
   printf '\n=== TRANSCRIPT (numbered, in order) ===\n'; python3 "$TOOLS/condense-transcript.py" "$1"
   printf '\n=== GIT DIFF after the run (tracked files) ===\n'; (cd "$W" && git --no-pager diff)

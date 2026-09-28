@@ -348,6 +348,36 @@ labelled the owner's; a known default effort was written `unknown`. Kept as
 the partner's correction of mine: the web assistant's "never receives code"
 line is not stale after the owner stops using it.
 
+**The fix round's first batch, 2026-09-29, and pair round 14 (blind,
+checked).** Twenty runs with the revised command and references; both arms
+got the same references. Baseline: update three of five (two missed bringing
+the old policies up to date), setup four of five. Command, under the rule
+then in force: setup five of five; update two passes, one fail (a scratch
+file written to `/tmp`, the second such slip) and two runs void because the
+fired judge wanted the literal `ROUTE — update` line and did not find it. Round
+14 held that count, 2 of 5, as the honest one, and said reading the fired
+check differently after the results would be a rule change. It then named
+what would settle loading: runtime evidence. That evidence exists: Claude
+Code's own session transcript records the command's name and its full text in
+the turns before the first reply, and it shows all five update runs loaded
+the command, the two void ones included. The count stands at 2 of 5 all the
+same, because the rule was fixed first. Also still wrong: one setup report
+said "all the checks pass" while every job was blocked.
+
+**Owner's ruling (ruling 16), and the rule for the next batch, fixed before
+it runs.** Fix and re-run rather than an exception. Three command fixes: the
+`ROUTE` line printed on its own line before any draft; every temporary file
+kept inside a directory being changed; never report the checks as passed
+while a job waits (both readiness clauses now reject it too). The fired check
+becomes the runtime proof, for both arms and for good: `evals/run-route-case.sh`
+finds the run's own transcript by session id and requires `/route` and the
+command's first sentence before the first reply (`loaded.txt`); a command run
+without it is void, and a baseline run with it, or one that touched a route
+file, is void. The fired judge's marker line is no longer a validity test.
+Acceptance unchanged from ruling 14: update three of five, setup four of
+five, valid runs passing outcome and downstream together. `SKILL.md` stands
+at 392 words; each line added since 300 answers a failure a run showed.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
