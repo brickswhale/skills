@@ -106,6 +106,17 @@ skill is designed against that record, not against theory.
     `/route` rather than starting an inventory mid-build. Supersedes the parts
     of rulings 2 and 9 that put the ranked walk and the two lines in a skill;
     both rulings still hold, carried by the policy's text.
+14. **`/route` is a thin command; the references carry the work** (owner,
+    2026-09-28, on the baseline of record: setup five of five, update three of
+    five). No setup or update checklist is written. The command points the
+    session at the references, asks the owner what no file shows, and writes
+    only on the owner's yes. The three update misses the baseline showed go
+    into the registry reference as rules every session reads: re-point a gone
+    block's call too, and check the finished file before reporting it done;
+    say that old confirmations belong to the old installation; report visible
+    models with no profile as their own list. Accepted when five command runs
+    per case reach four of five on setup and three of five on update, outcome
+    and downstream together, so the command makes neither worse.
 
 ## The plan after the pivot
 
