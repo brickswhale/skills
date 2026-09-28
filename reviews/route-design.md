@@ -117,6 +117,13 @@ skill is designed against that record, not against theory.
     models with no profile as their own list. Accepted when five command runs
     per case reach four of five on setup and three of five on update, outcome
     and downstream together, so the command makes neither worse.
+15. **The command's own files are the command** (owner, 2026-09-28, the same
+    principle as the saved-output ruling: the fence exists so a run cannot
+    look at the real machine). Reading `route`'s `SKILL.md` and references, or
+    the `pair` references it names, is not a read outside the fixture. Both
+    rubrics say so in the same words. Nine of the ten outside paths in the
+    first command-arm runs were these; the tenth, a draft written to `/tmp`,
+    still fails.
 
 ## The plan after the pivot
 
@@ -256,6 +263,47 @@ recorded above neither case earns a checklist. The margin is one clause on
 which the judges split: the first grader and pair round 10 failed it, the
 re-grade passed it. Recorded as it came out, not averaged; the owner rules on
 what follows.
+
+**Command arm, five runs per case, 2026-09-28.** The thin `/route`, with the
+three update rules in the registry reference, graded by the same judges plus
+the fired check and the `run-valid.sh` gate. After ruling 15, update four of
+five and setup five of five, outcome and downstream together: both over the
+acceptance bars of ruling 14, and neither worse than the baseline of record
+(three and five). Every run was valid and fired. The one failure is worth
+keeping: update run 4 drafted its changes in `/tmp`, wrote nothing, and waited
+for the owner's yes, as the command's step 4 asks; the update prompt says
+"re-point what moved" but gives no explicit go-ahead to write, where the setup
+prompt does. One run of five, so not yet a class.
+
+**Gate 2, pair round 11 (blind, checked), and a lost evidence store.** The
+final review found that the generated policy was not self-contained: the
+first-fit walk and the reviewer check before the build lived only in the
+template's preamble, outside the block `/route` copies; and three generated
+policies (two from the command, one from the baseline) invented a stand-in
+default for a choice the owner reserved ("follow the stricter option until
+the owner rules"), which one downstream coordinator then followed, choosing a
+review mode that was the owner's to choose, while the judge checked only
+eligibility. Fixed: the template's copied block gains a Routing section (where
+the registry lives, first fit with the reviewer check before the build, a
+reserved choice left open blocks its job with no stand-in, a revised decision
+re-issued); the registry lists the fields a block needs and separates
+`unknown` from `n/a` effort; the command limits discovery to tools the pair
+catalog recognises, says an explicit instruction to make a change is the
+owner's yes for it, and keeps drafts inside the directories being changed; the
+update prompt gives an explicit go-ahead; the downstream judges fail a
+decision that settles a reserved choice. The four Contract lines are
+untouched. Kept as the partner's objection, and true: the command arm ran
+with improved references while the baseline did not, and the acceptance rule
+was set after the baseline was seen, so what ships is an owner-approved
+usability choice that clears its bars, not a demonstrated win of the command
+over the references.
+
+The session's temporary store was wiped before the fixed package ran: every
+stored transcript, workspace and grade of the baseline and first command arm
+is gone; their counts survive above. The baseline therefore cannot be
+re-graded with the corrected downstream judge. That judge is stricter, and it
+now applies to the fixed command arm only, so the loss can only work against
+the command. Future evidence is kept outside the temporary store.
 
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
