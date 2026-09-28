@@ -145,6 +145,22 @@ asked for it: the one contract line that no run followed. Whether a progress
 note counts as user-facing stays open; the downstream grader reports the
 channel.
 
+**Step 4 done, 2026-09-28 — the paper probe.** Three hand-made setup outputs,
+each correct for its owner: a Codex builder with a Claude reviewer; a policy
+saying the money job waits (no builder has a reviewer of another family); the
+first one's content in YAML and JSON. A fenced read-only coordinator stated a
+decision from each; a fresh judge graded it on meaning against the owner's
+requirements. First run: two passed, the other-format one failed, and not for
+its format: its profiles were all unconfirmed and the coordinator stopped. Two
+defects, both fixed: the template had no rule for an unconfirmed profile, which
+every fresh setup produces (it now says one may be used, named as unconfirmed,
+closed by its first failure); and the judge allowed a stop only for "no
+eligible pair", not for a stop a written rule requires. A probe bug of mine
+also made the two formats differ (`null` against `no (drafted …)`). Re-run
+twice per case: six of six passed. In these decision-only runs the coordinator
+named its own model six of six, against none of six in the dispatch runs, so
+that miss looks tied to the moment of dispatch rather than to the wording.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
