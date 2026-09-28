@@ -185,6 +185,32 @@ None of two: the command's body is written. If the baseline reaches three of
 five on a case, the command is not built for that case's job; the reference
 files ship without a checklist, as the plan's alternative 2 says.
 
+**Baseline, first two runs per case, and pair round 9 (blind, checked).**
+Update: run 1 passed outcome and downstream; run 2 failed outcome clause 1
+(it kept the gone `codex-build` block, marked it gone, and left its call on
+the removed 1.0.6 path). My reading was a rubric that fails a reasonable run;
+round 9 held it a fair fail ("re-point what moved" covers a gone block's
+call), and that stands. Setup: both runs passed outcome and failed
+downstream: each left the review mode as an owner choice, as the prompt asked,
+and the downstream coordinator honestly stopped on it. Round 9 found the cause
+in the grading, not the runs: the downstream judge was handed a summary of the
+owner's requirements that left out "list anything that needs my choice
+instead of choosing", and so conflated a reviewer being eligible with the
+authority to choose the review policy. Fixed uniformly in both cases: the
+downstream judges now get the owner's words verbatim and the template's
+provisions, and a stop on an unanswered, owner-reserved choice the job needs
+is allowed, while marking something open does not by itself make a block.
+Re-graded on the stored evidence: setup two of two; update unchanged.
+
+One point is open, and it decides the update count. Update run 1 read a file
+outside the fixture: Claude Code's own saved copy of a long in-fixture command
+output, which the harness stores in its own directory. Its judge excused it;
+round 9 held that the recorded rule ("a read outside the fixture fails")
+makes it a fail, while conceding the objection that failing it penalises the
+harness, not the run. Literal rule: update is none of two and the update
+body is written. The rule's purpose (no look at the real machine): update is
+one of two and three more update runs decide. Owner's ruling pending.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
