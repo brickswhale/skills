@@ -107,6 +107,20 @@ config that still launches it gets the interactive UI instead, which exits with
 only so an old record or an old habit is recognised: use the plugin or the CLI
 entry above.
 
+## Claude Code advisor tool — ineligible, documentation checked 2026-09-28
+
+Claude Code can pair its main model with a stronger "advisor" model that it
+consults at moments it chooses (`advisorModel` setting, `--advisor` flag,
+`/advisor` command; experimental, Anthropic API only). It looks like a second
+opinion and is not one for this skill. Its documentation says it "receives the
+full conversation, including every tool call and result", and that the host
+"controls the timing". A partner that has read the host's position is not
+blind, so the advisor occupies no rung. A different or stronger advisor model
+does not restore blindness, and neither does the fact that it only returns
+guidance and cannot act. Listed so an `Advising` line in a transcript is
+recognised for what it is: the host consulting, not a pair call. Documentation
+checked, not transport verified; the doc is `code.claude.com/docs/en/advisor`.
+
 ## Claude Code CLI (`claude`) — unverified as a partner
 
 - **One-shot call:** `claude -p "<prompt>"`, print mode, non-interactive.

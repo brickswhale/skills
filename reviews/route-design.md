@@ -76,6 +76,21 @@ skill is designed against that record, not against theory.
     skill names the file and that relation, never a path. Setup looks there
     first; a missing file is the setup trigger, a `confirmed=` older than the
     installed tools is the staleness trigger.
+12. **The Claude Code advisor tool is never the review** (2026-09-28, both
+    readers). It reads the author's full conversation, so by ruling 8 it is at
+    best a different model in the same context, and a review requires a
+    different context. The decision line records it as configuration, not as
+    evidence a consultation happened: `advisor: <model>|off|unknown`, with
+    `unknown` never collapsed to `off`. Workers inherit it subject to their
+    own pairing check, so the session field does not prove a worker's
+    configuration. Ranking "profile + advisor" as a candidate of its own is
+    deferred (backlog 6): it would add availability, compatibility and a
+    consultation the model decides on into eligibility, and nothing yet
+    records whether a consultation ran. The operational rule goes into
+    `references/roles.md` and the notation into `references/lines.md` when
+    the skill is written; this record holds the reason. For the build of this
+    skill and its evals the advisor stays off, so attribution has one fewer
+    moving part. The `pair` catalog carries the matching exclusion.
 
 ## The plan, as corrected by the plan review
 
@@ -126,3 +141,4 @@ Trade accepted: a procedural aid whose reliability is measured, never enforced.
 | 3 | A policy must be able to carry everything the consuming project's doc obliges today (effort floors, pre-checks, audit order, failure handling, manual-lane limits), or retire each one on purpose. The template is judged against that list at step 7. | plan review | open |
 | 4 | Operational branches with no rule yet: malformed or contradictory policy; no eligible candidate; exhausted cumulative review; reviewer failure after build; an unauthorised waiver. | plan review | open |
 | 5 | Whether a route line printed in chat at dispatch time can be told apart from one backfilled into a log. Four of the consuming project's 24 lines were backfilled. | design review | unverified |
+| 6 | "Profile + advisor" as a ranked candidate. Needs a registry field, a per-worker configuration check, and a receipt line that says whether a consultation ran. Reopen when an advisor-on/off trial exists. | pair round 5 | deferred |
