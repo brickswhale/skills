@@ -77,7 +77,12 @@ prefer it to the bare CLI.
   look for a leftover `codex app-server` after the pair.
 - **Read-only:** enforced by the Codex sandbox. A write attempt returns
   "operation not permitted" and nothing lands.
-- **Family:** OpenAI GPT. The model is whatever the Codex config names.
+- **Family:** OpenAI GPT. The model is whatever the Codex config names,
+  unless the call adds `--model <slug>`. `task` also takes `--effort` with
+  `none`, `minimal`, `low`, `medium`, `high` or `xhigh` only, although the
+  Codex model cache lists `max` and `ultra` for some models (plugin 1.0.6
+  usage line and its effort check, read 2026-09-28). A pair call needs
+  neither; `route`'s registry does.
 - **Verified 2026-09-23**, plugin 1.0.6 on Codex CLI 0.154.0: the write was
   denied, a second `--fresh` call knew nothing of a word planted by the first,
   stdout held the answer alone, and the session-end hook left no process.
