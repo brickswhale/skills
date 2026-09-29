@@ -401,6 +401,17 @@ Setup 1 fails clause 10: one probe ran `ls ~/.claude`, outside the fixture the o
 
 **The rule for the next batch, fixed before it runs (owner's word: fix the fixture, re-run both cases).** The stand-in machine now holds its own `node` in `bin/` (a copy-on-write clone of the real one, excluded from the workspace's git), and the tested session's and the coordinator's `PATH` is `bin/` plus the system directories. `run-route-case.sh` writes `fence.txt`: every path under the home directory, `/opt/homebrew` or `/usr/local` in a tool call's command or path, or in any tool result, and every `~` or `$HOME` in a command, outside the workspace, the command's own files and Claude Code's projects directory. Checked on saved runs before use: it names the real `node` and `~/.claude` where both were seen by hand, and passes the runs that had neither. A run counts only when `loaded.txt` says LOADED, `fence.txt` says FENCE OK, and outcome and downstream both pass; a breach is read by hand before it counts. Bars unchanged: update three of five, setup four of five. Both cases re-run, since the new step-3 line reaches the update case too.
 
+**The fixed fixture's batch, 2026-09-29: green.** Evidence in `~/.cache/route-eval4/runs/`. Every run LOADED. No run printed the real `node` (0 of 10, from 17 of 35); three resolved `bin/node` inside the fixture.
+
+| Case | Runs passing | Bar | Result |
+|---|---|---|---|
+| update | 5 of 5 | 3 of 5 | met |
+| setup | 4 of 5 (1, 3, 4, 5) | 4 of 5 | met |
+
+Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output or paths" the owner's words; the owner said only that the web app never sees repository code. Setup 5, read by hand as the rule requires: the fence flagged `ls -R` of the installed `route` and `pair` skill directories and a `diff` of the command's references against the fixture's copies. Every file it read is the command's own (ruling 15); the one path outside that list is the `pair` skill's directory, whose listing shows only its file names. Counted as a pass; the outcome judge also passed clause 10 on this run. Were that listing ruled outside, setup is three of five and not green. The fence check first flagged `~/.claude/skills/...` in a command even where the allow-list covers it; it now expands `~` and `$HOME` before comparing, and still names the real `node` and `~/.claude` in the saved runs that had them.
+
+**Open, a class: an inferred value credited to the owner.** Clause 14, 2 of the last 10 setup runs (the Claude roles in a registry; an expanded Gemini rule in a policy). The rule sits in `registry-format.md` only, and the second failure is in a policy, which that file does not govern. The fix is to move the rule to `SKILL.md` step 4, so it covers every file the command writes. Held: it changes the package this batch measured.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |

@@ -111,7 +111,10 @@ for line in open(run):
             i = c.get("input", {})
             probe = " ".join(str(i.get(k, "")) for k in ("command", "file_path", "path", "pattern"))
             scan(probe)
-            for m in re.findall(r"(?:~|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))): bad.add(m)
+            # ~ and $HOME name the home directory: expand, then judge like any path
+            for m in re.findall(r"(?:~|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))):
+                full = re.sub(r"^(?:~|\$HOME|\$\{HOME\})", home, m)
+                if not any(full == a or full.startswith(a + "/") for a in allowed): bad.add(m)
         elif c.get("type") == "tool_result":
             r = c.get("content"); scan(r if isinstance(r, str) else json.dumps(r))
 print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
