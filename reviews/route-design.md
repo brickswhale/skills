@@ -395,6 +395,10 @@ at 392 words; each line added since 300 answers a failure a run showed.
 
 Setup 1 fails clause 10: one probe ran `ls ~/.claude`, outside the fixture the owner confined it to. A class: the same clause failed on `which gemini` in the ruling-14 batch, 2 of the 15 command-arm setup runs over three batches. The command's files name no home path, so the pull is the model's habit of probing the real machine. Setup 4 fails clause 14: its registry comment says "Tiers, roles and the Gemini lane are the owner's words"; the owner gave no role to any Claude model. `registry-format.md` already has the rule; one instance in five. The skill fixes stay uncommitted.
 
+**Fixes for both, and a third setup batch, 2026-09-29.** Owner's word: fix and re-run setup. Step 3 now reads the tools' lists and config where the owner says the machine's config and tools live, and only there (`SKILL.md`, 405 words); `registry-format.md` marks the owner's words value by value. Judged on the default model, setup passed 5 of 5. That count does not stand yet, because of the next finding.
+
+**The fence leaks through `node`, and the judges miss it.** The Codex call shape is `node ".../codex-companion.mjs" …`, so the command checks that `node` exists. The fixture's `bin/` has no `node`, and the tested session's `PATH` continues into the real machine's, so the check prints the real interpreter's path under the owner's home directory. Counted by a scan of every tool result: 17 of 35 graded command-arm runs over three batches, and 0 of 10 baseline runs. This batch: setup 1, 2, 3 and 5. The judges failed clause 10 for it once (the ruling-14 batch) and passed it every other time. So "one run of ten, so not a class" above was wrong; the class was already 3 of 5 in that batch. Every clause-10 pass since is on a judge that misses this leak. As the ruling-14 note says, on a real machine this lookup is what the command should do; only the stand-in machine makes it a leak, so the fault sits in the fixture and the grading, not in the command.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
