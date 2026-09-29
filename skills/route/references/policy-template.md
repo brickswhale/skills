@@ -41,7 +41,9 @@ Owner: <who rules on this file> · Revised: <date>
 
 - The machine's models are in `route-registry`, in the directory that holds the `pair` skill's record.
 - Walk a job's Do list in order; the first rank that fits wins. A builder fits only when every reviewer its job requires exists and is eligible for it: check that before the build starts.
-- A choice this file leaves to the owner (a line marked `<owner to choose …>`) blocks every job that needs it until the owner answers. Stop and ask; no stand-in default.
+- A choice this file leaves to the owner (a line marked `<owner to choose …>` or `(proposed)`) blocks every job that needs it until the owner answers or accepts it. Stop and ask; no stand-in default.
+- Not eligible, so skip it and name it among the ranks not used: a profile the registry marks `gone`; one whose call names a path that no longer exists; one whose call has no model selector while the tool's configured default is no longer its `model`; one whose tier is `unknown`, for any rank that compares tiers. Skipping to the next rank already written is routing, not rerouting.
+- A profile confirmed on a tool version or path no longer installed counts as unconfirmed.
 - A decision revised after a failed call is printed again as `Route (attempt 2): …`, the failure named among the ranks not used.
 
 ## Contract
@@ -55,7 +57,7 @@ Owner: <who rules on this file> · Revised: <date>
 
 - Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
 - Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing. An advisor consult is never the review.
+- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing and runs no tests: it reads the test output the builder produced, and may inspect the work read-only. An advisor consult is never the review.
 - Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
 - Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
 

@@ -24,7 +24,7 @@ evaluate a value.
 | `profile` | the name a policy ranks, such as `sonnet-build`; unique in the file |
 | `model` | the model the call reaches, as the tool names it |
 | `family` | the model's maker: `anthropic`, `openai`, `google`, … |
-| `tier` | `strong`, `capable` or `light`: the owner's ruling, not a measurement. Across families no honest scale exists, so a cross-family tier is a stated preference |
+| `tier` | `strong`, `capable`, `light`, or `unknown` until the owner rules: the owner's ruling, not a measurement. Across families no honest scale exists, so a cross-family tier is a stated preference |
 | `role` | `builder`, `reviewer` or `reader` |
 | `card` | the agent definition the call uses, or `—` |
 | `call` | the whole invocation, verbatim, with `"<prompt>"` as its only hole |
@@ -42,9 +42,17 @@ evaluate a value.
   call reaches the tool's configured default, and its `model=` is that
   default. Two profiles with the same call reach the same model, whatever
   their `model=` says.
-- **Effort is the overlap.** Only a value both the model lists and the
-  transport accepts. Not yet known: `unknown`, and ask; `n/a` means the host
-  sets it.
+- **Effort is what the call really carries**, and only a value both the
+  model lists and the transport accepts. A call with no effort flag carries
+  the tool's configured default: write that default. An effort the owner has
+  not chosen yet is a policy choice, not `unknown`; `unknown` is for an
+  effort nobody can yet tell, and `n/a` means the host sets it.
+- **A tier the owner has not given is `unknown`.** Such a profile fits no
+  rank that compares tiers until the owner rules.
+- **Mark only the owner's words as the owner's**, value by value. A comment
+  crediting the owner lists exactly the values the owner gave; every value
+  the session chose (a role, a card, an effort, a mechanism) says it was
+  inferred.
 - **A listed model is a candidate.** It becomes a profile when the owner keeps
   it, and `confirmed` when a call is seen working. A model the tool marks
   hidden is never a candidate.
@@ -86,6 +94,12 @@ evaluate a value.
    policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
 5. A rank naming a `gone`, stale or unconfirmed profile is listed by project.
+6. A rank or a mode still marked `<owner to choose …>` or `(proposed)` is
+   unresolved, not passed. Name every job that cannot run yet and the choice
+   it waits on. A draft with an unresolved job is saved, not ready.
+7. The risk classes name security work (auth, secrets, access rules, or what
+   the owner counts as such), or mark it `<owner to choose …>`. A policy
+   silent on security routes it as ordinary work.
 
 A failed check is reported to the owner with the rank it concerns. It is
 never fixed by quietly editing a rank.
@@ -99,11 +113,12 @@ never fixed by quietly editing a rank.
 2. **Old confirmations belong to the old installation.** Say so for every
    profile whose `confirmed` names a tool version or path no longer
    installed; a changed profile is `no` until a call is seen working.
-3. **Report visible models with no profile as their own list**, apart from
-   any replacement you suggest, and rank none of them: adopting one is the
-   owner's choice.
-4. **List every rank a change touches, per project**, and reroute none: a
-   gone model's ranks wait for the owner.
+3. **Report every visible model with no profile as its own list**, the
+   ones seen before as well as the new ones, apart from any replacement you
+   suggest, and rank none of them: adopting one is the owner's choice.
+4. **List every rank a change touches, per project**, and edit none to
+   replace a gone model: that replacement is the owner's. A later session
+   skips the gone rank and takes the next one already written, if eligible.
 
 ## Example
 
