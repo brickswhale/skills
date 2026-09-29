@@ -378,6 +378,8 @@ Acceptance unchanged from ruling 14: update three of five, setup four of
 five, valid runs passing outcome and downstream together. `SKILL.md` stands
 at 392 words; each line added since 300 answers a failure a run showed.
 
+**The second fix-round batch, 2026-09-29: void.** The account's usage limit cut it. All five update runs finished and the runtime proof shows each loaded the command; the five setup runs stopped at the limit; every judge failed on the same limit, so nothing was graded. The saved update workspaces are graded when the limit resets, and the setup runs re-run. The cost that led here, stated so it is not repeated: about 350 child sessions over two days, every one, judges included, on the most capable model at its highest default effort. Judges will move to a small model at low effort, recorded before they grade anything.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
