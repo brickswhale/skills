@@ -380,6 +380,21 @@ at 392 words; each line added since 300 answers a failure a run showed.
 
 **The second fix-round batch, 2026-09-29: void.** The account's usage limit cut it. All five update runs finished and the runtime proof shows each loaded the command; the five setup runs stopped at the limit; every judge failed on the same limit, so nothing was graded. The saved update workspaces are graded when the limit resets, and the setup runs re-run. The cost that led here, stated so it is not repeated: about 350 child sessions over two days, every one, judges included, on the most capable model at its highest default effort. Judges will move to a small model at low effort, recorded before they grade anything.
 
+**Judges, from 2026-09-29.** Outcome, fired and downstream judges run on `haiku` at `--effort low` (`run-route-case.sh`, `ROUTE_JUDGE_MODEL` overrides). The tested session and the downstream coordinator keep the default model: they are what is measured. A run whose outcome is FAIL gets no downstream stage, since acceptance needs both. `GRADE_ONLY=1` grades a saved run without re-running it. Calibration: three saved update runs already hold a default-model outcome verdict (2, 3, 5: PASS); the small judge grades the same three, and any disagreement is read by hand before its count stands.
+
+**Calibration result: haiku out, sonnet in.** Haiku failed update run 2 on clause 9: it counted `codex-audit` (openai) as a reviewer for money work, missing the policy's quota line "openai: builds only; never reviews". Read by hand, the run's report was right and the default-model PASS stands. Sonnet at low effort gave PASS on all three. Cost per outcome judge, from each run's `total_cost_usd`: default model about $0.21, sonnet $0.18, haiku $0.06. The judges were never the main cost; the tested sessions and the downstream coordinators are. Judges run on sonnet at low effort; every haiku verdict is re-judged on sonnet before it counts.
+
+**Sonnet out too; judges back on the default model.** On the re-run setup batch, sonnet at low effort failed setup 3 and 5 downstream (both misreads: it called a stop on `(proposed)` lines a stop on unconfirmed profiles, and called a quoted `Review (alternatives)` heading a choice the coordinator made) and passed setup 1 and 4 outcome, which the default model fails on evidence. Cheap-judge misgrades, counted: 5 over 25 verdicts, in both directions. A judge is about a fifth of a run's cost (tested session about $0.78). Every verdict below is on the default model.
+
+**The second fix-round batch, graded 2026-09-29.** Every run's transcript shows `/route` loaded.
+
+| Case | Runs passing outcome and downstream | Bar | Result |
+|---|---|---|---|
+| update (saved runs, graded) | 5 of 5 | 3 of 5 | met |
+| setup (re-run) | 3 of 5 (2, 3, 5) | 4 of 5 | not met |
+
+Setup 1 fails clause 10: one probe ran `ls ~/.claude`, outside the fixture the owner confined it to. A class: the same clause failed on `which gemini` in the ruling-14 batch, 2 of the 15 command-arm setup runs over three batches. The command's files name no home path, so the pull is the model's habit of probing the real machine. Setup 4 fails clause 14: its registry comment says "Tiers, roles and the Gemini lane are the owner's words"; the owner gave no role to any Claude model. `registry-format.md` already has the rule; one instance in five. The skill fixes stay uncommitted.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
