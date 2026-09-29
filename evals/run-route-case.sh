@@ -26,11 +26,16 @@ else
   [ "$(cd "$W" && git log -1 --format=%s)" = "after the case run" ] && (cd "$W" && git reset -q HEAD~1)
 fi
 FENCE=(env -i HOME="$HOME" USER="$USER" LOGNAME="$LOGNAME" PATH="$PATH" TMPDIR="$TMPDIR" LANG=en_US.UTF-8 TERM=xterm-256color)
-# the tested session and the downstream coordinator find the fixture's stubs first
-RUNFENCE=(env -i HOME="$HOME" USER="$USER" LOGNAME="$LOGNAME" PATH="$W/bin:$PATH" TMPDIR="$TMPDIR" LANG=en_US.UTF-8 TERM=xterm-256color)
+# The tested session and the downstream coordinator see the fixture's bin/ and
+# the system directories only: a PATH that fell through to the real machine's
+# printed its real node from a stand-in machine (17 of 35 command runs).
+RUNFENCE=(env -i HOME="$HOME" USER="$USER" LOGNAME="$LOGNAME" PATH="$W/bin:/usr/bin:/bin:/usr/sbin:/sbin" TMPDIR="$TMPDIR" LANG=en_US.UTF-8 TERM=xterm-256color)
 NOTOOLS="Bash,Read,Write,Edit,Glob,Grep,Skill,Agent,WebFetch,WebSearch,SendMessage,ListAgents,NotebookEdit"
 
 [ -z "$GRADE_ONLY" ] && cp "$R/evals/$CASE/scaffold.sh" "$W/" && (cd "$W" && bash scaffold.sh > /dev/null; echo $? > "$OUT/scaffold-exit"; rm -f scaffold.sh)
+# The stand-in machine's node: a copy-on-write clone of the real one (the Codex
+# call shape runs node), kept out of the workspace's git so no diff shows it.
+[ -z "$GRADE_ONLY" ] && cp -c "$(command -v node)" "$W/bin/node" && echo bin/node >> "$W/.git/info/exclude"
 BODY=$(awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/prompt.md")
 MAXT=$(sed -n 's/^max_turns: *//p' "$R/evals/$CASE/prompt.md")
 if [ -n "$GRADE_ONLY" ]; then :
@@ -80,6 +85,36 @@ s = "\n".join(opening)
 tag = "<command-name>/route</command-name>" in s
 print("LOADED: /route expanded, its text before the first reply" if tag and mark in s else
       f"NOT LOADED: {'/route named but its text absent' if tag else 'no /route command'} before the first reply")
+PYEOF
+
+# The fence, checked mechanically: judges missed a real path in tool output
+# 16 times of 17. Allowed outside the workspace: the command's own files and
+# Claude Code's own projects directory (owner's rulings, 2026-09-28).
+python3 - "$OUT/run.jsonl" "$W" "$R" > "$OUT/fence.txt" <<'PYEOF'
+import json, os, re, sys
+run, ws, repo = sys.argv[1:4]; home = os.path.expanduser("~")
+allowed = [ws, os.path.realpath(ws), os.path.join(home, ".claude/projects"),
+           os.path.join(repo, "skills/route"), os.path.join(repo, "skills/pair/references")]
+allowed += [os.path.join(home, d, "skills", s) for d in (".claude", ".agents") for s in ("route", "pair/references")]
+pat = re.compile(r"(?:%s|/opt/homebrew|/usr/local)[^\s\"'`:;|&)]*" % re.escape(home))
+bad = set()
+def scan(text):
+    for m in pat.findall(text):
+        if not any(m == a or m.startswith(a + "/") for a in allowed): bad.add(m)
+for line in open(run):
+    try: d = json.loads(line)
+    except ValueError: continue
+    content = (d.get("message") or {}).get("content")
+    if not isinstance(content, list): continue
+    for c in content:
+        if c.get("type") == "tool_use":
+            i = c.get("input", {})
+            probe = " ".join(str(i.get(k, "")) for k in ("command", "file_path", "path", "pattern"))
+            scan(probe)
+            for m in re.findall(r"(?:~|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))): bad.add(m)
+        elif c.get("type") == "tool_result":
+            r = c.get("content"); scan(r if isinstance(r, str) else json.dumps(r))
+print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
 PYEOF
 
 pack() { # evidence for a grader: transcript, diff, final files, logs
