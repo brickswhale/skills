@@ -86,7 +86,7 @@ evaluate a value.
 2. Every `reviewer` profile is `writes=no`.
 3. Every money-security job has a builder whose required reviewers all exist
    and are eligible: another family where the policy asks for one, a tier
-   not lower than the builder's, a fresh context, not a manual lane the
+   not lower than the builder's, a context other than the builder's, not a manual lane the
    policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
 5. A rank naming a `gone`, stale or unconfirmed profile is listed by project.

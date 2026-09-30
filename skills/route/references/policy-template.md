@@ -35,7 +35,7 @@ Owner: <who rules on this file> · Revised: <date>
 - Waivers: only <the owner>, in writing, naming the requirement waived.
 - Coordinator does the work itself: <when handing it off costs more than it saves | never for jobs marked below>.
 - No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed, and its first failed call closes it for the session.
+- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed.
 
 ## Routing
 
@@ -44,7 +44,11 @@ Owner: <who rules on this file> · Revised: <date>
 - A choice this file leaves to the owner (a line marked `<owner to choose …>` or `(proposed)`) blocks every job that needs it until the owner answers or accepts it. Stop and ask; no stand-in default.
 - Not eligible, so skip it and name it among the ranks not used: a profile the registry marks `gone`; one whose call names a path that no longer exists; one whose call has no model selector while the tool's configured default is no longer its `model`; one whose tier is `unknown`, for any rank that compares tiers. Skipping to the next rank already written is routing, not rerouting.
 - A profile confirmed on a tool version or path no longer installed counts as unconfirmed.
-- A decision revised after a failed call is printed again as `Route (attempt 2): …`, the failure named among the ranks not used.
+- Tiers compare across families only as the owner set them in the registry.
+- A failed call whose error names a version, model or sign-in problem: report the error word for word and let the owner choose; do not descend. An outage closes that profile for the session; a quota error closes its family. A decision revised after a failure is printed again as `Route (attempt 2): …`, the failure named among the ranks not used.
+- The owner may declare a family `low` or `off` for the session. The Quota section says what changes; `off` closes the family as a quota error does.
+- A reviewer the job requires cannot run after the build (unavailable, failed or closed): print `review not run — <reviewer>: <why>`. The work waits until the review runs or the owner waives it in writing.
+- A builder in another tool gets the Builder role's lines in its prompt, since its own instructions may differ. When it returns, check it left no commit, branch, worktree or stash.
 
 ## Contract
 
@@ -57,7 +61,7 @@ Owner: <who rules on this file> · Revised: <date>
 
 - Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
 - Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing and runs no tests: it reads the test output the builder produced, and may inspect the work read-only. An advisor consult is never the review.
+- Reviewer: reads the artifact against the spec in a context other than the builder's: a fresh one, or the coordinator's where a Review list names `coordinator`, and the decision line says which. Reports supported findings, missing checks and a verdict. Changes nothing and runs no tests: it reads the test output the builder produced, and may inspect the work read-only. An advisor consult is never the review.
 - Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
 - Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
 
@@ -69,6 +73,7 @@ Owner: <who rules on this file> · Revised: <date>
 ## Quota
 
 - <family>: spend on <1st>, then <2nd>; never on <…>. On the first quota error, that family is off for the session.
+- <family> low: <what changes>. Off: <what changes>.
 
 ## Job: <id> — <what this job is, one line>
 

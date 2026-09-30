@@ -135,6 +135,23 @@ skill is designed against that record, not against theory.
     the branches no rule covers yet (backlog 4) are owed. A pair round on a
     switch test (round 15, below) is kept for its points on answer keys and
     isolation; its switch-or-not framing is superseded.
+18. **The consuming project's duties, placed** (owner, 2026-09-30, on a
+    60-duty ledger of its routing document, kept privately beside the eval
+    evidence): every duty lands in the template, the registry, the project's
+    own policy sections, or the briefing, or is retired. For the template:
+    the coordinator may be a named reviewer, in a context other than the
+    builder's but not a fresh one, and the decision line says which; a failed
+    call whose error names a version, model or sign-in problem is reported
+    and the owner chooses, while an outage or quota error closes the profile
+    for the session; tiers compare across families only as the owner set
+    them; a required reviewer that cannot run after the build is printed as
+    not run and the work waits for the owner; the owner may declare a family
+    low or off; a builder in another tool gets the Builder role's rules in its
+    prompt and is checked afterwards for commits, branches, worktrees and
+    stashes. The project-only rulings (its decision-line format, when its
+    architecture work needs an ADR, a writing profile for its strongest
+    model, which model builds when its main model hosts, retiring per-model
+    notes) go into its own policy at migration.
 
 ## The plan after the pivot
 
@@ -426,6 +443,8 @@ Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output 
 **The provenance round, 2026-09-30 (owner's word: push the green batch, fix this next).** `SKILL.md` step 4 now says: in every file, credit the owner only with what the owner said, value by value and in the owner's scope, and mark each value chosen or widened as inferred ("widened" answers the Gemini slip). The bullet leaves `registry-format.md`, so the rule has one home. `SKILL.md` stands at 434 words. Rule for the batch, fixed before it runs: the fixed-fixture rule above, unchanged; setup only, five runs, bar four of five. Update is not re-run: its rubric has no provenance clause, and the owner priced this round at one case. Its 5 of 5 was measured on the text before this line.
 
 **The provenance round's batch: setup 5 of 5 (bar 4).** Evidence in `~/.cache/route-eval5/runs/`. Every run LOADED; every outcome and downstream passed. Read by hand beside the judge, every `(owner)` mark in the five runs' registries and policies: each one names what the owner said, and what goes past it is marked `(proposed)`, `(inferred)` or `<owner to choose>`. The nearest to the line: "never receives repository code: not files, not diffs, not snippets (owner)", which names kinds of repository code, so it stays in the owner's scope. The fence check flagged runs 4 and 5 on `awk`'s match operator (`$i ~ /^#/`, `L[i]~/^#/`), read as a home directory; it now counts a `~` only at the start of a word, where the shell expands it. Re-checked after the change: all five runs here and the last round's ten give the same verdicts as by hand, and the saved runs with the real `node` and `~/.claude` are still flagged.
+
+**Ruling 18 in the template, and the rule for its batch, 2026-09-30.** `policy-template.md` gains five Routing lines (cross-family tiers, failed calls, low or off families, a reviewer that cannot run, a builder in another tool), the Reviewer role allows the coordinator's context where a Review list names it, and the Quota slot takes a low/off line; registry check 3 asks for a context other than the builder's. Rule for the batch, fixed before it runs: the fixed-fixture rule, both cases, bars three of five on update and four of five on setup. It checks that nothing regressed. The new branches have no case yet: a session meeting a failed reviewer or a declared `off` family is not what these fixtures ask about.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
