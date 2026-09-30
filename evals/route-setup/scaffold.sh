@@ -232,55 +232,42 @@ mkdir -p routing-kit
 cat > routing-kit/policy-template.md <<'KITEOF'
 # Routing policy template
 
-`/route` writes the block below into the project, fills every `<…>` from the
-owner's answers, and deletes the lines that do not apply. The project decides
-where it lives; its agent briefing carries one line pointing at it. The file
-is self-contained: a session deciding who builds and who reviews reads this
-file and the machine's `route-registry`, and nothing else. The **Contract**
-and **Roles** sections are copied as written. The Contract's four lines are
-the exact words an eval showed a bare session following (2026-09-28): they
-turned a blind reviewer hand-off and an honest receipt from 0 of 3 into 3 of
-3. Change their wording only with a run that shows the new words work.
+`/route` copies the block below into the project, fills every `<…>`, and
+deletes the lines that do not apply. The project decides where the file
+lives; its agent briefing carries one line pointing at it. A session deciding
+who builds and who reviews reads this file and the registry it names, nothing
+else.
 
-Rules for the shape, so any agent reads it the same way:
+**Floors**, **Contract** and **Roles** are the template's: on an update
+`/route` offers their current text. Every other section is the owner's and is
+kept as written. The Contract's four lines are tested wording (a bare session
+went from 0 of 3 to 3 of 3 on a blind hand-off and an honest receipt,
+2026-09-28); change them only with a run that shows the new words work.
 
-- One `## Job:` heading per job. Under it, one line per rank.
-- A rank names a registry `profile`, or `coordinator` (the session does it
-  itself), or `owner` (a person does it). Nothing else.
-- Every review list says whether it is **cumulative** (every line runs) or
-  **alternatives** (first fit runs). First fit never drops a cumulative line.
-- A rank's condition is prose after the dash. If a condition cannot be judged
-  from the job in hand, the rank is badly written; fix the line, not the run.
-- Nothing is removed from here to make a run pass. An obligation that no
-  longer holds is retired with a dated line under **Retired**.
+The shape, so any agent reads it the same way:
+
+- One `## Job:` heading per job; under it, one line per rank.
+- A rank names a registry `profile`, `coordinator` (the session does it
+  itself) or `owner` (a person does it).
+- Every review list says **cumulative** (every line runs) or
+  **alternatives** (the first that fits runs).
+- A rank's condition is prose after the dash, judged from the job in hand.
+- An obligation that no longer holds is retired with a dated line under
+  **Retired**, never deleted.
 
 ```markdown
 # Routing policy — <project>
 
-Owner: <who rules on this file> · Revised: <date>
+Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this machine's route-registry>`
 
-## Defaults
+## Floors
 
-- Reviewer: never the author's context; never a lower tier than the builder.
-- Same-model fresh review: <allowed for ordinary work | not allowed>.
-- Money and security: the reviewer is from a different family than the builder.
-- Waivers: only <the owner>, in writing, naming the requirement waived.
-- Coordinator does the work itself: <when handing it off costs more than it saves | never for jobs marked below>.
-- No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed.
-
-## Routing
-
-- The machine's models are in `route-registry`, in the directory that holds the `pair` skill's record.
-- Walk a job's Do list in order; the first rank that fits wins. A builder fits only when every reviewer its job requires exists and is eligible for it: check that before the build starts.
-- A choice this file leaves to the owner (a line marked `<owner to choose …>` or `(proposed)`) blocks every job that needs it until the owner answers or accepts it. Stop and ask; no stand-in default.
-- Not eligible, so skip it and name it among the ranks not used: a profile the registry marks `gone`; one whose call names a path that no longer exists; one whose call has no model selector while the tool's configured default is no longer its `model`; one whose tier is `unknown`, for any rank that compares tiers. Skipping to the next rank already written is routing, not rerouting.
-- A profile confirmed on a tool version or path no longer installed counts as unconfirmed.
-- Tiers compare across families only as the owner set them in the registry.
-- A failed call whose error names a version, model or sign-in problem: report the error word for word and let the owner choose; do not descend. An outage closes that profile for the session; a quota error closes its family. A decision revised after a failure is printed again as `Route (attempt 2): …`, the failure named among the ranks not used.
-- The owner may declare a family `low` or `off` for the session. The Quota section says what changes; `off` closes the family as a quota error does.
-- A reviewer the job requires cannot run after the build (unavailable, failed or closed): print `review not run — <reviewer>: <why>`. The work waits until the review runs or the owner waives it in writing.
-- A builder in another tool gets the Builder role's lines in its prompt, since its own instructions may differ. When it returns, check it left no commit, branch, worktree or stash.
+- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, its call still works this session, and every reviewer its job requires is eligible too.
+- The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
+- Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
+- A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
+- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
+- No registry at the path above, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Never guess a model.
 
 ## Contract
 
@@ -291,11 +278,9 @@ Owner: <who rules on this file> · Revised: <date>
 
 ## Roles
 
-- Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a context other than the builder's: a fresh one, or the coordinator's where a Review list names `coordinator`, and the decision line says which. Reports supported findings, missing checks and a verdict. Changes nothing and runs no tests: it reads the test output the builder produced, and may inspect the work read-only. An advisor consult is never the review.
-- Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
-- Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
+- Coordinator: the session the owner talks to, on the model the owner picked. Routes by this file, hands the work off, integrates the result.
+- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
+- Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where a Review list names `coordinator`, and works from the builder's test output. Changes nothing.
 
 ## Risk classes
 
@@ -304,24 +289,19 @@ Owner: <who rules on this file> · Revised: <date>
 
 ## Quota
 
-- <family>: spend on <1st>, then <2nd>; never on <…>. On the first quota error, that family is off for the session.
-- <family> low: <what changes>. Off: <what changes>.
+- <family>: spend on <…>; never on <…>.
 
 ## Job: <id> — <what this job is, one line>
 
 Do (ranked):
 1. <profile | coordinator> — <when this rank fits>
-2. <profile> — <when>
 
 Review (<cumulative | alternatives>):
 1. <profile | coordinator | owner> — <when>
-2. <profile> — <when>
 
 ## Other obligations
 
-- <each rule this project already holds that the lines above cannot express:
-  effort floors, pre-checks before a large dispatch, audit order, what a
-  failed reviewer means, what a manual lane may never receive>
+- <each rule this project holds that the lines above do not express>
 
 ## Retired
 
@@ -332,16 +312,14 @@ cat > routing-kit/registry-format.md <<'KITEOF'
 # The route registry
 
 One file per machine, named `route-registry`. It lists the models this machine
-can hand work to, one block per **profile**, and it is never committed to any
-repository: it names this machine's tools and paths and nothing about a
-project. Every project on the machine reads the same file. `/route` builds it
-and keeps it current; this file says what a correct one looks like.
+can hand work to, one block per **profile**. Every project on the machine
+reads the same file; it names this machine's tools and paths and nothing about
+a project, so it is never committed. `/route` builds it and keeps it current.
 
 ## Where it lives
 
-In the directory that holds the `pair` skill's `pair-transport.<host-family>`
-record. No record yet: ask the owner which directory is this machine's config
-directory, and use the answer. A location the owner names always wins.
+`~/.config/route/route-registry`, unless the owner names another place. Each
+policy's header names the path.
 
 ## Format
 
@@ -355,58 +333,48 @@ evaluate a value.
 | `profile` | the name a policy ranks, such as `sonnet-build`; unique in the file |
 | `model` | the model the call reaches, as the tool names it |
 | `family` | the model's maker: `anthropic`, `openai`, `google`, … |
-| `tier` | `strong`, `capable`, `light`, or `unknown` until the owner rules: the owner's ruling, not a measurement. Across families no honest scale exists, so a cross-family tier is a stated preference |
+| `tier` | `strong`, `capable`, `light`, or `unknown`: the owner's ruling, not a measurement; across families it is a stated preference |
 | `role` | `builder`, `reviewer` or `reader` |
 | `card` | the agent definition the call uses, or `—` |
 | `call` | the whole invocation, verbatim, with `"<prompt>"` as its only hole |
 | `effort` | the effort the call carries, or `n/a` where the host sets it |
 | `writes` | `yes`, or `no` with how that is held: `enforced (<mechanism>)` or `instruction only` |
-| `confirmed` | the date a call was **seen working**, and the tool versions it was seen on; `no (drafted <date>)` until then |
-| `gone` | optional: the date its tool or model disappeared; the block stays so ranks that name it can be found |
+| `confirmed` | the date a call was **seen working**, with the tool versions; `no (drafted <date>)` until then |
+| `gone` | optional: the date its tool or model disappeared; the block stays so the ranks that name it can be found |
 
 ## Rules for a profile
 
 - **One model, several profiles.** A read-only reviewer card and a writing
-  builder card are different calls, so they are different blocks with the
-  same `model`.
+  builder card are different calls, so different blocks.
 - **A call that must reach one model names it.** Without a model selector a
-  call reaches the tool's configured default, and its `model=` is that
-  default. Two profiles with the same call reach the same model, whatever
-  their `model=` says.
-- **Effort is what the call really carries**, and only a value both the
-  model lists and the transport accepts. A call with no effort flag carries
-  the tool's configured default: write that default. An effort the owner has
-  not chosen yet is a policy choice, not `unknown`; `unknown` is for an
-  effort nobody can yet tell, and `n/a` means the host sets it.
-- **A tier the owner has not given is `unknown`.** Such a profile fits no
-  rank that compares tiers until the owner rules.
-- **A listed model is a candidate.** It becomes a profile when the owner keeps
-  it, and `confirmed` when a call is seen working. A model the tool marks
-  hidden is never a candidate.
-- **External calls** take their shape from `pair`'s `references/transports.md`
-  and keep its rules: the whole line verbatim, resolved paths, the mandatory
-  redirections. That catalog forbids write flags because a partner advises;
-  a `builder` profile may carry one and says `writes=yes`.
-- **A web app the owner pastes into** is found only by asking, never by
-  scanning. Record it as `role=reader`, `call=manual: <how the ask and the
-  reply travel>`, and write in the policy what it may never receive.
+  call reaches the tool's configured default, and `model=` is that default.
+- **Effort is what the call really carries**: a value both the model lists
+  and the transport accepts, or, with no effort flag, the tool's configured
+  default.
+- **A tier the owner has not given is `unknown`**, and fits no rank that
+  compares tiers.
+- **A listed model is a candidate** until the owner keeps it. A model the
+  tool marks hidden is never a candidate.
+- **External calls** take their shape from `pair`'s catalog: the whole line
+  verbatim, resolved paths, the mandatory redirections. A `builder` profile may
+  carry a write flag and says `writes=yes`.
+- **A web app the owner pastes into** is found only by asking. Record it as
+  `role=reader`, `call=manual: <how the ask and the reply travel>`, and write
+  in the policy what it may never receive.
 
 ## What does not go here
 
 - **Partners.** A second opinion runs `pair`, which keeps its own record.
-  `/route` reads that record and reports it when stale; it never rewrites it.
-- **The coordinator.** It is the session the owner picked, not a candidate.
-- **Session state.** "That family is off today" or a quota error lasts one
-  session and goes in the decision line, never here.
-- **Preferences.** Which profile a job tries first is the project policy's.
+- **The coordinator.** It is the session the owner picked.
+- **Session state.** A family closed for the day goes in the decision line.
+- **Preferences.** Which profile a job tries first is the policy's.
 
 ## File states
 
-- **missing**: no file where it should be. Setup.
-- **malformed**: a duplicate key in a block, a duplicate profile, a block
-  missing any of `profile`, `model`, `family`, `tier`, `role`, `call`,
-  `writes` or `confirmed` (the checks depend on each), or a call with a hole
-  other than `"<prompt>"`.
+- **missing**: no file at the path. Setup.
+- **malformed**: a duplicate key or profile, a block missing any of
+  `profile`, `model`, `family`, `tier`, `role`, `call`, `writes` or
+  `confirmed`, or a call with a hole other than `"<prompt>"`.
 - **stale**: a `confirmed` version differs from the installed tool, a resolved
   path no longer exists, or the tool's configured default model changed.
 - **current**: none of the above.
@@ -416,147 +384,29 @@ evaluate a value.
 1. Every rank names a profile in this file, `coordinator`, or `owner`.
 2. Every `reviewer` profile is `writes=no`.
 3. Every money-security job has a builder whose required reviewers all exist
-   and are eligible: another family where the policy asks for one, a tier
-   not lower than the builder's, a context other than the builder's, not a manual lane the
-   policy bars from code, never an advisor.
+   and are eligible: another family where the policy asks for one, a tier not
+   lower than the builder's, a context other than the builder's, not a manual
+   lane the policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
-5. A rank naming a `gone`, stale or unconfirmed profile is listed by project.
-6. A rank or a mode still marked `<owner to choose …>` or `(proposed)` is
-   unresolved, not passed. Name every job that cannot run yet and the choice
-   it waits on. A draft with an unresolved job is saved, not ready.
-7. The risk classes name security work (auth, secrets, access rules, or what
-   the owner counts as such), or mark it `<owner to choose …>`. A policy
-   silent on security routes it as ordinary work.
+5. Every rank naming a `gone`, stale or unconfirmed profile is listed, per
+   project.
+6. Every `<owner to choose …>` line is listed with the jobs it blocks.
+7. The risk classes name security work, or mark it `<owner to choose …>`.
 
-A failed check is reported to the owner with the rank it concerns. It is
-never fixed by quietly editing a rank.
+A failed check is reported to the owner with the rank it concerns, never fixed
+by quietly editing a rank.
 
 ## Updating an existing registry
 
 1. **Re-point every call** whose path or tool moved, a `gone` block's call
-   too: it stays so the ranks naming it can be found, and it stays correct.
-   Then read the finished file back and confirm no call names a removed path
-   before reporting the work done.
-2. **Old confirmations belong to the old installation.** Say so for every
-   profile whose `confirmed` names a tool version or path no longer
-   installed; a changed profile is `no` until a call is seen working.
-3. **Report every visible model with no profile as its own list**, the
-   ones seen before as well as the new ones, apart from any replacement you
-   suggest, and rank none of them: adopting one is the owner's choice.
+   too. Read the finished file back and confirm no call names a removed path.
+2. **Old confirmations belong to the old installation.** A profile confirmed
+   on a tool version or path no longer installed is unconfirmed; say so.
+3. **Report every visible model with no profile as its own list**, old and
+   new, and rank none: adopting one is the owner's choice.
 4. **List every rank a change touches, per project**, and edit none to
-   replace a gone model: that replacement is the owner's. A later session
-   skips the gone rank and takes the next one already written, if eligible.
-
-## Example
-
-Illustrative, not a registry. Build yours from the live tools and the owner's
-answers; never copy these values.
-
-```
-profile=sonnet-build
-model=sonnet
-family=anthropic
-tier=capable
-role=builder
-card=implementer
-call=Agent tool, subagent_type=implementer, model=sonnet, one prompt, no continuation
-effort=n/a
-writes=yes
-confirmed=no (drafted 2026-09-28)
-
-profile=codex-build
-model=<a model the Codex cache lists>
-family=openai
-tier=capable
-role=builder
-card=—
-call=node "<resolved plugin root>/scripts/codex-companion.mjs" task --fresh --write --model <that model> --effort medium "<prompt>" < /dev/null
-effort=medium
-writes=yes
-confirmed=2026-09-28 (codex-cli <version>, plugin <version>)
-
-profile=web-research
-model=the owner's web assistant
-family=google
-tier=capable
-role=reader
-card=—
-call=manual: print the ask between copy markers; the owner pastes the reply back
-effort=n/a
-writes=no, enforced (no repository access)
-confirmed=2026-09-28 (owner)
-```
-KITEOF
-cat > routing-kit/lines.md <<'KITEOF'
-# The decision line and the receipt
-
-Two lines per job. The **decision line** is printed before anything is handed
-off; the **receipt** after the work and its review come back. Both go in the
-chat, and wherever the project logs its work. What a session must do is in the
-project policy's Contract section, which `/route` writes; this file is the
-longer form behind it, with the field rules and examples. A policy never
-depends on this file being installed.
-
-## Decision line
-
-```
-Route: job <id> · coordinator <model>, user-chosen; advisor <model|off|unknown>; also did <roles|none> · do <profile>; <model>; <effort|n/a> · rank <k> — <why it fits> · review <profiles> (<cumulative|alternatives>) — <why> · bypassed <profile — reason; …|none> · exceptions <requirement — disposition|none>
-```
-
-- **Before, not after.** Nothing for this job is dispatched until the line is
-  printed. A line written afterwards is a log entry, not a decision.
-- **coordinator** is an input, the owner's pick. `also did` names every other
-  role it plays on this job, because the floors bind that work too.
-- **advisor** is configuration, not proof a consultation happened. `unknown`
-  is never written as `off`. An advisor consult is never the review.
-- **do** is a registry profile, or `coordinator` when the session does the
-  work itself.
-- **review** names every reviewer that will run, and says whether the list is
-  cumulative or alternatives, as the policy does.
-- **bypassed** names every higher rank not taken and why, including a builder
-  refused **because no eligible reviewer exists for it**. That check happens
-  here, before the build, not after it.
-- **exceptions** is a requirement not met and what happens: the named person
-  who waived it, or `job waits`. A reason is not a waiver.
-- **Revised decisions** are re-issued, never edited in place:
-  `Route (attempt 2): …`, with the failed attempt in `bypassed`.
-
-## Receipt
-
-```
-Receipt: job <id> · observed <role> <model|unknown>; … · verdicts <role> <verdict>; … · dismissed <finding — reason; …|none> · usage <what was measured|—>
-```
-
-- **observed** comes from the run's own evidence: the subagent's report of its
-  model, the tool's output. A value copied from the registry is not observed;
-  write `unknown`.
-- **verdicts** per reviewer, in its own words: `clean`, `FIX-FIRST (3)`, …
-- **dismissed** lists every finding the coordinator did not act on, with the
-  reason. A dismissal the evidence contradicts is a wrong dismissal, however
-  well worded; the reason has to survive the files.
-
-## Examples
-
-Illustrative. Profile names are the reader's own registry's.
-
-Ordinary job, done by the coordinator:
-
-```
-Route: job readme-fix · coordinator opus, user-chosen; advisor off; also did builder · do coordinator; opus; xhigh · rank 1 — two lines, cause known · review none — the policy's ordinary docs job needs no review · bypassed none · exceptions none
-```
-
-Money-security job, rank 1 refused before the build:
-
-```
-Route: job refund-limit · coordinator opus, user-chosen; advisor off; also did none · do codex-build; Codex config default; medium · rank 2 — rank 1 has no eligible reviewer · review fable-review (alternatives) — money-security needs a family other than the builder's · bypassed sonnet-build — no reviewer outside its family is available today · exceptions none
-Receipt: job refund-limit · observed builder unknown (the plugin reports none); reviewer claude-fable-5-1 · verdicts fable-review FIX-FIRST (2) · dismissed "rename the helper" — style only, outside the spec · usage —
-```
-
-A decision revised at dispatch time:
-
-```
-Route (attempt 2): job docs-sweep · coordinator opus, user-chosen; advisor off; also did none · do sonnet-build; sonnet; n/a · rank 2 — the fallback for bulk text · review coordinator (alternatives) — ordinary · bypassed codex-build — attempt 1 returned a usage-limit error; that family is off for the session · exceptions none
-```
+   replace a gone model: that replacement is the owner's. A session skips the
+   gone rank and takes the next one already written.
 KITEOF
 cat > routing-kit/transports.md <<'KITEOF'
 # Partner transports
@@ -742,9 +592,9 @@ cat > AGENTS.md <<'MD'
 
 This directory stands in for one owner's machine.
 
-- `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. Treat only what it lists as installed, and look nowhere outside this directory.
+- `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. It stands in for every config location a tool would use on a real machine (`~/.config/…`, `~/.codex`, `~/.claude`): anything that would live there lives in `.machine/`. Treat only what it lists as installed, and look nowhere outside this directory.
 - `bin/` holds the command-line tools installed here (`codex`, `claude`); it is first on PATH.
-- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, the decision-line and receipt reference, and the partner-transport catalog.
+- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, and the partner-transport catalog.
 - `projects/` holds the owner's projects on this machine.
 MD
 mkdir -p projects/refunds/app projects/refunds/docs projects/refunds/tests
@@ -765,6 +615,17 @@ Acceptance:
 1. A refund larger than the charge is rejected with `ValueError`.
 2. A refund on an unknown charge raises `KeyError`.
 3. Refunds follow `docs/refunds.md`.
+MD
+cat > projects/refunds/docs/spec-format.md <<'MD'
+# spec: amount formatting
+
+Add `format_amount(cents)` to `tools/format.py`: it returns the amount as a
+string with two decimals, such as `format_amount(1050) == "10.50"`.
+
+Acceptance:
+1. `format_amount(1050)` returns `"10.50"`; `format_amount(5)` returns `"0.05"`.
+2. A test in `tests/test_format.py` covers both.
+3. Nothing under `app/` changes.
 MD
 cat > projects/refunds/docs/refunds.md <<'MD'
 # Refunds

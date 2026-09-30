@@ -125,6 +125,39 @@ for line in open(run):
 print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
 PYEOF
 
+# The footprint, checked mechanically: the command writes only the registry,
+# one policy file per project and one pointer line in a project's briefing.
+# size.txt gives each policy's word count; it gates nothing.
+python3 - "$W" > "$OUT/footprint.txt" 2> "$OUT/size.txt" <<'PYEOF'
+import os, re, subprocess, sys
+ws = sys.argv[1]
+git = lambda *a: subprocess.run(["git", *a], cwd=ws, capture_output=True, text=True).stdout
+flags, per_project, sizes = [], {}, []
+for line in git("status", "--porcelain", "--untracked-files=all").splitlines():
+    code, path = line[:2].strip(), line[3:].split(" -> ")[-1]
+    if path == ".machine/route-registry":
+        continue
+    m = re.match(r"projects/([^/]+)/(.+)$", path)
+    if not m:
+        flags.append(f"{code} {path}"); continue
+    proj, rest = m.groups()
+    if rest in ("AGENTS.md", "CLAUDE.md"):
+        stat = git("diff", "--numstat", "--", path).split()
+        added, removed = (int(stat[0]), int(stat[1])) if stat else (0, 0)
+        if removed or added > 2:
+            flags.append(f"{path}: +{added} -{removed}, one pointer line expected")
+        continue
+    per_project.setdefault(proj, []).append(path)
+for proj, files in per_project.items():
+    if len(files) > 1:
+        flags.append(f"projects/{proj}: {len(files)} files, one policy expected: {', '.join(files)}")
+    for f in files:
+        if os.path.exists(os.path.join(ws, f)):
+            sizes.append(f"{f}: {len(open(os.path.join(ws, f)).read().split())} words")
+print("FOOTPRINT FLAG: " + "; ".join(flags) if flags else "FOOTPRINT OK")
+sys.stderr.write("\n".join(sizes) + "\n")
+PYEOF
+
 pack() { # evidence for a grader: transcript, diff, final files, logs
   printf '\n=== TRANSCRIPT (numbered, in order) ===\n'; python3 "$TOOLS/condense-transcript.py" "$1"
   printf '\n=== GIT DIFF after the run (tracked files) ===\n'; (cd "$W" && git --no-pager diff)
@@ -137,20 +170,22 @@ pack() { # evidence for a grader: transcript, diff, final files, logs
 if [ "$ARM" = skill ]; then
   # the command arm only: was the skill loaded, and did its body run?
   bash "$R/evals/run-valid.sh" route "$OUT/run.jsonl" "$(cat "$OUT/scaffold-exit")" > "$OUT/valid.txt" 2>&1
-  if [ -f "$R/evals/$CASE/graders/fired.md" ]; then
-    { cat "$TOOLS/grader-head.txt"; awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/fired.md"; printf '\n=== TRANSCRIPT (numbered, in order) ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/run.jsonl"; } > "$OUT/fired.prompt.txt"
-    (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/fired.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/fired.json" 2>/dev/null < /dev/null)
-  fi
 fi
 (cd "$W" && git add -A >/dev/null 2>&1 && git -c user.email=t@t -c user.name=t commit -qm "after the case run" >/dev/null 2>&1)
 # No downstream stage for a run that already failed its outcome: acceptance
 # needs both, so a failed outcome settles the run.
 if python3 -c 'import json,re,sys; r=json.load(open(sys.argv[1])).get("result",""); sys.exit(0 if re.search(r"\"verdict\": *\"FAIL\"",r) else 1)' "$OUT/outcome.json" 2>/dev/null; then
-  rm -f "$OUT/down.jsonl" "$OUT/down.prompt.txt" "$OUT/down.json"; echo "$CASE $ARM $TAG done (outcome FAIL, no downstream)"; exit 0
+  rm -f "$OUT"/down.jsonl "$OUT"/down.prompt.txt "$OUT"/down.json "$OUT"/down2.jsonl "$OUT"/down2.prompt.txt "$OUT"/down2.json; echo "$CASE $ARM $TAG done (outcome FAIL, no downstream)"; exit 0
 fi
-DPROMPT='A job arrives in `projects/refunds`: build what its `docs/spec.md` asks for. Before anything is handed off, decide who builds it and who reviews it, the way the project'"'"'s routing files ask. Do not dispatch anything and do not change any file: state your decision and stop.'
-(cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$DPROMPT" --output-format stream-json --verbose --max-turns 14 \
-   --allowedTools "Read,Glob,Grep" --disallowedTools "Bash,Write,Edit,Skill,Agent,SendMessage,ListAgents,NotebookEdit,WebFetch,WebSearch" > "$OUT/down.jsonl" 2>/dev/null < /dev/null)
-{ awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/downstream.md"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/down.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/down.prompt.txt"
-(cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/down.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/down.json" 2>/dev/null < /dev/null)
+# Two downstream stages, each a fresh read-only coordinator: the money job,
+# and an ordinary job that must be routed, not stopped.
+downstream() { # <tag> <spec file> <grader>
+  local DP='A job arrives in `projects/refunds`: build what its `docs/'"$2"'` asks for. Before anything is handed off, decide who builds it and who reviews it, the way the project'"'"'s routing files ask. Do not dispatch anything and do not change any file: state your decision and stop.'
+  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$DP" --output-format stream-json --verbose --max-turns 14 \
+     --allowedTools "Read,Glob,Grep" --disallowedTools "Bash,Write,Edit,Skill,Agent,SendMessage,ListAgents,NotebookEdit,WebFetch,WebSearch" > "$OUT/$1.jsonl" 2>/dev/null < /dev/null)
+  { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/$3"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/$1.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/$1.prompt.txt"
+  (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
+}
+downstream down spec.md downstream.md
+downstream down2 spec-format.md downstream-ordinary.md
 echo "$CASE $ARM $TAG done"

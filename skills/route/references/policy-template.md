@@ -1,54 +1,41 @@
 # Routing policy template
 
-`/route` writes the block below into the project, fills every `<…>` from the
-owner's answers, and deletes the lines that do not apply. The project decides
-where it lives; its agent briefing carries one line pointing at it. The file
-is self-contained: a session deciding who builds and who reviews reads this
-file and the machine's `route-registry`, and nothing else. The **Contract**
-and **Roles** sections are copied as written. The Contract's four lines are
-the exact words an eval showed a bare session following (2026-09-28): they
-turned a blind reviewer hand-off and an honest receipt from 0 of 3 into 3 of
-3. Change their wording only with a run that shows the new words work.
+`/route` copies the block below into the project, fills every `<…>`, and
+deletes the lines that do not apply. The project decides where the file
+lives; its agent briefing carries one line pointing at it. A session deciding
+who builds and who reviews reads this file and the registry it names, nothing
+else.
 
-Rules for the shape, so any agent reads it the same way:
+**Floors**, **Contract** and **Roles** are the template's: on an update
+`/route` offers their current text. Every other section is the owner's and is
+kept as written. The Contract's four lines are tested wording (a bare session
+went from 0 of 3 to 3 of 3 on a blind hand-off and an honest receipt,
+2026-09-28); change them only with a run that shows the new words work.
 
-- One `## Job:` heading per job. Under it, one line per rank.
-- A rank names a registry `profile`, or `coordinator` (the session does it
-  itself), or `owner` (a person does it). Nothing else.
-- Every review list says whether it is **cumulative** (every line runs) or
-  **alternatives** (first fit runs). First fit never drops a cumulative line.
-- A rank's condition is prose after the dash. If a condition cannot be judged
-  from the job in hand, the rank is badly written; fix the line, not the run.
-- Nothing is removed from here to make a run pass. An obligation that no
-  longer holds is retired with a dated line under **Retired**.
+The shape, so any agent reads it the same way:
+
+- One `## Job:` heading per job; under it, one line per rank.
+- A rank names a registry `profile`, `coordinator` (the session does it
+  itself) or `owner` (a person does it).
+- Every review list says **cumulative** (every line runs) or
+  **alternatives** (the first that fits runs).
+- A rank's condition is prose after the dash, judged from the job in hand.
+- An obligation that no longer holds is retired with a dated line under
+  **Retired**, never deleted.
 
 ```markdown
 # Routing policy — <project>
 
-Owner: <who rules on this file> · Revised: <date>
+Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this machine's route-registry>`
 
-## Defaults
+## Floors
 
-- Reviewer: never the author's context; never a lower tier than the builder.
-- Same-model fresh review: <allowed for ordinary work | not allowed>.
-- Money and security: the reviewer is from a different family than the builder.
-- Waivers: only <the owner>, in writing, naming the requirement waived.
-- Coordinator does the work itself: <when handing it off costs more than it saves | never for jobs marked below>.
-- No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed.
-
-## Routing
-
-- The machine's models are in `route-registry`, in the directory that holds the `pair` skill's record.
-- Walk a job's Do list in order; the first rank that fits wins. A builder fits only when every reviewer its job requires exists and is eligible for it: check that before the build starts.
-- A choice this file leaves to the owner (a line marked `<owner to choose …>` or `(proposed)`) blocks every job that needs it until the owner answers or accepts it. Stop and ask; no stand-in default.
-- Not eligible, so skip it and name it among the ranks not used: a profile the registry marks `gone`; one whose call names a path that no longer exists; one whose call has no model selector while the tool's configured default is no longer its `model`; one whose tier is `unknown`, for any rank that compares tiers. Skipping to the next rank already written is routing, not rerouting.
-- A profile confirmed on a tool version or path no longer installed counts as unconfirmed.
-- Tiers compare across families only as the owner set them in the registry.
-- A failed call whose error names a version, model or sign-in problem: report the error word for word and let the owner choose; do not descend. An outage closes that profile for the session; a quota error closes its family. A decision revised after a failure is printed again as `Route (attempt 2): …`, the failure named among the ranks not used.
-- The owner may declare a family `low` or `off` for the session. The Quota section says what changes; `off` closes the family as a quota error does.
-- A reviewer the job requires cannot run after the build (unavailable, failed or closed): print `review not run — <reviewer>: <why>`. The work waits until the review runs or the owner waives it in writing.
-- A builder in another tool gets the Builder role's lines in its prompt, since its own instructions may differ. When it returns, check it left no commit, branch, worktree or stash.
+- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, its call still works this session, and every reviewer its job requires is eligible too.
+- The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
+- Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
+- A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
+- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
+- No registry at the path above, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Never guess a model.
 
 ## Contract
 
@@ -59,11 +46,9 @@ Owner: <who rules on this file> · Revised: <date>
 
 ## Roles
 
-- Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a context other than the builder's: a fresh one, or the coordinator's where a Review list names `coordinator`, and the decision line says which. Reports supported findings, missing checks and a verdict. Changes nothing and runs no tests: it reads the test output the builder produced, and may inspect the work read-only. An advisor consult is never the review.
-- Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
-- Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
+- Coordinator: the session the owner talks to, on the model the owner picked. Routes by this file, hands the work off, integrates the result.
+- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
+- Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where a Review list names `coordinator`, and works from the builder's test output. Changes nothing.
 
 ## Risk classes
 
@@ -72,24 +57,19 @@ Owner: <who rules on this file> · Revised: <date>
 
 ## Quota
 
-- <family>: spend on <1st>, then <2nd>; never on <…>. On the first quota error, that family is off for the session.
-- <family> low: <what changes>. Off: <what changes>.
+- <family>: spend on <…>; never on <…>.
 
 ## Job: <id> — <what this job is, one line>
 
 Do (ranked):
 1. <profile | coordinator> — <when this rank fits>
-2. <profile> — <when>
 
 Review (<cumulative | alternatives>):
 1. <profile | coordinator | owner> — <when>
-2. <profile> — <when>
 
 ## Other obligations
 
-- <each rule this project already holds that the lines above cannot express:
-  effort floors, pre-checks before a large dispatch, audit order, what a
-  failed reviewer means, what a manual lane may never receive>
+- <each rule this project holds that the lines above do not express>
 
 ## Retired
 

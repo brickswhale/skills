@@ -13,7 +13,6 @@ REF = os.path.join(REPO, "skills/route/references")
 KIT = {
     "policy-template.md": open(os.path.join(REF, "policy-template.md")).read(),
     "registry-format.md": open(os.path.join(REF, "registry-format.md")).read(),
-    "lines.md": open(os.path.join(REF, "lines.md")).read(),
     "transports.md": open(os.path.join(REPO, "skills/pair/references/transports.md")).read(),
 }
 for name, body in KIT.items():
@@ -153,6 +152,17 @@ Acceptance:
 2. A refund on an unknown charge raises `KeyError`.
 3. Refunds follow `docs/refunds.md`.
 MD
+cat > {dirname}/docs/spec-format.md <<'MD'
+# spec: amount formatting
+
+Add `format_amount(cents)` to `tools/format.py`: it returns the amount as a
+string with two decimals, such as `format_amount(1050) == "10.50"`.
+
+Acceptance:
+1. `format_amount(1050)` returns `"10.50"`; `format_amount(5)` returns `"0.05"`.
+2. A test in `tests/test_format.py` covers both.
+3. Nothing under `app/` changes.
+MD
 cat > {dirname}/docs/refunds.md <<'MD'
 # Refunds
 
@@ -170,9 +180,9 @@ ROOT_AGENTS = """cat > AGENTS.md <<'MD'
 
 This directory stands in for one owner's machine.
 
-- `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. Treat only what it lists as installed, and look nowhere outside this directory.
+- `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. It stands in for every config location a tool would use on a real machine (`~/.config/…`, `~/.codex`, `~/.claude`): anything that would live there lives in `.machine/`. Treat only what it lists as installed, and look nowhere outside this directory.
 - `bin/` holds the command-line tools installed here (`codex`, `claude`); it is first on PATH.
-- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, the decision-line and receipt reference, and the partner-transport catalog.
+- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, and the partner-transport catalog.
 - `projects/` holds the owner's projects on this machine.
 MD
 """
