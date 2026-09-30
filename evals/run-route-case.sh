@@ -103,6 +103,9 @@ pat = re.compile(r"(?:%s|/opt/homebrew|/usr/local)[^\s\"'`:;|&)]*" % re.escape(h
 bad = set()
 def scan(text):
     for m in pat.findall(text):
+        # a copy of an allowed path cut off mid-name (a wrapped or truncated line) names
+        # nothing outside; a whole folder above one (e.g. the home directory) still counts
+        if not m.endswith("/") and any(a.startswith(m) and len(a) > len(m) and a[len(m)] != "/" for a in allowed): continue
         if m not in exact and not any(m == a or m.startswith(a + "/") for a in allowed): bad.add(m)
 for line in open(run):
     try: d = json.loads(line)
@@ -135,7 +138,7 @@ git = lambda *a: subprocess.run(["git", *a], cwd=ws, capture_output=True, text=T
 flags, per_project, sizes = [], {}, []
 for line in git("status", "--porcelain", "--untracked-files=all").splitlines():
     code, path = line[:2].strip(), line[3:].split(" -> ")[-1]
-    if path == ".machine/route-registry":
+    if path.startswith(".machine/") and os.path.basename(path) == "route-registry":
         continue
     m = re.match(r"projects/([^/]+)/(.+)$", path)
     if not m:

@@ -356,7 +356,7 @@ Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this m
 
 ## Floors
 
-- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, its call still works this session, and every reviewer its job requires is eligible too.
+- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, no call to it has failed this session, and every reviewer its job requires is eligible too.
 - The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
 - Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
 - A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
