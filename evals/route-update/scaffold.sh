@@ -469,10 +469,6 @@ evaluate a value.
   effort nobody can yet tell, and `n/a` means the host sets it.
 - **A tier the owner has not given is `unknown`.** Such a profile fits no
   rank that compares tiers until the owner rules.
-- **Mark only the owner's words as the owner's**, value by value. A comment
-  crediting the owner lists exactly the values the owner gave; every value
-  the session chose (a role, a card, an effort, a mechanism) says it was
-  inferred.
 - **A listed model is a candidate.** It becomes a profile when the owner keeps
   it, and `confirmed` when a call is seen working. A model the tool marks
   hidden is never a candidate.
