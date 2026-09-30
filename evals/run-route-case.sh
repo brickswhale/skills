@@ -96,11 +96,14 @@ run, ws, repo = sys.argv[1:4]; home = os.path.expanduser("~")
 allowed = [ws, os.path.realpath(ws), os.path.join(home, ".claude/projects"),
            os.path.join(repo, "skills/route"), os.path.join(repo, "skills/pair/references")]
 allowed += [os.path.join(home, d, "skills", s) for d in (".claude", ".agents") for s in ("route", "pair/references")]
+# a listing of the pair skill's own folder shows only file names (owner, 2026-09-30); its files stay outside
+exact = [os.path.join(b, "pair") for b in (os.path.join(home, ".claude/skills"), os.path.join(home, ".agents/skills"), os.path.join(repo, "skills"))]
+exact += [e + "/" for e in exact]
 pat = re.compile(r"(?:%s|/opt/homebrew|/usr/local)[^\s\"'`:;|&)]*" % re.escape(home))
 bad = set()
 def scan(text):
     for m in pat.findall(text):
-        if not any(m == a or m.startswith(a + "/") for a in allowed): bad.add(m)
+        if m not in exact and not any(m == a or m.startswith(a + "/") for a in allowed): bad.add(m)
 for line in open(run):
     try: d = json.loads(line)
     except ValueError: continue
@@ -116,7 +119,7 @@ for line in open(run):
             # awk's match operator (`$1 ~ /re/`, `a[i]~/re/`) is not a path.
             for m in re.findall(r"(?:(?<![^\s=:'\"(])~(?!\s+/)|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))):
                 full = re.sub(r"^(?:~|\$HOME|\$\{HOME\})", home, m)
-                if not any(full == a or full.startswith(a + "/") for a in allowed): bad.add(m)
+                if full not in exact and not any(full == a or full.startswith(a + "/") for a in allowed): bad.add(m)
         elif c.get("type") == "tool_result":
             r = c.get("content"); scan(r if isinstance(r, str) else json.dumps(r))
 print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
