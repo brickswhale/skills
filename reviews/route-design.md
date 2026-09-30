@@ -412,6 +412,8 @@ Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output 
 
 **Open, a class: an inferred value credited to the owner.** Clause 14, 2 of the last 10 setup runs (the Claude roles in a registry; an expanded Gemini rule in a policy). The rule sits in `registry-format.md` only, and the second failure is in a policy, which that file does not govern. The fix is to move the rule to `SKILL.md` step 4, so it covers every file the command writes. Held: it changes the package this batch measured.
 
+**The provenance round, 2026-09-30 (owner's word: push the green batch, fix this next).** `SKILL.md` step 4 now says: in every file, credit the owner only with what the owner said, value by value and in the owner's scope, and mark each value chosen or widened as inferred ("widened" answers the Gemini slip). The bullet leaves `registry-format.md`, so the rule has one home. `SKILL.md` stands at 434 words. Rule for the batch, fixed before it runs: the fixed-fixture rule above, unchanged; setup only, five runs, bar four of five. Update is not re-run: its rubric has no provenance clause, and the owner priced this round at one case. Its 5 of 5 was measured on the text before this line.
+
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
 | # | Step | Proof |
