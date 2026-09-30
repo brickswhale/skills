@@ -124,6 +124,17 @@ skill is designed against that record, not against theory.
     rubrics say so in the same words. Nine of the ten outside paths in the
     first command-arm runs were these; the tenth, a draft written to `/tmp`,
     still fails.
+16. **Fix and re-run** (owner, 2026-09-29): recorded where it was given, in
+    the fix round below.
+17. **The switch is decided; the aim is reuse** (owner, 2026-09-30). The
+    consuming project moves to `/route`; no test of whether to switch. The aim
+    is a `/route` every consumer repository can use. It runs rarely: once at
+    setup, again when a model or subscription changes. So the measure is the
+    files it writes, which sessions read for months: the consuming project's
+    routing document is a source of requirements (verification backlog 3), and
+    the branches no rule covers yet (backlog 4) are owed. A pair round on a
+    switch test (round 15, below) is kept for its points on answer keys and
+    isolation; its switch-or-not framing is superseded.
 
 ## The plan after the pivot
 
@@ -415,6 +426,8 @@ Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output 
 **The provenance round, 2026-09-30 (owner's word: push the green batch, fix this next).** `SKILL.md` step 4 now says: in every file, credit the owner only with what the owner said, value by value and in the owner's scope, and mark each value chosen or widened as inferred ("widened" answers the Gemini slip). The bullet leaves `registry-format.md`, so the rule has one home. `SKILL.md` stands at 434 words. Rule for the batch, fixed before it runs: the fixed-fixture rule above, unchanged; setup only, five runs, bar four of five. Update is not re-run: its rubric has no provenance clause, and the owner priced this round at one case. Its 5 of 5 was measured on the text before this line.
 
 **The provenance round's batch: setup 5 of 5 (bar 4).** Evidence in `~/.cache/route-eval5/runs/`. Every run LOADED; every outcome and downstream passed. Read by hand beside the judge, every `(owner)` mark in the five runs' registries and policies: each one names what the owner said, and what goes past it is marked `(proposed)`, `(inferred)` or `<owner to choose>`. The nearest to the line: "never receives repository code: not files, not diffs, not snippets (owner)", which names kinds of repository code, so it stays in the owner's scope. The fence check flagged runs 4 and 5 on `awk`'s match operator (`$i ~ /^#/`, `L[i]~/^#/`), read as a home directory; it now counts a `~` only at the start of a word, where the shell expands it. Re-checked after the change: all five runs here and the last round's ten give the same verdicts as by hand, and the saved runs with the real `node` and `~/.claude` are still flagged.
+
+**Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
 ## The plan, as corrected by the plan review (superseded by ruling 13)
 
