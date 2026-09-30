@@ -111,8 +111,10 @@ for line in open(run):
             i = c.get("input", {})
             probe = " ".join(str(i.get(k, "")) for k in ("command", "file_path", "path", "pattern"))
             scan(probe)
-            # ~ and $HOME name the home directory: expand, then judge like any path
-            for m in re.findall(r"(?:~|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))):
+            # ~ and $HOME name the home directory: expand, then judge like any path.
+            # A ~ counts only where the shell expands it, at the start of a word;
+            # awk's match operator (`$1 ~ /re/`, `a[i]~/re/`) is not a path.
+            for m in re.findall(r"(?:(?<![^\s=:'\"(])~(?!\s+/)|\$HOME|\$\{HOME\})(?:/[^\s\"'`:;|&)]*)?", str(i.get("command", ""))):
                 full = re.sub(r"^(?:~|\$HOME|\$\{HOME\})", home, m)
                 if not any(full == a or full.startswith(a + "/") for a in allowed): bad.add(m)
         elif c.get("type") == "tool_result":
