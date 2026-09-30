@@ -8,7 +8,8 @@ a project, so it is never committed. `/route` builds it and keeps it current.
 ## Where it lives
 
 `~/.config/route/route-registry`, unless the owner names another place. Each
-policy's header names the path.
+policy's header names the path, with `~` for the home directory, so the
+committed file names no account.
 
 ## Format
 

@@ -156,7 +156,11 @@ for proj, files in per_project.items():
         flags.append(f"projects/{proj}: {len(files)} files, one policy expected: {', '.join(files)}")
     for f in files:
         if os.path.exists(os.path.join(ws, f)):
-            sizes.append(f"{f}: {len(open(os.path.join(ws, f)).read().split())} words")
+            text = open(os.path.join(ws, f)).read()
+            sizes.append(f"{f}: {len(text.split())} words")
+            # a committed policy names no account: an absolute home path is flagged
+            if re.search(r"/(Users|home)/[^/\s]+", text):
+                flags.append(f"{f}: an absolute home path")
 print("FOOTPRINT FLAG: " + "; ".join(flags) if flags else "FOOTPRINT OK")
 sys.stderr.write("\n".join(sizes) + "\n")
 PYEOF

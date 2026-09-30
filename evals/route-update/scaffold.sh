@@ -352,7 +352,7 @@ The shape, so any agent reads it the same way:
 ```markdown
 # Routing policy — <project>
 
-Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this machine's route-registry>`
+Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this machine's route-registry, with ~ for the home directory>`
 
 ## Floors
 
@@ -413,7 +413,8 @@ a project, so it is never committed. `/route` builds it and keeps it current.
 ## Where it lives
 
 `~/.config/route/route-registry`, unless the owner names another place. Each
-policy's header names the path.
+policy's header names the path, with `~` for the home directory, so the
+committed file names no account.
 
 ## Format
 
