@@ -490,6 +490,15 @@ Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output 
 
 The batch is re-run whole: the floor's wording reaches every run.
 
+**The cut's batch, re-run: ten of ten.** Evidence in `~/.cache/route-eval8/runs/`. Every run LOADED, FENCE OK and FOOTPRINT OK, and passed outcome, the money job and the ordinary job. No run wrote to the real machine's config directories. Policies came out at 499 to 722 words (881 to 1,048 before the cut). Read by hand: every setup run stops the money job on the owner's open builder and reviewer choice, every update run stops it on the gone builder and the missing waiver, and all ten route the ordinary job (sonnet or the Codex builder, reviewed by opus, fable or a fresh sonnet).
+
+| Case | Runs passing | Bar | Result |
+|---|---|---|---|
+| update | 5 of 5 | 3 of 5 | met |
+| setup | 5 of 5 | 4 of 5 | met |
+
+Found by reading the policies, not by any check: 13 of the 15 policies name the registry by an absolute path under the home directory. In a consumer repository that path is committed, names the owner's account and breaks on any other machine.
+
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
 ## The plan, as corrected by the plan review (superseded by ruling 13)
