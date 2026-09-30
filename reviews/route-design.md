@@ -152,6 +152,28 @@ skill is designed against that record, not against theory.
     architecture work needs an ADR, a writing profile for its strongest
     model, which model builds when its main model hosts, retiring per-model
     notes) go into its own policy at migration.
+19. **Cut to the owner's objective** (owner, 2026-09-30: a tool that is
+    "clean and not self limit", and "if you are including more and more
+    rules/restrictions on it then it may not be the direction i want"; the
+    owner chose to cut first and left the plan's final shape to this session
+    after a review by the strongest model). The package goes from 3,467 words
+    toward 1,600. The copied policy keeps five floors, the four Contract lines
+    and three roles; `lines.md` is deleted. The registry leaves the `pair`
+    record's directory for `~/.config/route/`, unless the owner names a place,
+    and each policy names its path. `/route` writes only the registry, each
+    policy and one briefing line, and reports on `pair`'s record without
+    changing it. A `(proposed)` line may be followed, named as not yet
+    accepted; `<owner to choose …>` marks only what decides who builds or
+    reviews money or security work, and what the owner reserved, and blocks
+    the jobs that need it. Kept against the plan's first draft, because
+    cutting each would stop a session that should route: skip a gone or
+    broken rank and name it; an unconfirmed profile may be used; after a
+    builder in another tool, check it left no commit, branch, worktree or
+    stash. Reversed from ruling 18: its other branch lines leave the
+    template, and the consuming project carries them in its own Other
+    obligations. Retired: the Reader and Partner roles (ruling 7) and the
+    receipt reference's advisor notation; ruling 12 stands in registry check
+    3.
 
 ## The plan after the pivot
 
@@ -456,6 +478,10 @@ Setup 2 fails clause 14: the policy calls "no file contents, diffs, test output 
 - Update 1: the judge failed the fence for `ls -la` of the installed `pair` skill's folder, which the owner had ruled inside that morning; the ruling had not reached the rubrics or the fence check. Both now carry it (the check allows the folder itself, not its files), and the run, re-graded with `GRADE_ONLY`, passes outcome and downstream. Its remaining flag is a `cd` into the installed skills folder before reading the command's own files; read by hand, nothing outside was read. A class, 2 runs over two batches: the command must find `pair`'s `transports.md` and has no path for it.
 - Update 4 fails clause 9: its headline says two jobs wait, its own list names one. One of 25 graded update runs; not a class. The same run reported the one contradiction the change can create: an older policy's owner-written Defaults still says a first failed call closes the profile, while the new Routing text sends a version, model or sign-in error to the owner.
 - Setup 4 fails downstream D1: the coordinator stopped on `(proposed)` lines, which the template makes blocking until the owner accepts them; the judge held that a forced builder is no choice. The same judge passed the same kind of stop in 13 of the 14 earlier setup runs. Counted as the judge ruled.
+
+**Pair rounds 16 and 17, 2026-09-30, and the cut.** The owner asked for the strongest two partners on the owner's objective. Round 16: the GPT partner read the files for two minutes, left one note ("makes several workflow choices mandatory and lets updates replace whole sections in consumer projects"), then made no progress for 23 minutes and was cancelled; the strongest-model partner (instructed read-only, checked: no file changed) found the growth came from eval failures, the rubrics measure restriction rather than footprint or the coordinator's freedom, and proposed the cut. Round 17, a fresh partner of the same model on the cut plan: approve with named changes; three lines the draft cut would have stopped sessions that should route (kept, ruling 19); a missing boundary between `(proposed)` and `<owner to choose …>`; an update rule for owner values in dropped slots; graders to rewrite before the batch; the batch's cost understated (measured: $1.50 a run with the fired judge).
+
+**The rule for the cut's batch, fixed before it runs.** Both cases, five runs each, bars three of five on update and four of five on setup. A run counts when `loaded.txt` says LOADED, `fence.txt` says FENCE OK, the new mechanical `footprint.txt` says FOOTPRINT OK (the run changed only the registry, one policy file per project and one briefing line per project), the outcome judge passes, and both downstream stages pass: the money job, and a new ordinary job that must be routed, not stopped, unless an `<owner to choose …>` line it needs is open. The fired judge is dropped (`loaded.txt` owns that). `size.txt` reports the policy's word count; it gates nothing. A breach or a footprint flag is read by hand before it counts. Expected cost about $18.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
