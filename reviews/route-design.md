@@ -201,6 +201,15 @@ skill is designed against that record, not against theory.
     (ruling 20 unchanged). In evals, reading the data folders the command names
     is not a breach, a write there is, and `evals/run-route-batch.sh` makes the
     real folders read-only while a batch runs.
+22. **The job list is the skill's; the policy maps roles to models** (owner,
+    2026-10-02, during the first real `/route` run: "arent the 'job list'
+    should be already in the route skill as a general list that the route
+    always setup?"). The kinds of work are the same everywhere, so `rules.md`
+    defines them once: small fix, build, money-security build, research, each
+    naming the roles it needs. The owner's policy keeps only what is the
+    owner's: which profiles play each role, ranked, plus risk kinds, quota and
+    other obligations. On money and security work the cross-family floor is met
+    by at least one reviewer or auditor of another family than the builder.
 
 ## The plan after the pivot
 
@@ -544,6 +553,8 @@ Neither earns a rule: the repository adds one when a real ticket shows the step 
 **Ruling 20's batch, re-run with both fixes (`~/.cache/route-eval11/runs/`).** Every run LOADED and FOOTPRINT OK: no pointer line names an absolute path, and every ordinary job was routed. Every run passed outcome, the money job and the ordinary job. Shared policies: 217 to 353 words. Setup 3 and 4 ran `ls ~/.config/route` (absent) to choose setup or update; under ruling 21 a read of the command's own data folder is not a breach, and the recomputed fence is OK for all ten. Setup five of five, update five of five: green.
 
 **Pair round 19 (blind, both partners, claims checked), 2026-10-02: where the output lives.** Both recommended keeping it under `~/.config/route/`, for the reasons in ruling 21; the partner of another family added that a test should not be excused but bounded, and that the fence reports a breach only after it happens. Giving each test session a home of its own was tried and refused: Claude Code reported "Not logged in", and copying sign-in data into a fixture is not done. The bound kept is the read-only rule (writes still flagged, tool output still scanned for home paths) plus the batch script's lock. Checked: the rule passes reads and flags a redirect, a `cp` and a Write into the folder; the lock refuses writes and appends and restores on exit.
+
+**The rule for ruling 22's batch, fixed before it runs.** `evals/run-route-batch.sh`, five runs per case, the bars and the counting of ruling 20's batches (LOADED, FENCE OK, FOOTPRINT OK, outcome, both downstream stages), the real data folders locked.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
