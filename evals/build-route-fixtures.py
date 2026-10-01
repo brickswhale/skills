@@ -290,24 +290,17 @@ Rules: the `route` skill's `references/rules.md`, installed under `~/.claude/ski
 
 - openai: builds only; never reviews.
 
-## Job: money-feature — a spec that changes money code
+## Roles
 
-Do (ranked):
-1. codex-build — every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family
-2. sonnet-build — only if the owner waives the family rule in writing
-
-Review (alternatives):
-1. fable-review — the default
-2. opus-review — when fable-review cannot run
-
-## Job: feature — a spec that changes ordinary code
-
-Do (ranked):
-1. sonnet-build — the spec pins the work
-2. codex-build — the fallback
-
-Review (alternatives):
-1. fable-review — the default
+- Builder (ranked):
+  1. sonnet-build — the spec pins the work
+  2. codex-build — the fallback
+- Reviewer (alternatives):
+  1. fable-review — the default
+  2. opus-review — when fable-review cannot run
+- Money builder (ranked):
+  1. codex-build — every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family
+  2. sonnet-build — only if the owner waives the family rule in writing
 
 ## Other obligations
 
@@ -326,9 +319,9 @@ REFUNDS_LINES = "\n" + POINTER + "Routing in this project: money-security here i
 LEDGER_LINES = "\n" + POINTER + """Routing in this project (the owner's, 2026-09-26):
 - money-security here: anything under `app/` that moves money.
 - openai: audits and builds; never docs.
-- money-feature: Do sonnet-build, the spec pins the work. Review cumulative: fable-review, then codex-audit, the different-family audit money work needs.
-- feature: review opus-review.
-- Audit order: codex-audit runs after the Claude review, never before.
+- Money builder: sonnet-build, the spec pins the work.
+- Auditor: codex-audit, the different-family audit money work needs; it runs after the Claude review, never before.
+- Reviewer for ordinary builds: opus-review.
 - Effort floor: no Codex call runs below high.
 """
 

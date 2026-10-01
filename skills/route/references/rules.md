@@ -8,11 +8,20 @@ them into a project or a policy. The Contract's four lines are tested wording
 receipt, 2026-09-28); change them only with a run that shows the new words
 work.
 
+## Jobs
+
+A task is one of these jobs. Each names the roles it needs; the policy lists, for each role, the profiles that can play it, ranked.
+
+- **Small fix** — the cause is known, no design choice, a few files. The coordinator does it, reads its own diff, and shows the failing check now passing. No other role.
+- **Build** — a feature or change from a clear spec: a builder and a reviewer.
+- **Money-security build** — work in the policy's money-security class: a money builder, a reviewer and an auditor.
+- **Research** — facts from outside the repository: the coordinator's own tools first, a reader for what they cannot settle, and the coordinator checks every cited fact before anything rests on it.
+
 ## Floors
 
-- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, no call to it has failed this session, and every reviewer its job requires is eligible too.
-- The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
-- Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
+- For each role a job needs, walk the policy's ranked list for that role; the first eligible profile wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- A reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
+- Money and security work: at least one reviewer or auditor is from another family than the builder, unless the owner waives that in writing.
 - A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
 - The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
 - A project's own routing lines, under the pointer in its briefing, add to the policy; where they differ, the project's lines win in that project.
@@ -27,6 +36,7 @@ work.
 
 ## Roles
 
-- Coordinator: the session the owner talks to, on the model the owner picked. Routes by these rules and the policy, hands the work off, integrates the result.
+- Coordinator: the session the owner talks to, on the model the owner picked. Picks the job, routes it by these rules and the policy, hands the work off, integrates the result.
 - Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
-- Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where a Review list names `coordinator`, and works from the builder's test output. Changes nothing.
+- Reviewer and auditor: read the work against the spec in their own context, a fresh one or the coordinator's where the policy ranks `coordinator`, and work from the builder's test output. Change nothing. An auditor looks for what a same-family review may share a blind spot on.
+- Reader: gathers facts from outside the repository, keeps what it saw apart from what it infers, decides nothing.

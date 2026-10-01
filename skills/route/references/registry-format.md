@@ -57,7 +57,7 @@ evaluate a value.
 - **Partners.** A second opinion runs `pair`, which keeps its own record.
 - **The coordinator.** It is the session the owner picked.
 - **Session state.** A family closed for the day goes in the decision line.
-- **Preferences.** Which profile a job tries first is the policy's.
+- **Preferences.** Which profile plays each role first is the policy's.
 
 ## File states
 
@@ -73,10 +73,10 @@ evaluate a value.
 
 1. Every rank names a profile in this file, `coordinator`, or `owner`.
 2. Every `reviewer` profile is `writes=no`.
-3. Every money-security job has a builder whose required reviewers all exist
-   and are eligible: another family where the policy asks for one, a tier not
-   lower than the builder's, a context other than the builder's, not a manual
-   lane the policy bars from code, never an advisor.
+3. The money builder's ranks reach a builder whose reviewer and auditor exist
+   and are eligible: at least one of another family than the builder, a tier
+   not lower than the builder's, a context other than the builder's, not a
+   manual lane the policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
 5. Every rank naming a `gone`, stale or unconfirmed profile is listed, in the
    policy and in any project's own routing lines.
