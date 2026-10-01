@@ -128,39 +128,35 @@ for line in open(run):
 print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
 PYEOF
 
-# The footprint, checked mechanically: the command writes only the registry,
-# one policy file per project and one pointer line in a project's briefing.
-# size.txt gives each policy's word count; it gates nothing.
+# The footprint, checked mechanically (rule 9): the command writes the registry
+# and the policy under the machine's config directory, and in a project nothing
+# but a pointer line in its briefing. size.txt gives the policy's word count; it
+# gates nothing. A committed file naming an absolute home path is flagged.
 python3 - "$W" > "$OUT/footprint.txt" 2> "$OUT/size.txt" <<'PYEOF'
 import os, re, subprocess, sys
 ws = sys.argv[1]
 git = lambda *a: subprocess.run(["git", *a], cwd=ws, capture_output=True, text=True).stdout
-flags, per_project, sizes = [], {}, []
+home = re.compile(r"/(Users|home)/[^/\s]+")
+flags, sizes = [], []
 for line in git("status", "--porcelain", "--untracked-files=all").splitlines():
     code, path = line[:2].strip(), line[3:].split(" -> ")[-1]
-    if path.startswith(".machine/") and os.path.basename(path) == "route-registry":
+    full = os.path.join(ws, path)
+    if path.startswith(".machine/route/"):
+        if "policy" in os.path.basename(path) and os.path.exists(full):
+            sizes.append(f"{path}: {len(open(full).read().split())} words")
         continue
-    m = re.match(r"projects/([^/]+)/(.+)$", path)
+    m = re.match(r"projects/([^/]+)/(AGENTS|CLAUDE)\.md$", path)
     if not m:
         flags.append(f"{code} {path}"); continue
-    proj, rest = m.groups()
-    if rest in ("AGENTS.md", "CLAUDE.md"):
+    if code == "??":
+        added, removed = len(open(full).read().splitlines()), 0
+    else:
         stat = git("diff", "--numstat", "--", path).split()
         added, removed = (int(stat[0]), int(stat[1])) if stat else (0, 0)
-        if removed or added > 2:
-            flags.append(f"{path}: +{added} -{removed}, one pointer line expected")
-        continue
-    per_project.setdefault(proj, []).append(path)
-for proj, files in per_project.items():
-    if len(files) > 1:
-        flags.append(f"projects/{proj}: {len(files)} files, one policy expected: {', '.join(files)}")
-    for f in files:
-        if os.path.exists(os.path.join(ws, f)):
-            text = open(os.path.join(ws, f)).read()
-            sizes.append(f"{f}: {len(text.split())} words")
-            # a committed policy names no account: an absolute home path is flagged
-            if re.search(r"/(Users|home)/[^/\s]+", text):
-                flags.append(f"{f}: an absolute home path")
+    if removed or added > 2:
+        flags.append(f"{path}: +{added} -{removed}, one pointer line expected")
+    if os.path.exists(full) and home.search(git("diff", "--", path) if code != "??" else open(full).read()):
+        flags.append(f"{path}: an absolute home path")
 print("FOOTPRINT FLAG: " + "; ".join(flags) if flags else "FOOTPRINT OK")
 sys.stderr.write("\n".join(sizes) + "\n")
 PYEOF

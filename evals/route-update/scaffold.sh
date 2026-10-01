@@ -8,10 +8,11 @@
 # Codex client moved from 0.154.0 to 0.158.0, gpt-5.6-terra left the model
 # cache, and gpt-6-sol appeared. A good update re-points what moved without
 # calling it confirmed, keeps the gone model's profile marked and lists every rank
-# that names it in each project instead of choosing a replacement, reports the
-# visible model that has no profile without ranking it, flags the stale confirmations, never proposes a
-# hidden model, and leaves both projects' owner-written obligations, both
-# Retired sections and the pair record untouched.
+# that names it, in the shared policy and in a project's own routing lines,
+# instead of choosing a replacement, reports the visible model that has no
+# profile without ranking it, flags the stale confirmations, never proposes a
+# hidden model, and leaves the owner-written obligations, the Retired section,
+# ledger's own routing lines and the pair record untouched.
 set -e
 git init -q -b main . && git config user.email t@t && git config user.name t
 mkdir -p .machine/codex .machine/plugins/codex/1.0.7/scripts bin
@@ -207,7 +208,8 @@ if (j >= 0 && !visible.has(args[j + 1])) {
 console.log("ok (stub: nothing was sent)");
 JSEOF
 
-cat > .machine/pair-transport.anthropic <<RECEOF
+mkdir -p .machine/pair
+cat > .machine/pair/pair-transport.anthropic <<RECEOF
 # pair transport record — host family: anthropic
 partner=codex-plugin
 family=openai-gpt
@@ -253,7 +255,8 @@ tools: Read, Grep, Glob
 You review the named artifact against its spec. Report supported findings, missing checks and a verdict. You change nothing.
 MD
 chmod +x bin/codex bin/claude .machine/plugins/codex/1.0.7/scripts/codex-companion.mjs
-cat > .machine/route-registry <<REGEOF
+mkdir -p .machine/route
+cat > .machine/route/route-registry <<REGEOF
 # route-registry — this machine's models for dispatched work. Written by /route 2026-09-26.
 
 profile=sonnet-build
@@ -326,17 +329,11 @@ mkdir -p routing-kit
 cat > routing-kit/policy-template.md <<'KITEOF'
 # Routing policy template
 
-`/route` copies the block below into the project, fills every `<…>`, and
-deletes the lines that do not apply. The project decides where the file
-lives; its agent briefing carries one line pointing at it. A session deciding
-who builds and who reviews reads this file and the registry it names, nothing
-else.
-
-**Floors**, **Contract** and **Roles** are the template's: on an update
-`/route` offers their current text. Every other section is the owner's and is
-kept as written. The Contract's four lines are tested wording (a bare session
-went from 0 of 3 to 3 of 3 on a blind hand-off and an honest receipt,
-2026-09-28); change them only with a run that shows the new words work.
+`/route` fills the block below into `~/.config/route/route-policy.md`, one per
+machine and shared by every project on it: every `<…>` from the owner's
+answers, the lines that do not apply deleted. The policy holds only the
+owner's choices; the generic Floors, Contract and Roles stay in this skill's
+`references/rules.md`, read in place.
 
 The shape, so any agent reads it the same way:
 
@@ -349,36 +346,24 @@ The shape, so any agent reads it the same way:
 - An obligation that no longer holds is retired with a dated line under
   **Retired**, never deleted.
 
+A project gets one line in its agent briefing (`AGENTS.md`, or `CLAUDE.md`
+where that is the briefing; once where one links to the other), and its own
+routing lines under it only when the owner adds them:
+
+```
+Routing: before handing work off, read `~/.config/route/route-policy.md` and the files it names. If you cannot, say so and ask the owner to run `/route`; never guess a model.
+```
+
 ```markdown
-# Routing policy — <project>
+# Routing policy — this machine
 
-Owner: <who rules on this file> · Revised: <date> · Registry: `<path of this machine's route-registry, with ~ for the home directory>`
-
-## Floors
-
-- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, no call to it has failed this session, and every reviewer its job requires is eligible too.
-- The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
-- Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
-- A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
-- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
-- No registry at the path above, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Never guess a model.
-
-## Contract
-
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder profile and why, the reviewer and why, and every higher-ranked profile you are not using, with the reason.
-- The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the registry's value as observed.
-- List every review finding you do not act on, with the reason.
-
-## Roles
-
-- Coordinator: the session the owner talks to, on the model the owner picked. Routes by this file, hands the work off, integrates the result.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
-- Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where a Review list names `coordinator`, and works from the builder's test output. Changes nothing.
+Owner: <who rules on this file> · Revised: <date>
+Registry: `<path of this machine's route-registry, with ~ for the home directory>`
+Rules: the `route` skill's `references/rules.md`, installed under `~/.claude/skills/route/` and `~/.agents/skills/route/`
 
 ## Risk classes
 
-- money-security: <paths or kinds: payments, auth, secrets, access rules, …>
+- money-security: <kinds: payments, auth, secrets, access rules, …; a project names its own paths under its pointer>
 - ordinary: everything else.
 
 ## Quota
@@ -395,7 +380,7 @@ Review (<cumulative | alternatives>):
 
 ## Other obligations
 
-- <each rule this project holds that the lines above do not express>
+- <each rule the owner holds for every project that the lines above do not express>
 
 ## Retired
 
@@ -412,9 +397,9 @@ a project, so it is never committed. `/route` builds it and keeps it current.
 
 ## Where it lives
 
-`~/.config/route/route-registry`, unless the owner names another place. Each
-policy's header names the path, with `~` for the home directory, so the
-committed file names no account.
+`~/.config/route/route-registry`, beside the policy `route-policy.md`, unless
+the owner names another place. The policy's header names the path, with `~`
+for the home directory.
 
 ## Format
 
@@ -483,8 +468,8 @@ evaluate a value.
    lower than the builder's, a context other than the builder's, not a manual
    lane the policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
-5. Every rank naming a `gone`, stale or unconfirmed profile is listed, per
-   project.
+5. Every rank naming a `gone`, stale or unconfirmed profile is listed, in the
+   policy and in any project's own routing lines.
 6. Every `<owner to choose …>` line is listed with the jobs it blocks.
 7. The risk classes name security work, or mark it `<owner to choose …>`.
 
@@ -499,9 +484,44 @@ by quietly editing a rank.
    on a tool version or path no longer installed is unconfirmed; say so.
 3. **Report every visible model with no profile as its own list**, old and
    new, and rank none: adopting one is the owner's choice.
-4. **List every rank a change touches, per project**, and edit none to
-   replace a gone model: that replacement is the owner's. A session skips the
+4. **List every rank a change touches**, in the policy and in any project's
+   own routing lines, and edit none to replace a gone model: that replacement
+   is the owner's. A session skips the
    gone rank and takes the next one already written.
+KITEOF
+cat > routing-kit/rules.md <<'KITEOF'
+# Routing rules
+
+Every project on a machine routes by these rules, the owner's policy
+(`~/.config/route/route-policy.md`) and the registry the policy names. The
+rules belong to the `route` skill and are read here, in place; nothing copies
+them into a project or a policy. The Contract's four lines are tested wording
+(a bare session went from 0 of 3 to 3 of 3 on a blind hand-off and an honest
+receipt, 2026-09-28); change them only with a run that shows the new words
+work.
+
+## Floors
+
+- Walk a job's Do list in order; the first eligible rank wins. Name every rank you skip, and why. Eligible: in the registry, not marked `gone`, no call to it has failed this session, and every reviewer its job requires is eligible too.
+- The reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
+- Money and security work: the reviewer is from another family than the builder, unless the owner waives that in writing.
+- A `<owner to choose …>` line blocks the jobs that need it until the owner answers. A `(proposed)` line may be followed, and a profile whose `confirmed` says `no` may be used: the decision line says which.
+- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
+- A project's own routing lines, under the pointer in its briefing, add to the policy; where they differ, the project's lines win in that project.
+- No policy or registry where the pointer says, or a profile the policy names is missing from the registry: stop, and ask the owner to run `/route`. Never guess a model.
+
+## Contract
+
+- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder profile and why, the reviewer and why, and every higher-ranked profile you are not using, with the reason.
+- The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
+- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the registry's value as observed.
+- List every review finding you do not act on, with the reason.
+
+## Roles
+
+- Coordinator: the session the owner talks to, on the model the owner picked. Routes by these rules and the policy, hands the work off, integrates the result.
+- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
+- Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where a Review list names `coordinator`, and works from the builder's test output. Changes nothing.
 KITEOF
 cat > routing-kit/transports.md <<'KITEOF'
 # Partner transports
@@ -689,9 +709,53 @@ This directory stands in for one owner's machine.
 
 - `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. It stands in for every config location a tool would use on a real machine (`~/.config/…`, `~/.codex`, `~/.claude`): anything that would live there lives in `.machine/`. Treat only what it lists as installed, and look nowhere outside this directory.
 - `bin/` holds the command-line tools installed here (`codex`, `claude`); it is first on PATH.
-- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, and the partner-transport catalog.
+- `routing-kit/` holds the model-routing templates and formats: the policy template, the routing rules, the registry format, and the partner-transport catalog.
 - `projects/` holds the owner's projects on this machine.
 MD
+cat > .machine/route/route-policy.md <<'POLEOF'
+# Routing policy — this machine
+
+Owner: the owner · Revised: 2026-09-26
+Registry: `~/.config/route/route-registry` (on this machine: `.machine/route/route-registry`)
+Rules: the `route` skill's `references/rules.md`, installed under `~/.claude/skills/route/` and `~/.agents/skills/route/`
+
+## Risk classes
+
+- money-security: code that moves money; a project names its own paths under its pointer.
+- ordinary: everything else.
+
+## Quota
+
+- openai: builds only; never reviews.
+
+## Job: money-feature — a spec that changes money code
+
+Do (ranked):
+1. codex-build — every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family
+2. sonnet-build — only if the owner waives the family rule in writing
+
+Review (alternatives):
+1. fable-review — the default
+2. opus-review — when fable-review cannot run
+
+## Job: feature — a spec that changes ordinary code
+
+Do (ranked):
+1. sonnet-build — the spec pins the work
+2. codex-build — the fallback
+
+Review (alternatives):
+1. fable-review — the default
+
+## Other obligations
+
+- Every build is followed by the project's test command, and its result goes to the reviewer.
+- The owner reads a money job's spec before it is dispatched.
+
+## Retired
+
+- 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner
+POLEOF
 mkdir -p projects/refunds/app projects/refunds/docs projects/refunds/tests
 cat > projects/refunds/AGENTS.md <<'MD'
 # refunds — agent briefing
@@ -699,7 +763,8 @@ cat > projects/refunds/AGENTS.md <<'MD'
 Commands:
 - test: `python3 -m unittest discover -s tests -q`
 
-Routing: which model builds and which reviews is in `docs/routing.md`.
+Routing: before handing work off, read `~/.config/route/route-policy.md` and the files it names. If you cannot, say so and ask the owner to run `/route`; never guess a model.
+Routing in this project: money-security here is anything under `app/` that moves money.
 
 Never commit. The owner commits.
 MD
@@ -733,73 +798,6 @@ MD
 : > projects/refunds/app/__init__.py
 printf 'charges = {"ch_1": 100}\nrefunds = {}\n' > projects/refunds/app/store.py
 : > projects/refunds/tests/__init__.py
-cat > projects/refunds/docs/routing.md <<'POLEOF'
-# Routing policy — refunds
-
-Owner: the owner · Revised: 2026-09-26
-
-## Defaults
-
-- Reviewer: never the author's context; never a lower tier than the builder.
-- Same-model fresh review: allowed for ordinary work.
-- Money and security: the reviewer is from a different family than the builder.
-- Waivers: only the owner, in writing, naming the requirement waived.
-- Coordinator does the work itself: never for money-security jobs.
-- No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed, and its first failed call closes it for the session.
-
-## Contract
-
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder profile and why, the reviewer and why, and every higher-ranked profile you are not using, with the reason.
-- The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the registry's value as observed.
-- List every review finding you do not act on, with the reason.
-
-## Roles
-
-- Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing. An advisor consult is never the review.
-- Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
-- Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
-
-## Risk classes
-
-- money-security: anything under `app/` that moves money.
-- ordinary: everything else.
-
-## Quota
-
-- openai: builds only; never reviews.
-
-## Job: money-feature — a spec that changes money code
-
-Do (ranked):
-1. codex-build — every reviewer this project allows is anthropic, so only an openai builder can get a reviewer of another family
-2. sonnet-build — only if the owner waives the family rule in writing
-
-Review (alternatives):
-1. fable-review — the default
-2. opus-review — when fable-review cannot run
-
-## Job: feature — a spec that changes ordinary code
-
-Do (ranked):
-1. sonnet-build — the spec pins the work
-2. codex-build — the fallback
-
-Review (alternatives):
-1. fable-review — the default
-
-## Other obligations
-
-- Every build is followed by the project's test command, and its result goes to the reviewer.
-- The owner reads a money job's spec before it is dispatched.
-
-## Retired
-
-- 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner
-POLEOF
 mkdir -p projects/ledger/app projects/ledger/docs projects/ledger/tests
 cat > projects/ledger/AGENTS.md <<'MD'
 # ledger — agent briefing
@@ -807,7 +805,14 @@ cat > projects/ledger/AGENTS.md <<'MD'
 Commands:
 - test: `python3 -m unittest discover -s tests -q`
 
-Routing: which model builds and which reviews is in `docs/routing.md`.
+Routing: before handing work off, read `~/.config/route/route-policy.md` and the files it names. If you cannot, say so and ask the owner to run `/route`; never guess a model.
+Routing in this project (the owner's, 2026-09-26):
+- money-security here: anything under `app/` that moves money.
+- openai: audits and builds; never docs.
+- money-feature: Do sonnet-build, the spec pins the work. Review cumulative: fable-review, then codex-audit, the different-family audit money work needs.
+- feature: review opus-review.
+- Audit order: codex-audit runs after the Claude review, never before.
+- Effort floor: no Codex call runs below high.
 
 Never commit. The owner commits.
 MD
@@ -841,71 +846,5 @@ MD
 : > projects/ledger/app/__init__.py
 printf 'charges = {"ch_1": 100}\nrefunds = {}\n' > projects/ledger/app/store.py
 : > projects/ledger/tests/__init__.py
-cat > projects/ledger/docs/routing.md <<'POLEOF'
-# Routing policy — ledger
-
-Owner: the owner · Revised: 2026-09-26
-
-## Defaults
-
-- Reviewer: never the author's context; never a lower tier than the builder.
-- Same-model fresh review: allowed for ordinary work.
-- Money and security: at least one required reviewer is from a different family than the builder.
-- Waivers: only the owner, in writing, naming the requirement waived.
-- Coordinator does the work itself: never for money-security jobs.
-- No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed, and its first failed call closes it for the session.
-
-## Contract
-
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder profile and why, the reviewer and why, and every higher-ranked profile you are not using, with the reason.
-- The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the registry's value as observed.
-- List every review finding you do not act on, with the reason.
-
-## Roles
-
-- Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing. An advisor consult is never the review.
-- Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
-- Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
-
-## Risk classes
-
-- money-security: anything under `app/` that moves money.
-- ordinary: everything else.
-
-## Quota
-
-- openai: audits and builds; never docs.
-
-## Job: money-feature — a spec that changes money code
-
-Do (ranked):
-1. sonnet-build — the spec pins the work
-
-Review (cumulative):
-1. fable-review — the code review
-2. codex-audit — the different-family audit money work needs
-
-## Job: feature — a spec that changes ordinary code
-
-Do (ranked):
-1. sonnet-build — the default
-2. codex-build — the fallback
-
-Review (alternatives):
-1. opus-review — the default
-
-## Other obligations
-
-- Audit order: codex-audit runs after the Claude review, never before.
-- Effort floor: no Codex call runs below high.
-
-## Retired
-
-- 2026-09-12 — web research before every design — the owner
-POLEOF
 printf '*.log\n__pycache__/\n' > .gitignore
 git add -A -- . ":!scaffold.sh" && git commit -qm "machine and projects as routed on 2026-09-26"

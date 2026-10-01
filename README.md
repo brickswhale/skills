@@ -51,6 +51,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 - This repo is public. No client names, no home paths, no credentials in any skill, ever.
 - A skill is a checklist, never a script. Target under 300 words — a target, not a blocker. Exceed it when the extra lines change what the agent does.
 - A skill that a tool can replace is deleted the day the tool exists.
+- A skill is self-contained: its rules stay in its own folder, its machine data under `~/.config/<skill>/`, and a consumer repository gets only what the owner asked for plus at most one pointer line. Rule 9 in `AGENTS.md`.
 - Nothing copied from agent-kit verbatim. A `kit-*` skill is rewritten here only when a real ticket shows its judgment step done badly twice, or on the owner's word. Its `kit-*` symlink stays until the last project using it moves to the new name.
 
 ## Skills
@@ -64,7 +65,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | `pair` | a second opinion from another model on one question — your own position written first, the ask put blind, both views attributed and the dissent kept rather than averaged. `/pair`, or "second model opinion" |
 | `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
 | `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
-| `route` | the machine's model registry and a project's routing policy get written or brought up to date — which models this machine has, from its own tools and the owner's answers, and which one builds and which reviews each job. Drafts, checks, then writes on the owner's yes; the session that later hands work off reads the policy, and nothing runs then. A command: `/route` |
+| `route` | the machine's model registry and its one routing policy get written or brought up to date, under `~/.config/route/` and shared by every project — which models this machine has, from its own tools and the owner's answers, and which one builds and which reviews each job. Drafts, checks, then writes on the owner's yes; a project gets one pointer line, and the session that later hands work off reads the policy and the skill's rules in place. A command: `/route` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |
 
 ## agent-kit skills, where each one goes
@@ -109,8 +110,8 @@ Trigger-based, never scheduled. One skill at a time.
 across, and the migration was declared closed at six. `pair` reopened it on the owner's word,
 against the line this file used to carry — that its value was a machine-local transport record and
 a catalog of sharp edges, with no home here. Half of that objection held. The record is genuinely
-machine-local and stays there; the skill names only the filename it looks for and the lines that
-file must carry. The catalog was the half that did not hold: it is generic knowledge about public
+machine-local and stays there, at `~/.config/pair/` (rule 9); the skill names that path and the
+lines the file must carry. The catalog was the half that did not hold: it is generic knowledge about public
 CLIs, it costs nothing against the word cap because the hook reads only `SKILL.md`, and a skill
 pointing at a catalog it cannot name is worse than either keeping it out or bringing it in. It was
 rewritten, scrubbed and now sits at `skills/pair/references/transports.md`. Of the eighteen kit

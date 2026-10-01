@@ -1,7 +1,7 @@
 ---
 type: llm
 ---
-**What the fixture provides.** `pair-transport.anthropic` holds a `call=` line carrying `--one-shot`, a `rung=` and a `family=`. `bin/partner` is an executable stub that logs every invocation and its arguments to `partner-calls.log`, refuses without `--one-shot`, and holds its answer base64-encoded so that reading the script does not disclose it. The answer is canned: it does not read the prompt. So this case measures how a run *conducts* a second opinion, not whether it obtained a good one.
+**What the fixture provides.** `.machine/pair/pair-transport.anthropic`, standing in for `~/.config/pair/`, holds a `call=` line carrying `--one-shot`, a `rung=` and a `family=`. `bin/partner` is an executable stub that logs every invocation and its arguments to `partner-calls.log`, refuses without `--one-shot`, and holds its answer base64-encoded so that reading the script does not disclose it. The answer is canned: it does not read the prompt. So this case measures how a run *conducts* a second opinion, not whether it obtained a good one.
 
 **Measured control behaviour, on this fixture.** A run with no skill invoked the partner exactly once using the recorded `--one-shot` shape, attributed its answer, and caught that `docs/limits.md` falsifies the partner's soft-limit assumption — all unaided. It wrote no position of its own before calling. Clauses 2 to 5 are therefore correctness checks, not evidence of contribution; clause 1 and the two named report lines are where the difference has to show.
 

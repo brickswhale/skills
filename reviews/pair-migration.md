@@ -25,7 +25,7 @@ Reasoning lives in the commits, not here:
 
 | # | Question | From | Status |
 |---|---|---|---|
-| 1 | The skill names the record's filename but no directory. How does a fresh install find it? | GPT | unverified |
+| 1 | The skill names the record's filename but no directory. How does a fresh install find it? | GPT | answered 2026-10-02: `~/.config/pair/pair-transport.<host-family>`, the repository's rule 9 |
 | 2 | Nothing requires confirming that a model override actually took effect, so a rung claim can be honest and wrong. | GPT | unverified |
 | 3 | A reused record's rung is not re-checked against the current host; a rung-1 record on a new host may no longer be cross-family. | GPT | unverified |
 | 4 | There is a per-rung attempt limit but no total-budget stop across the ladder. | GPT | unverified |

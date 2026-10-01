@@ -7,9 +7,9 @@ a project, so it is never committed. `/route` builds it and keeps it current.
 
 ## Where it lives
 
-`~/.config/route/route-registry`, unless the owner names another place. Each
-policy's header names the path, with `~` for the home directory, so the
-committed file names no account.
+`~/.config/route/route-registry`, beside the policy `route-policy.md`, unless
+the owner names another place. The policy's header names the path, with `~`
+for the home directory.
 
 ## Format
 
@@ -78,8 +78,8 @@ evaluate a value.
    lower than the builder's, a context other than the builder's, not a manual
    lane the policy bars from code, never an advisor.
 4. Every cumulative review list can be satisfied in full.
-5. Every rank naming a `gone`, stale or unconfirmed profile is listed, per
-   project.
+5. Every rank naming a `gone`, stale or unconfirmed profile is listed, in the
+   policy and in any project's own routing lines.
 6. Every `<owner to choose …>` line is listed with the jobs it blocks.
 7. The risk classes name security work, or mark it `<owner to choose …>`.
 
@@ -94,6 +94,7 @@ by quietly editing a rank.
    on a tool version or path no longer installed is unconfirmed; say so.
 3. **Report every visible model with no profile as its own list**, old and
    new, and rank none: adopting one is the owner's choice.
-4. **List every rank a change touches, per project**, and edit none to
-   replace a gone model: that replacement is the owner's. A session skips the
+4. **List every rank a change touches**, in the policy and in any project's
+   own routing lines, and edit none to replace a gone model: that replacement
+   is the owner's. A session skips the
    gone rank and takes the next one already written.

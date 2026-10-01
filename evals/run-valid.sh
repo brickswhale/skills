@@ -26,9 +26,12 @@
 # costs double the runs. Until a case has one, a green means the model-plus-
 # skill performed, not that the skill contributed.
 #
-# usage: run-valid.sh <skill-name> <run.jsonl> [scaffold-exit-code]
+# usage: run-valid.sh <skill-name> <run.jsonl> [scaffold-exit-code] [fixture-dir] [case]
+# With a fixture dir, a FOOTPRINT line follows: every path the run changed that
+# the case's `writes:` (in its prompt.md frontmatter) does not list. Rule 9:
+# reported, then read by hand; it does not change VALID or INVALID.
 set -u
-name="$1"; run="$2"; scaf="${3:-0}"
+name="$1"; run="$2"; scaf="${3:-0}"; fx="${4:-}"; case_name="${5:-}"
 
 [ -s "$run" ] || { echo "INVALID: no run file"; exit 1; }
 
@@ -68,3 +71,19 @@ if not (result.get("result") or "").strip():
     print("INVALID: empty result text"); sys.exit(1)
 print(f"VALID: {name} loaded, {result.get('num_turns')} turns, answered")
 PY
+rc=$?
+if [ -n "$fx" ] && git -C "$fx" rev-parse -q --verify HEAD >/dev/null 2>&1; then
+  dir=$(cd "$(dirname "$0")" && pwd)
+  [ -n "$case_name" ] || case_name=$(basename "$(ls -d "$dir/$name"-* 2>/dev/null | head -1)")
+  writes=$(awk 'BEGIN{n=0} /^---$/{n++; next} n==1 && /^writes:/{sub(/^writes: */,""); print}' "$dir/$case_name/prompt.md" 2>/dev/null)
+  python3 - "$fx" "$writes" <<'PY'
+import fnmatch, subprocess, sys
+fx, allowed = sys.argv[1], sys.argv[2].strip().strip("[]")
+pats = [p.strip().strip("'\"") for p in allowed.split(",") if p.strip()]
+st = subprocess.run(["git", "-C", fx, "status", "--porcelain", "--untracked-files=all"], capture_output=True, text=True).stdout
+paths = [l[3:].split(" -> ")[-1] for l in st.splitlines()]
+extra = [p for p in paths if p != "scaffold.sh" and not any(fnmatch.fnmatch(p, q) for q in pats)]
+print("FOOTPRINT: " + ", ".join(extra) if extra else "FOOTPRINT OK")
+PY
+fi
+exit $rc

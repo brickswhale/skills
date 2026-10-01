@@ -11,7 +11,7 @@ A lesson that lives where nothing reads it is not a lesson.
 2. **Run every control that covers this class; paste what each printed.** One you cannot show running is unloaded — a loading failure, not a missing one: raise it to a rung nothing can skip, never duplicate it. Then take the highest rung that can catch the class. Each lower rung needs something to choose to read it, so it is weaker:
    - **a test** that fails when the class comes back.
    - **a hook or lint rule** that blocks it as it happens.
-   - **a line in a skill** the work already loads.
+   - **a line in a project-owned skill** the work already loads.
    - **a line in the project briefing.**
    A rung counts only if it can see the mistake. Name the rungs you ruled out and why.
 3. **Prefer replacement.** Name the line superseded. If none exists, say so and justify the addition.

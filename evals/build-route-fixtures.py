@@ -13,6 +13,7 @@ REF = os.path.join(REPO, "skills/route/references")
 KIT = {
     "policy-template.md": open(os.path.join(REF, "policy-template.md")).read(),
     "registry-format.md": open(os.path.join(REF, "registry-format.md")).read(),
+    "rules.md": open(os.path.join(REF, "rules.md")).read(),
     "transports.md": open(os.path.join(REPO, "skills/pair/references/transports.md")).read(),
 }
 for name, body in KIT.items():
@@ -77,7 +78,8 @@ cat > .machine/plugins.json <<JSONEOF
 [{{"id": "codex@openai-codex", "version": "{plugin_ver}", "enabled": true, "scope": "user", "installPath": "$ROOT/.machine/plugins/codex/{plugin_ver}"}}]
 JSONEOF
 {heredoc(f".machine/plugins/codex/{plugin_ver}/scripts/codex-companion.mjs", PLUGIN_JS, "JSEOF")}
-cat > .machine/pair-transport.anthropic <<RECEOF
+mkdir -p .machine/pair
+cat > .machine/pair/pair-transport.anthropic <<RECEOF
 # pair transport record — host family: anthropic
 partner=codex-plugin
 family=openai-gpt
@@ -182,7 +184,7 @@ This directory stands in for one owner's machine.
 
 - `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. It stands in for every config location a tool would use on a real machine (`~/.config/…`, `~/.codex`, `~/.claude`): anything that would live there lives in `.machine/`. Treat only what it lists as installed, and look nowhere outside this directory.
 - `bin/` holds the command-line tools installed here (`codex`, `claude`); it is first on PATH.
-- `routing-kit/` holds the model-routing templates and formats: the policy template, the registry format, and the partner-transport catalog.
+- `routing-kit/` holds the model-routing templates and formats: the policy template, the routing rules, the registry format, and the partner-transport catalog.
 - `projects/` holds the owner's projects on this machine.
 MD
 """
@@ -193,7 +195,8 @@ HEAD = """#!/usr/bin/env bash
 """
 
 # ---------------------------------------------------------------- route-update
-UPDATE_REG = """cat > .machine/route-registry <<REGEOF
+UPDATE_REG = """mkdir -p .machine/route
+cat > .machine/route/route-registry <<REGEOF
 # route-registry — this machine's models for dispatched work. Written by /route 2026-09-26.
 
 profile=sonnet-build
@@ -264,74 +267,29 @@ confirmed=2026-09-26 (owner)
 REGEOF
 """
 
-# The update fixture's two policies were written by an OLDER /route: they carry
-# the template's Contract as it was, the Roles before "runs no tests", and no
-# Routing section. A correct update brings those template-owned sections to the
-# current text and leaves the owner-written ones alone. Frozen here on purpose;
-# never regenerate this block from the current template.
-CONTRACT_ROLES = """## Contract
-
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder profile and why, the reviewer and why, and every higher-ranked profile you are not using, with the reason.
-- The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the registry's value as observed.
-- List every review finding you do not act on, with the reason.
-
-## Roles
-
-- Coordinator: the session the owner talks to, on the model the owner picked. Frames the job, routes it by this file, integrates the result, and plans; bound by a role's rules whenever it plays that role.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations. Never commits.
-- Reviewer: reads the artifact against the spec in a fresh context, never the builder's. Reports supported findings, missing checks and a verdict. Changes nothing. An advisor consult is never the review.
-- Reader: gathers cited evidence, keeps what it saw apart from what it infers, decides nothing.
-- Partner: answers one blind question through the `pair` skill. Executes nothing and never stands in for a review.
-"""
-
-
-def policy(name, defaults_extra, quota, jobs, other, retired,
-           money="- Money and security: the reviewer is from a different family than the builder."):
-    return f"""# Routing policy — {name}
+# The update fixture's routing as the owner left it on 2026-09-26: one shared
+# policy beside the registry, a pointer line in each project's briefing, and
+# ledger's own routing lines under its pointer (they win in ledger). Frozen
+# here on purpose; never regenerate this block from the current template.
+SHARED_POLICY = """# Routing policy — this machine
 
 Owner: the owner · Revised: 2026-09-26
-
-## Defaults
-
-- Reviewer: never the author's context; never a lower tier than the builder.
-- Same-model fresh review: allowed for ordinary work.
-{money}
-- Waivers: only the owner, in writing, naming the requirement waived.
-- Coordinator does the work itself: never for money-security jobs.
-- No `route-registry` on this machine, or a profile this file names is missing from it: stop, and ask the owner to run `/route`. Do not guess a model.
-- A profile whose `confirmed` says `no` may be used: the decision line calls it unconfirmed, and its first failed call closes it for the session.
-{defaults_extra}
-{CONTRACT_ROLES.rstrip()}
+Registry: `~/.config/route/route-registry` (on this machine: `.machine/route/route-registry`)
+Rules: the `route` skill's `references/rules.md`, installed under `~/.claude/skills/route/` and `~/.agents/skills/route/`
 
 ## Risk classes
 
-- money-security: anything under `app/` that moves money.
+- money-security: code that moves money; a project names its own paths under its pointer.
 - ordinary: everything else.
 
 ## Quota
 
-{quota}
+- openai: builds only; never reviews.
 
-{jobs}
-
-## Other obligations
-
-{other}
-
-## Retired
-
-{retired}
-"""
-
-
-REFUNDS_POLICY = policy(
-    "refunds", "",
-    "- openai: builds only; never reviews.",
-    """## Job: money-feature — a spec that changes money code
+## Job: money-feature — a spec that changes money code
 
 Do (ranked):
-1. codex-build — every reviewer this project allows is anthropic, so only an openai builder can get a reviewer of another family
+1. codex-build — every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family
 2. sonnet-build — only if the owner waives the family rule in writing
 
 Review (alternatives):
@@ -345,35 +303,30 @@ Do (ranked):
 2. codex-build — the fallback
 
 Review (alternatives):
-1. fable-review — the default""",
-    """- Every build is followed by the project's test command, and its result goes to the reviewer.
-- The owner reads a money job's spec before it is dispatched.""",
-    "- 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner")
+1. fable-review — the default
 
-LEDGER_POLICY = policy(
-    "ledger", "",
-    "- openai: audits and builds; never docs.",
-    """## Job: money-feature — a spec that changes money code
+## Other obligations
 
-Do (ranked):
-1. sonnet-build — the spec pins the work
+- Every build is followed by the project's test command, and its result goes to the reviewer.
+- The owner reads a money job's spec before it is dispatched.
 
-Review (cumulative):
-1. fable-review — the code review
-2. codex-audit — the different-family audit money work needs
+## Retired
 
-## Job: feature — a spec that changes ordinary code
+- 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner
+"""
 
-Do (ranked):
-1. sonnet-build — the default
-2. codex-build — the fallback
+POINTER = "Routing: before handing work off, read `~/.config/route/route-policy.md` and the files it names. If you cannot, say so and ask the owner to run `/route`; never guess a model.\n"
 
-Review (alternatives):
-1. opus-review — the default""",
-    """- Audit order: codex-audit runs after the Claude review, never before.
-- Effort floor: no Codex call runs below high.""",
-    "- 2026-09-12 — web research before every design — the owner",
-    money="- Money and security: at least one required reviewer is from a different family than the builder.")
+REFUNDS_LINES = "\n" + POINTER + "Routing in this project: money-security here is anything under `app/` that moves money.\n"
+
+LEDGER_LINES = "\n" + POINTER + """Routing in this project (the owner's, 2026-09-26):
+- money-security here: anything under `app/` that moves money.
+- openai: audits and builds; never docs.
+- money-feature: Do sonnet-build, the spec pins the work. Review cumulative: fable-review, then codex-audit, the different-family audit money work needs.
+- feature: review opus-review.
+- Audit order: codex-audit runs after the Claude review, never before.
+- Effort floor: no Codex call runs below high.
+"""
 
 UPDATE = HEAD + """# route-update: a machine whose Codex changed under an existing routing setup.
 #
@@ -382,20 +335,20 @@ UPDATE = HEAD + """# route-update: a machine whose Codex changed under an existi
 # Codex client moved from 0.154.0 to 0.158.0, gpt-5.6-terra left the model
 # cache, and gpt-6-sol appeared. A good update re-points what moved without
 # calling it confirmed, keeps the gone model's profile marked and lists every rank
-# that names it in each project instead of choosing a replacement, reports the
-# visible model that has no profile without ranking it, flags the stale confirmations, never proposes a
-# hidden model, and leaves both projects' owner-written obligations, both
-# Retired sections and the pair record untouched.
+# that names it, in the shared policy and in a project's own routing lines,
+# instead of choosing a replacement, reports the visible model that has no
+# profile without ranking it, flags the stale confirmations, never proposes a
+# hidden model, and leaves the owner-written obligations, the Retired section,
+# ledger's own routing lines and the pair record untouched.
 set -e
 git init -q -b main . && git config user.email t@t && git config user.name t
 """ + machine_block("1.0.7", "0.158.0", [
     ("gpt-6-astra", "list", 1, 6), ("gpt-6-sol", "list", 2, 6), ("gpt-6-luna", "list", 3, 5),
     ("gpt-reserve", "hide", 3, 5), ("gpt-5.6-luna", "list", 8, 5), ("codex-auto-review", "hide", 43, 5)],
     pair_plugin_ver="1.0.6", pair_client="0.154.0") + UPDATE_REG + kit_block() + ROOT_AGENTS + \
-    project("projects/refunds", "\nRouting: which model builds and which reviews is in `docs/routing.md`.\n") + \
-    heredoc("projects/refunds/docs/routing.md", REFUNDS_POLICY, "POLEOF") + \
-    project("projects/ledger", "\nRouting: which model builds and which reviews is in `docs/routing.md`.\n") + \
-    heredoc("projects/ledger/docs/routing.md", LEDGER_POLICY, "POLEOF") + \
+    heredoc(".machine/route/route-policy.md", SHARED_POLICY, "POLEOF") + \
+    project("projects/refunds", REFUNDS_LINES) + \
+    project("projects/ledger", LEDGER_LINES) + \
     """printf '*.log\\n__pycache__/\\n' > .gitignore
 git add -A -- . ":!scaffold.sh" && git commit -qm "machine and projects as routed on 2026-09-26"
 """
