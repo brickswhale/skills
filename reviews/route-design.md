@@ -174,6 +174,22 @@ skill is designed against that record, not against theory.
     obligations. Retired: the Reader and Partner roles (ruling 7) and the
     receipt reference's advisor notation; ruling 12 stands in registry check
     3.
+20. **One shared policy per machine; the skill keeps its own rules; a
+    consumer repository gets a pointer** (owner, 2026-10-02: "the skills should
+    always contained on their own and only do minimal changes to consumer
+    repo, this should be always how we design skills/tools"; then option 1 of
+    a plan from pair round 18). `/route` writes `~/.config/route/route-registry`
+    and `~/.config/route/route-policy.md` (the owner's choices: risk classes as
+    kinds, quota, jobs, other obligations), shared by every project on the
+    machine, and one pointer line in each project's briefing. The generic
+    Floors, Contract and Roles move to the skill's `references/rules.md`,
+    read in place, never copied: one source, and a `git pull` updates every
+    machine. A project that differs adds its own routing lines under the
+    pointer; they win for that project. Supersedes rulings 13 and 19 where they
+    copy a policy into each project, and the update step that offered the
+    template's sections. The principle is the repository's rule 9; `pair`'s
+    record moves to `~/.config/pair/` and `learn`'s skill rung names a
+    project-owned skill, under the same rule.
 
 ## The plan after the pivot
 
@@ -507,6 +523,10 @@ Found by reading the policies, not by any check: 13 of the 15 policies name the 
 - Update 2 (clause 9): moving the ledger policy's owner-written money rule ("at least one required reviewer from a different family") beside the new money floor, the run read the two as a conflict and blocked the ledger's money job until the owner picks, though it could run before. 1 of 8 update runs.
 
 Neither earns a rule: the repository adds one when a real ticket shows the step done badly twice. Across the last two batches, which differ by that one phrase, setup is seven of eight and update seven of eight, over both standing bars. Cost, measured from each run's own totals: $14.18, $15.51 and $8.39 for the three batches since the cut.
+
+**Pair round 18 (blind, both partners, claims checked), 2026-10-02: the principle across the repository.** GPT through the Codex plugin (rung 1; answered in full, its call run with the plugin's `--background` flag, which the record's `call=` lacks, as the record's own note to run heavy asks in the background) and the strongest Claude model (instructed read-only; checked, nothing changed) agreed on the rule, its home in `AGENTS.md` and the README, a machine-data convention `~/.config/<skill>/`, and the shared policy with pointer lines. Verified in the files: three skills reach outside their own place — `route` copies its rules into every project, `learn`'s rung "a line in a skill the work already loads" can edit a shared skill through its install link, and `pair`'s record sits, unnamed, in a retired toolkit's folder; `intent` writes nothing (its grader fails any edit); the commit hook watches only `SKILL.md`; `pair`'s fixture keeps its record inside the repository under test. Where they differed: GPT would copy the generic rules to the machine, the other partner would read them in place; read in place was chosen, since the skill then keeps its own rules. GPT would grow the commit hook; a `writes:` line per eval case and a few lines in `run-valid.sh` were chosen, as the smaller machinery.
+
+**The rule for ruling 20's batches, fixed before they run.** `route`: both cases, five runs each, bars three of five on update and four of five on setup; a run counts when LOADED, FENCE OK, FOOTPRINT OK (now: the registry and the policy under the machine's config directory, and in a project nothing but a pointer line of at most two added lines), outcome, and both downstream stages pass. `pair` and `learn`: `/eval-skill`, five runs and one baseline each, green at three of five with the baseline failed, with the new footprint line read by hand. Every batch runs before the real `~/.config/pair/` exists, so no run can reach a real partner.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
