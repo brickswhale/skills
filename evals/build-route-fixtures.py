@@ -131,6 +131,10 @@ def kit_block():
     out = "mkdir -p routing-kit\n"
     for name, body in KIT.items():
         out += heredoc(f"routing-kit/{name}", body)
+    # the skill as installed on this stand-in machine: policies name its rules
+    # under ~/.claude/skills/route/, and .machine/ stands in for ~/.claude
+    out += "mkdir -p .machine/claude/skills/route/references\n"
+    out += heredoc(".machine/claude/skills/route/references/rules.md", KIT["rules.md"])
     return out
 
 
