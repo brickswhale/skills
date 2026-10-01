@@ -28,7 +28,7 @@
 #
 # usage: run-valid.sh <skill-name> <run.jsonl> [scaffold-exit-code] [fixture-dir] [case]
 # With a fixture dir, a FOOTPRINT line follows: every path the run changed that
-# the case's `writes:` (in its prompt.md frontmatter) does not list. Rule 9:
+# the case's `writes` file (beside its prompt.md, one glob per line) does not list. Rule 9:
 # reported, then read by hand; it does not change VALID or INVALID.
 set -u
 name="$1"; run="$2"; scaf="${3:-0}"; fx="${4:-}"; case_name="${5:-}"
@@ -75,7 +75,7 @@ rc=$?
 if [ -n "$fx" ] && git -C "$fx" rev-parse -q --verify HEAD >/dev/null 2>&1; then
   dir=$(cd "$(dirname "$0")" && pwd)
   [ -n "$case_name" ] || case_name=$(basename "$(ls -d "$dir/$name"-* 2>/dev/null | head -1)")
-  writes=$(awk 'BEGIN{n=0} /^---$/{n++; next} n==1 && /^writes:/{sub(/^writes: */,""); print}' "$dir/$case_name/prompt.md" 2>/dev/null)
+  writes=$(grep -v '^[[:space:]]*$' "$dir/$case_name/writes" 2>/dev/null | paste -sd, -)
   python3 - "$fx" "$writes" <<'PY'
 import fnmatch, subprocess, sys
 fx, allowed = sys.argv[1], sys.argv[2].strip().strip("[]")

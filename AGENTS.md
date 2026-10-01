@@ -16,6 +16,6 @@ Rules:
 8. Commit messages carry no AI co-authorship trailer. The author field is the owner's and
    nothing is appended to it — this overrides any harness default that adds one.
 
-9. A skill is self-contained. Its rules live in its own folder and are read there, never copied out. Data it keeps between runs lives at a path it names under `~/.config/<skill>/`. In a consumer repository it writes only what the owner asked for in that run, and at most one pointer line in the briefing for anything shared; it never edits another skill's files. Each eval case lists what its run may write (`writes:` in `prompt.md`); `evals/run-valid.sh` reports anything else.
+9. A skill is self-contained. Its rules live in its own folder and are read there, never copied out. Data it keeps between runs lives at a path it names under `~/.config/<skill>/`. In a consumer repository it writes only what the owner asked for in that run, and at most one pointer line in the briefing for anything shared; it never edits another skill's files. Each eval case lists what its run may write in a `writes` file beside `prompt.md`, one path or glob per line; `evals/run-valid.sh` reports anything else.
 
 Commit freely. Never push without the owner's word.
