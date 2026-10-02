@@ -20,4 +20,6 @@ Rules:
 
 Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 
+Tickets: GitHub Issues in this repository (`gh issue`). Work beyond a typo, comment or format fix follows the `flow` skill: call it before the first edit.
+
 Commit freely. Never push without the owner's word.
