@@ -82,6 +82,10 @@ fx, allowed = sys.argv[1], sys.argv[2].strip().strip("[]")
 pats = [p.strip().strip("'\"") for p in allowed.split(",") if p.strip()]
 st = subprocess.run(["git", "-C", fx, "status", "--porcelain", "--untracked-files=all"], capture_output=True, text=True).stdout
 paths = [l[3:].split(" -> ")[-1] for l in st.splitlines()]
+# a run that commits hides its writes from status: add every path changed since the fixture's first commit
+root = subprocess.run(["git", "-C", fx, "rev-list", "--max-parents=0", "HEAD"], capture_output=True, text=True).stdout.split()
+if root:
+    paths += subprocess.run(["git", "-C", fx, "diff", "--name-only", root[-1], "HEAD"], capture_output=True, text=True).stdout.split()
 extra = [p for p in paths if p != "scaffold.sh" and not any(fnmatch.fnmatch(p, q) for q in pats)]
 print("FOOTPRINT: " + ", ".join(extra) if extra else "FOOTPRINT OK")
 PY

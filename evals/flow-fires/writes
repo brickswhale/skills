@@ -1,0 +1,5 @@
+docs/tickets/*
+src/parse.py
+test.sh
+docs/devlog.md
+.git/**
