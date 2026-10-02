@@ -252,8 +252,8 @@ Owner: <who rules on these files> · Revised: <date> · Tools seen: <name versio
 - Family: <anthropic | openai | google | …> · Tier: <strong | capable | light | unknown>
 - Good for: <one line, the owner's words or (proposed)>
 - Cost: <plan or quota, the owner's words>
-- Write call: <the whole invocation, "<prompt>" its only hole, for work that changes files> · writes: yes
-- Read-only call: <the invocation for a review or a read> · writes: no, <enforced (how) | instruction only>
+- Write call: <host that makes it>: <the whole invocation, "<prompt>" its only hole, for work that changes files> · writes: yes
+- Read-only call: <host that makes it>: <the invocation for a review or a read> · writes: no, <enforced (how) | instruction only>
 - Effort: <what the call carries | n/a>
 - Confirmed: <the date a call was seen working, with tool versions | no (drafted <date>)>
 - Gone: <the date its tool or model disappeared; omit while it is installed>
@@ -271,6 +271,7 @@ Writing an entry:
 
 How to write a call:
 
+- Each call names the host that makes it — the agent app a session runs in, not the tools one session has switched on: `Claude Code` (its Agent tool), `any` (any app with a shell), `manual` (a person carries it). A session on a host a call does not name cannot make that call.
 - Claude Code subagents: the Agent tool with `model=<opus | fable | sonnet | haiku>`. Write call: a type that can edit, such as `general-purpose`. Read-only call: a type without edit tools, such as `Plan`; it keeps Bash, so `writes: no, instruction only`.
 - Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. The write call adds `--write`; the read-only call never does (enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory; never `--resume`.
 - Codex CLI without the plugin: read-only only, `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`. A CLI write call is unverified: ask the owner.
@@ -278,7 +279,7 @@ How to write a call:
 
 ## 2. The jobs — `~/.config/route/jobs.md`
 
-Each job's models, ranked to do the work and to review it, and the owner's notes. These four
+Each job's models, ranked to do the work and to review it, and the owner's notes. These five
 rows are the starting jobs; the owner may add rows.
 
 ```markdown
@@ -288,9 +289,10 @@ Owner: <who rules on these files> · Revised: <date>
 
 | Job | Do (ranked) | Review (ranked) | Notes |
 |---|---|---|---|
-| Small fix — cause known, no design choice, a few files | main session | main session reads its own diff; the failing check now passes | |
+| Small fix — cause known, no design choice, a few files; a rule file only as its own row's Notes allow | main session | main session reads its own diff; the failing check now passes | |
 | Build — a feature or change from a clear spec | <name> (<when>) → <name> (<when>) | <name> → <name> | |
 | Money-security build — <the owner's kinds: payments, auth, secrets, access rules, …> | <name> → … | <name> → …; at least one of another family than the builder | |
+| Rule file — a change to instructions an agent loads before working: a briefing, an agent card, a skill's rules, prompt rules, these route files | main session | <name> (another family, when that family's tool loads the file) → <name> (fresh context) | each reviewer reads the diff as instructions it would load and names any line it would read otherwise, any path or tool only one host has, and any rule the diff dropped; when no reader of the loading family ran, the receipt says so. Trims and moves count even when "no rule changed"; a purely mechanical pointer, path, date or typo fix that changes no instruction's authority, scope or obligation is a Small fix; a generated rule file is built as a Build and reviewed here |
 | Research — facts from outside the repository | main session's own tools → <reader> (by hand) | main session checks every cited fact | <what a manual lane never receives> |
 
 ## Notes
@@ -312,7 +314,7 @@ Added once to a project's agent briefing (`AGENTS.md`, or `CLAUDE.md` where
 that is the briefing; once where one links to the other), word for word:
 
 ```
-Routing: before handing work off, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
+Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 ```
 
 ## Before writing: the checks
@@ -324,6 +326,8 @@ Routing: before handing work off, read the `route` skill's rules (`~/.claude/ski
 5. Every rank naming a gone, stale or unconfirmed model is listed.
 6. Every `<owner to choose …>` cell is listed with the jobs it blocks.
 7. The money-security row names security work, or marks it `<owner to choose …>`.
+8. Every starting job keeps this template's scope and review requirements, its placeholders filled, or the difference is listed with the owner's dated note that made it.
+9. For every host the owner coordinates from, every Do and Review cell has `main session`, `owner`, or a rank whose call for that role that host can make, or the row's Notes say that role waits for the owner there.
 
 A failed check is reported with the row it concerns, never fixed by quietly
 editing a rank. A file is missing (setup), malformed (an entry without Family,
@@ -350,8 +354,8 @@ the `route` skill; they use two files the owner keeps on this machine:
 
 ## Routing
 
-- Match the task to a job in `jobs.md`. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
-- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- Match the task to a job in `jobs.md`; a task that fits two jobs takes the one with the stricter review, and the decision line names the job passed over. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
+- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, with the call its role needs (write to build, read-only to review) on the host you run on — the agent app, not the tools this session has switched on — and no call to it has failed this session; a builder only when the reviewers its job needs are eligible too. When no rank in a cell is eligible on your host, that role waits for the owner: name the rank and the host it needs.
 - Call a model exactly as its dictionary entry says: its write call for work that changes files, its read-only call for a review or a read.
 
 ## Floors
@@ -359,20 +363,20 @@ the `route` skill; they use two files the owner keeps on this machine:
 - A reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
 - Money and security work: at least one reviewer is from another family than the builder, unless the owner waives that in writing.
 - A `<owner to choose …>` cell blocks the jobs that need it until the owner answers. A `(proposed)` cell may be followed, and a model whose `confirmed` says `no` may be used: the decision line says which.
-- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
-- No jobs or dictionary file, or a model the jobs name is missing from the dictionary: stop, and ask the owner to run `/route`. Never guess a model.
+- Every builder prompt carries the Builder role's lines, whatever tool runs it; when the builder returns, check it left no commit, staged change, push, branch, worktree, stash or pull request.
+- No jobs or dictionary file, or a model the jobs name is missing from the dictionary: stop, and ask the owner to run `/route`. Never guess a model. Only `/route` writes those two files: a session that finds one wrong reports it to the owner and never edits it by hand.
 
 ## Contract
 
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder and why, the reviewer and why, and every higher-ranked model you are not using, with the reason.
+- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder with its effort and why, the reviewer with its effort and why, and every higher-ranked model you are not using, with the reason. A rank taken later, because an earlier one failed, is named when it is taken.
 - The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the dictionary's value as observed.
+- After the review, print a receipt: the model and effort each role actually reported, or `unknown` when nothing it returned names one. Never write the dictionary's value as observed.
 - List every review finding you do not act on, with the reason.
 
 ## Roles
 
 - Coordinator: the session the owner talks to, on the model the owner picked. Picks the job, routes it by these rules, hands the work off, integrates the result.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
+- Builder: never commits, stages or pushes, and creates no branch, worktree, stash or pull request. Re-checks the spec against today's code first; a spec that is stale, wrong, already done or superseded stops the work, reported as found, never rewritten to fit. Changes only what the job names; a scope or design choice the spec leaves open is reported, not taken. Runs the named checks, reports evidence and deviations.
 - Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where the row ranks `main session`, and works from the builder's test output. Changes nothing. A reviewer of another family looks for what a same-family review may share a blind spot on.
 - Reader: gathers facts from outside the repository, keeps what it saw apart from what it infers, decides nothing.
 KITEOF
@@ -388,8 +392,8 @@ the `route` skill; they use two files the owner keeps on this machine:
 
 ## Routing
 
-- Match the task to a job in `jobs.md`. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
-- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- Match the task to a job in `jobs.md`; a task that fits two jobs takes the one with the stricter review, and the decision line names the job passed over. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
+- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, with the call its role needs (write to build, read-only to review) on the host you run on — the agent app, not the tools this session has switched on — and no call to it has failed this session; a builder only when the reviewers its job needs are eligible too. When no rank in a cell is eligible on your host, that role waits for the owner: name the rank and the host it needs.
 - Call a model exactly as its dictionary entry says: its write call for work that changes files, its read-only call for a review or a read.
 
 ## Floors
@@ -397,20 +401,20 @@ the `route` skill; they use two files the owner keeps on this machine:
 - A reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
 - Money and security work: at least one reviewer is from another family than the builder, unless the owner waives that in writing.
 - A `<owner to choose …>` cell blocks the jobs that need it until the owner answers. A `(proposed)` cell may be followed, and a model whose `confirmed` says `no` may be used: the decision line says which.
-- The builder never commits. A builder in another tool gets the Builder role's lines in its prompt; when it returns, check it left no commit, branch, worktree or stash.
-- No jobs or dictionary file, or a model the jobs name is missing from the dictionary: stop, and ask the owner to run `/route`. Never guess a model.
+- Every builder prompt carries the Builder role's lines, whatever tool runs it; when the builder returns, check it left no commit, staged change, push, branch, worktree, stash or pull request.
+- No jobs or dictionary file, or a model the jobs name is missing from the dictionary: stop, and ask the owner to run `/route`. Never guess a model. Only `/route` writes those two files: a session that finds one wrong reports it to the owner and never edits it by hand.
 
 ## Contract
 
-- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder and why, the reviewer and why, and every higher-ranked model you are not using, with the reason.
+- Before the first dispatch of a job, print one decision line: the job, your own model (the user's pick), the builder with its effort and why, the reviewer with its effort and why, and every higher-ranked model you are not using, with the reason. A rank taken later, because an earlier one failed, is named when it is taken.
 - The reviewer's prompt carries the spec, the code or its diff, and the test output. It never carries the builder's verdict or your own judgement of the work.
-- After the review, print a receipt: the model each role actually reported, or `unknown` when nothing it returned names one. Never write the dictionary's value as observed.
+- After the review, print a receipt: the model and effort each role actually reported, or `unknown` when nothing it returned names one. Never write the dictionary's value as observed.
 - List every review finding you do not act on, with the reason.
 
 ## Roles
 
 - Coordinator: the session the owner talks to, on the model the owner picked. Picks the job, routes it by these rules, hands the work off, integrates the result.
-- Builder: re-checks the spec against today's code first, changes only what the job names, runs the named checks, reports evidence and deviations.
+- Builder: never commits, stages or pushes, and creates no branch, worktree, stash or pull request. Re-checks the spec against today's code first; a spec that is stale, wrong, already done or superseded stops the work, reported as found, never rewritten to fit. Changes only what the job names; a scope or design choice the spec leaves open is reported, not taken. Runs the named checks, reports evidence and deviations.
 - Reviewer: reads the work against the spec in its own context, a fresh one or the coordinator's where the row ranks `main session`, and works from the builder's test output. Changes nothing. A reviewer of another family looks for what a same-family review may share a blind spot on.
 - Reader: gathers facts from outside the repository, keeps what it saw apart from what it infers, decides nothing.
 KITEOF

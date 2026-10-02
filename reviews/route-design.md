@@ -236,6 +236,31 @@ skill is designed against that record, not against theory.
     disconnect, not link and unlink, because this repository already uses
     "link" for its install symlinks. No machine-wide pause: it would add a state
     every session must check.
+25. **The first consuming project's gaps go upstream** (owner, 2026-10-02:
+    "how to make sure it wont happen again? shouldnt it be properly formatted
+    within the route templating?"; then option 1 of a blind pair, GPT rung 1
+    and Fable rung 2, "let the route decide who to fix it"). The first project
+    to disconnect its own routing document ran that 7-file retirement as a
+    small fix; a hand-added rule-file row shipped a loose exemption; and a
+    cross-family review found generic duties that had lived only in the
+    project's document. Both partners agreed the fix belongs in the skill:
+    a fifth starting job, **Rule file** (main session builds; another family
+    reviews when its tool loads the file, else a fresh same-family reader),
+    with the Small-fix row pointing to it; a task that fits two jobs takes the
+    stricter review; only `/route` writes the two machine files; the Builder
+    role carries the full prohibition (no commit, stage, push, branch,
+    worktree, stash or pull request) and stops on a stale spec; the decision
+    line and receipt carry effort, a later fallback rank is named when taken;
+    each dictionary call names the tool that makes it, and a rank is eligible
+    only where the current tool can make its role's call; `connect` reports
+    the rules a project's own routing document holds that the skill does not.
+    Checks 8 and 9 guard the new rows and transports. Where the partners
+    split, the owner took: no hook or script, still (ruling 3; revisit if a
+    model-run check misses twice); the pointer line also fires before editing
+    agent instructions; a generated rule file still gets rule-file review;
+    pairing stays the `pair` skill's. Against ruling 19's lean aim the
+    package grew 2,176 → 2,652 words, almost all in replaced lines and
+    the one new row. A cross-family review of the edit found 7, all fixed.
 
 ## The plan after the pivot
 
@@ -595,6 +620,8 @@ Neither earns a rule: the repository adds one when a real ticket shows the step 
 **The rule for ruling 24's batch, fixed before it runs.** Two new cases, `route-connect` and `route-disconnect`, five runs each, through `evals/run-route-batch.sh` with the real data folders locked; a run counts when LOADED, FENCE OK, FOOTPRINT OK and its outcome judge passes (these cases have no downstream stage); bar four of five each. The footprint check now judges a briefing's changed lines by content: only blank lines and the route pointer line may be added or removed. Setup and update are not re-run: the new lines are a separate mode their steps never reach.
 
 **Ruling 24's batch (`~/.cache/route-eval15/runs/`): green.** Connect four of five, disconnect five of five; every run LOADED, FENCE OK and FOOTPRINT OK, and the batch script reported the real data folders unchanged, now that `~/.config/route/` exists and was locked. Each passing run added or removed only the pointer line and the blank line beside it. Connect 2 changed nothing: the fixture's briefing said the references were copied into `routing-kit/`, which these two new fixtures never created, so the run found no template, kept to "look nowhere outside", and asked the owner instead of reading the skill's own copy. A fixture fault of this session's; both fixtures now carry `routing-kit/`.
+
+**Ruling 25's batches (`~/.cache/route-eval16/` then `route-eval17/`).** First batch: connect five of five, disconnect five of five; setup and update three of five each, counted strictly. One setup failure was the edit's own: a read-only downstream session with no Agent tool read "a call the tool you run in can make" as its own switched-on tools and named no builder. "Tool" meant the agent app in six new lines; all six now say host, defined as the agent app, not a session's tools. Re-run of setup and update: setup five of five graded, four counted (one fence breach, a read of `$HOME`); update four of five, its failure the older one of not naming every rank a gone model touches. Real data folders unchanged both times.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 

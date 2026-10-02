@@ -19,8 +19,8 @@ Owner: <who rules on these files> · Revised: <date> · Tools seen: <name versio
 - Family: <anthropic | openai | google | …> · Tier: <strong | capable | light | unknown>
 - Good for: <one line, the owner's words or (proposed)>
 - Cost: <plan or quota, the owner's words>
-- Write call: <the whole invocation, "<prompt>" its only hole, for work that changes files> · writes: yes
-- Read-only call: <the invocation for a review or a read> · writes: no, <enforced (how) | instruction only>
+- Write call: <host that makes it>: <the whole invocation, "<prompt>" its only hole, for work that changes files> · writes: yes
+- Read-only call: <host that makes it>: <the invocation for a review or a read> · writes: no, <enforced (how) | instruction only>
 - Effort: <what the call carries | n/a>
 - Confirmed: <the date a call was seen working, with tool versions | no (drafted <date>)>
 - Gone: <the date its tool or model disappeared; omit while it is installed>
@@ -38,6 +38,7 @@ Writing an entry:
 
 How to write a call:
 
+- Each call names the host that makes it — the agent app a session runs in, not the tools one session has switched on: `Claude Code` (its Agent tool), `any` (any app with a shell), `manual` (a person carries it). A session on a host a call does not name cannot make that call.
 - Claude Code subagents: the Agent tool with `model=<opus | fable | sonnet | haiku>`. Write call: a type that can edit, such as `general-purpose`. Read-only call: a type without edit tools, such as `Plan`; it keeps Bash, so `writes: no, instruction only`.
 - Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. The write call adds `--write`; the read-only call never does (enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory; never `--resume`.
 - Codex CLI without the plugin: read-only only, `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`. A CLI write call is unverified: ask the owner.
@@ -45,7 +46,7 @@ How to write a call:
 
 ## 2. The jobs — `~/.config/route/jobs.md`
 
-Each job's models, ranked to do the work and to review it, and the owner's notes. These four
+Each job's models, ranked to do the work and to review it, and the owner's notes. These five
 rows are the starting jobs; the owner may add rows.
 
 ```markdown
@@ -55,9 +56,10 @@ Owner: <who rules on these files> · Revised: <date>
 
 | Job | Do (ranked) | Review (ranked) | Notes |
 |---|---|---|---|
-| Small fix — cause known, no design choice, a few files | main session | main session reads its own diff; the failing check now passes | |
+| Small fix — cause known, no design choice, a few files; a rule file only as its own row's Notes allow | main session | main session reads its own diff; the failing check now passes | |
 | Build — a feature or change from a clear spec | <name> (<when>) → <name> (<when>) | <name> → <name> | |
 | Money-security build — <the owner's kinds: payments, auth, secrets, access rules, …> | <name> → … | <name> → …; at least one of another family than the builder | |
+| Rule file — a change to instructions an agent loads before working: a briefing, an agent card, a skill's rules, prompt rules, these route files | main session | <name> (another family, when that family's tool loads the file) → <name> (fresh context) | each reviewer reads the diff as instructions it would load and names any line it would read otherwise, any path or tool only one host has, and any rule the diff dropped; when no reader of the loading family ran, the receipt says so. Trims and moves count even when "no rule changed"; a purely mechanical pointer, path, date or typo fix that changes no instruction's authority, scope or obligation is a Small fix; a generated rule file is built as a Build and reviewed here |
 | Research — facts from outside the repository | main session's own tools → <reader> (by hand) | main session checks every cited fact | <what a manual lane never receives> |
 
 ## Notes
@@ -79,7 +81,7 @@ Added once to a project's agent briefing (`AGENTS.md`, or `CLAUDE.md` where
 that is the briefing; once where one links to the other), word for word:
 
 ```
-Routing: before handing work off, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
+Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 ```
 
 ## Before writing: the checks
@@ -91,6 +93,8 @@ Routing: before handing work off, read the `route` skill's rules (`~/.claude/ski
 5. Every rank naming a gone, stale or unconfirmed model is listed.
 6. Every `<owner to choose …>` cell is listed with the jobs it blocks.
 7. The money-security row names security work, or marks it `<owner to choose …>`.
+8. Every starting job keeps this template's scope and review requirements, its placeholders filled, or the difference is listed with the owner's dated note that made it.
+9. For every host the owner coordinates from, every Do and Review cell has `main session`, `owner`, or a rank whose call for that role that host can make, or the row's Notes say that role waits for the owner there.
 
 A failed check is reported with the row it concerns, never fixed by quietly
 editing a rank. A file is missing (setup), malformed (an entry without Family,
