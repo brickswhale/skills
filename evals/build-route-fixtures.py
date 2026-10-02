@@ -11,10 +11,8 @@ import sys
 REPO = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REF = os.path.join(REPO, "skills/route/references")
 KIT = {
-    "policy-template.md": open(os.path.join(REF, "policy-template.md")).read(),
-    "registry-format.md": open(os.path.join(REF, "registry-format.md")).read(),
+    "template.md": open(os.path.join(REF, "template.md")).read(),
     "rules.md": open(os.path.join(REF, "rules.md")).read(),
-    "transports.md": open(os.path.join(REPO, "skills/pair/references/transports.md")).read(),
 }
 for name, body in KIT.items():
     assert "KITEOF" not in body, name
@@ -188,7 +186,7 @@ This directory stands in for one owner's machine.
 
 - `.machine/` is the machine's config directory: Codex config and model cache in `codex/`, Claude Code's agent cards in `claude/agents/`, the plugin list, and the pair skill's record. It stands in for every config location a tool would use on a real machine (`~/.config/…`, `~/.codex`, `~/.claude`): anything that would live there lives in `.machine/`. Treat only what it lists as installed, and look nowhere outside this directory.
 - `bin/` holds the command-line tools installed here (`codex`, `claude`); it is first on PATH.
-- `routing-kit/` holds the model-routing templates and formats: the policy template, the routing rules, the registry format, and the partner-transport catalog.
+- `routing-kit/` holds copies of the model-routing references: the route template and the routing rules.
 - `projects/` holds the owner's projects on this machine.
 MD
 """
@@ -200,74 +198,70 @@ HEAD = """#!/usr/bin/env bash
 
 # ---------------------------------------------------------------- route-update
 UPDATE_REG = """mkdir -p .machine/route
-cat > .machine/route/route-registry <<REGEOF
-# route-registry — this machine's models for dispatched work. Written by /route 2026-09-26.
+cat > .machine/route/dictionary.md <<REGEOF
+# Model dictionary — this machine
 
-profile=sonnet-build
-model=sonnet
-family=anthropic
-tier=capable
-role=builder
-card=implementer
-call=Agent tool, subagent_type=implementer, model=sonnet, one prompt, no continuation
-effort=n/a
-writes=yes
-confirmed=2026-09-26 (claude 2.1.247)
+Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli 0.154.0, plugin codex 1.0.6
 
-profile=fable-review
-model=fable
-family=anthropic
-tier=strong
-role=reviewer
-card=reviewer
-call=Agent tool, subagent_type=reviewer, model=fable, one prompt, no continuation
-effort=n/a
-writes=no, enforced (card tools Read, Grep, Glob)
-confirmed=2026-09-26 (claude 2.1.247)
+## Sonnet
 
-profile=opus-review
-model=opus
-family=anthropic
-tier=strong
-role=reviewer
-card=reviewer
-call=Agent tool, subagent_type=reviewer, model=opus, one prompt, no continuation
-effort=n/a
-writes=no, enforced (card tools Read, Grep, Glob)
-confirmed=2026-09-26 (claude 2.1.247)
+- Model: sonnet
+- Family: anthropic · Tier: capable
+- Good for: builds from a clear spec
+- Cost: Claude plan
+- Build call: Agent tool, subagent_type=implementer, model=sonnet, one prompt, no continuation · writes: yes
+- Effort: n/a
+- Confirmed: 2026-09-26 (claude 2.1.247)
 
-profile=codex-build
-model=gpt-5.6-terra
-family=openai
-tier=capable
-role=builder
-card=—
-call=node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --write --model gpt-5.6-terra --effort medium "<prompt>" < /dev/null
-effort=medium
-writes=yes
-confirmed=2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
+## Fable
 
-profile=codex-audit
-model=gpt-6-astra
-family=openai
-tier=strong
-role=reviewer
-card=—
-call=node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --model gpt-6-astra --effort high "<prompt>" < /dev/null
-effort=high
-writes=no, enforced (Codex read-only sandbox)
-confirmed=2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
+- Model: fable
+- Family: anthropic · Tier: strong
+- Good for: reviews, diagnosis
+- Cost: Claude plan
+- Review call: Agent tool, subagent_type=reviewer, model=fable, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
+- Effort: n/a
+- Confirmed: 2026-09-26 (claude 2.1.247)
 
-profile=web-research
-model=the owner's Gemini web app
-family=google
-tier=capable
-role=reader
-card=—
-call=manual: print the ask between copy markers; the owner pastes the reply back
-effort=n/a
-writes=no, enforced (no repository access)
-confirmed=2026-09-26 (owner)
+## Opus
+
+- Model: opus
+- Family: anthropic · Tier: strong
+- Good for: reviews when Fable cannot run
+- Cost: Claude plan
+- Review call: Agent tool, subagent_type=reviewer, model=opus, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
+- Effort: n/a
+- Confirmed: 2026-09-26 (claude 2.1.247)
+
+## Terra
+
+- Model: gpt-5.6-terra
+- Family: openai · Tier: capable
+- Good for: ordinary builds
+- Cost: Codex plan
+- Build call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --write --model gpt-5.6-terra --effort medium "<prompt>" < /dev/null · writes: yes
+- Effort: medium
+- Confirmed: 2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
+
+## Astra
+
+- Model: gpt-6-astra
+- Family: openai · Tier: strong
+- Good for: audits from another family
+- Cost: Codex plan
+- Review call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --model gpt-6-astra --effort high "<prompt>" < /dev/null · writes: no, enforced (Codex read-only sandbox)
+- Effort: high
+- Confirmed: 2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
+
+## Gemini web app
+
+- Model: the owner's Gemini web app
+- Family: google · Tier: capable
+- Good for: broad web research
+- Cost: the owner's Gemini plan
+- Review call: manual: print the ask between copy markers; the owner pastes the reply back · writes: no, enforced (no repository access)
+- Effort: n/a
+- Confirmed: 2026-09-26 (owner)
 REGEOF
 """
 
@@ -275,53 +269,34 @@ REGEOF
 # policy beside the registry, a pointer line in each project's briefing, and
 # ledger's own routing lines under its pointer (they win in ledger). Frozen
 # here on purpose; never regenerate this block from the current template.
-SHARED_POLICY = """# Routing policy — this machine
+SHARED_POLICY = """# Jobs — this machine
 
 Owner: the owner · Revised: 2026-09-26
-Registry: `~/.config/route/route-registry` (on this machine: `.machine/route/route-registry`)
-Rules: the `route` skill's `references/rules.md`, installed under `~/.claude/skills/route/` and `~/.agents/skills/route/`
 
-## Risk classes
+| Job | Builders (ranked) | Reviewers (ranked) | Notes |
+|---|---|---|---|
+| Small fix — cause known, no design choice, a few files | main session | main session reads its own diff; the failing check now passes | |
+| Build — a feature or change from a clear spec | Sonnet (the spec pins the work) → Terra (the fallback) | Fable → Opus (when Fable cannot run) | |
+| Money-security build — code that moves money | Terra (every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family) → Sonnet (only if the owner waives the family rule in writing) | Fable → Opus (when Fable cannot run) | a project names its own paths under its pointer |
+| Research — facts from outside the repository | main session's own tools → Gemini web app (broad research) | main session checks every cited fact | the Gemini web app never receives repository code |
 
-- money-security: code that moves money; a project names its own paths under its pointer.
-- ordinary: everything else.
+## Notes
 
-## Quota
-
-- openai: builds only; never reviews.
-
-## Roles
-
-- Builder (ranked):
-  1. sonnet-build — the spec pins the work
-  2. codex-build — the fallback
-- Reviewer (alternatives):
-  1. fable-review — the default
-  2. opus-review — when fable-review cannot run
-- Money builder (ranked):
-  1. codex-build — every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family
-  2. sonnet-build — only if the owner waives the family rule in writing
-
-## Other obligations
-
+- Quota: openai: builds only; never reviews.
 - Every build is followed by the project's test command, and its result goes to the reviewer.
 - The owner reads a money job's spec before it is dispatched.
-
-## Retired
-
-- 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner
+- Retired: 2026-09-10 — a second model pre-checks every spec before dispatch — too costly for small specs; the owner
 """
 
-POINTER = "Routing: before handing work off, read `~/.config/route/route-policy.md` and the files it names. If you cannot, say so and ask the owner to run `/route`; never guess a model.\n"
+POINTER = "Routing: before handing work off, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.\n"
 
 REFUNDS_LINES = "\n" + POINTER + "Routing in this project: money-security here is anything under `app/` that moves money.\n"
 
 LEDGER_LINES = "\n" + POINTER + """Routing in this project (the owner's, 2026-09-26):
 - money-security here: anything under `app/` that moves money.
 - openai: audits and builds; never docs.
-- Money builder: sonnet-build, the spec pins the work.
-- Auditor: codex-audit, the different-family audit money work needs; it runs after the Claude review, never before.
-- Reviewer for ordinary builds: opus-review.
+- Money-security build: Sonnet builds, the spec pins the work; reviewers cumulative: Fable, then Astra, the different-family audit money work needs, never before the Claude review.
+- Build: reviewer Opus.
 - Effort floor: no Codex call runs below high.
 """
 
@@ -343,7 +318,7 @@ git init -q -b main . && git config user.email t@t && git config user.name t
     ("gpt-6-astra", "list", 1, 6), ("gpt-6-sol", "list", 2, 6), ("gpt-6-luna", "list", 3, 5),
     ("gpt-reserve", "hide", 3, 5), ("gpt-5.6-luna", "list", 8, 5), ("codex-auto-review", "hide", 43, 5)],
     pair_plugin_ver="1.0.6", pair_client="0.154.0") + UPDATE_REG + kit_block() + ROOT_AGENTS + \
-    heredoc(".machine/route/route-policy.md", SHARED_POLICY, "POLEOF") + \
+    heredoc(".machine/route/jobs.md", SHARED_POLICY, "POLEOF") + \
     project("projects/refunds", REFUNDS_LINES) + \
     project("projects/ledger", LEDGER_LINES) + \
     """printf '*.log\\n__pycache__/\\n' > .gitignore

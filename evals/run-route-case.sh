@@ -146,7 +146,7 @@ PYEOF
 
 # The footprint, checked mechanically (rule 9): the command writes the registry
 # and the policy under the machine's config directory, and in a project nothing
-# but a pointer line in its briefing. size.txt gives the policy's word count; it
+# but a pointer line in its briefing. size.txt gives each machine file's word count; it
 # gates nothing. A committed file naming an absolute home path is flagged.
 python3 - "$W" > "$OUT/footprint.txt" 2> "$OUT/size.txt" <<'PYEOF'
 import os, re, subprocess, sys
@@ -158,7 +158,7 @@ for line in git("status", "--porcelain", "--untracked-files=all").splitlines():
     code, path = line[:2].strip(), line[3:].split(" -> ")[-1]
     full = os.path.join(ws, path)
     if path.startswith(".machine/route/"):
-        if "policy" in os.path.basename(path) and os.path.exists(full):
+        if os.path.exists(full):
             sizes.append(f"{path}: {len(open(full).read().split())} words")
         continue
     m = re.match(r"projects/([^/]+)/(AGENTS|CLAUDE)\.md$", path)
