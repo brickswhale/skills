@@ -107,12 +107,14 @@ own = [os.path.join(home, ".config/route"), os.path.join(home, ".config/pair")]
 is_own = lambda p: any(p == o or p.startswith(o + "/") for o in own)
 WRITE = re.compile(r"(^|[\s;|&(])(tee|cp|mv|mkdir|rm|rmdir|touch|ln|chmod|chown|install|rsync|truncate|dd)\b|\bsed\s+-i|>{1,2}\s*(?!&|/dev/null)\S")
 bad = set()
-def scan(text):
+def scan(text, output=False):
     for m in pat.findall(text):
         if is_own(m): continue
         # a copy of an allowed path cut off mid-name (a wrapped or truncated line) names
-        # nothing outside; a whole folder above one (e.g. the home directory) still counts
-        if not m.endswith("/") and any(a.startswith(m) and len(a) > len(m) and a[len(m)] != "/" for a in allowed): continue
+        # nothing outside; in a command a whole folder above one (e.g. the home
+        # directory) still counts, while in tool output any cut-off piece passes:
+        # a real listing there shows the outside paths themselves
+        if any(a.startswith(m.rstrip("/")) and len(a) > len(m.rstrip("/")) for a in allowed) and (output or (not m.endswith("/") and all(a[len(m)] != "/" for a in allowed if a.startswith(m) and len(a) > len(m)))): continue
         if m not in exact and not any(m == a or m.startswith(a + "/") for a in allowed): bad.add(m)
 for line in open(run):
     try: d = json.loads(line)
@@ -140,7 +142,7 @@ for line in open(run):
                 if is_own(full): continue
                 if full not in exact and not any(full == a or full.startswith(a + "/") for a in allowed): bad.add(m)
         elif c.get("type") == "tool_result":
-            r = c.get("content"); scan(r if isinstance(r, str) else json.dumps(r))
+            r = c.get("content"); scan(r if isinstance(r, str) else json.dumps(r), output=True)
 print("FENCE BREACH: " + ", ".join(sorted(bad)) if bad else "FENCE OK")
 PYEOF
 

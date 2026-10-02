@@ -252,8 +252,8 @@ Owner: <who rules on these files> · Revised: <date> · Tools seen: <name versio
 - Family: <anthropic | openai | google | …> · Tier: <strong | capable | light | unknown>
 - Good for: <one line, the owner's words or (proposed)>
 - Cost: <plan or quota, the owner's words>
-- Build call: <the whole invocation, "<prompt>" its only hole> · writes: yes
-- Review call: <the read-only invocation> · writes: no, <enforced (how) | instruction only>
+- Write call: <the whole invocation, "<prompt>" its only hole, for work that changes files> · writes: yes
+- Read-only call: <the invocation for a review or a read> · writes: no, <enforced (how) | instruction only>
 - Effort: <what the call carries | n/a>
 - Confirmed: <the date a call was seen working, with tool versions | no (drafted <date>)>
 - Gone: <the date its tool or model disappeared; omit while it is installed>
@@ -261,24 +261,24 @@ Owner: <who rules on these files> · Revised: <date> · Tools seen: <name versio
 
 Writing an entry:
 
-- One entry per model. Omit a call the model will not make; its build and review calls differ, since one writes and one does not.
+- One entry per model. Omit a call the model will not make; its write and read-only calls differ.
 - A call that must reach one model names it. Without a selector a call reaches the tool's configured default, and `Model` is that default.
 - Effort is what the call carries: a value the model lists and the tool accepts, or, with no effort flag, the tool's configured default.
 - A tier the owner has not given is `unknown`, and fits no rank that compares tiers.
 - A listed model is a candidate until the owner keeps it. A model the tool marks hidden is never a candidate.
-- A web app the owner pastes into is found only by asking. Its review call is `manual: <how the ask and the reply travel>`; the jobs notes say what it never receives.
+- A web app the owner pastes into is found only by asking. Its read-only call is `manual: <how the ask and the reply travel>`; the jobs notes say what it never receives.
 - No entry for the coordinator, the session the owner picked, or for second-opinion partners, which are `pair`'s.
 
 How to write a call:
 
-- Claude Code subagents: the Agent tool with `model=<opus | fable | sonnet | haiku>`. Build: a type that can edit, such as `general-purpose`. Review: a type without edit tools, such as `Plan`; it keeps Bash, so `writes: no, instruction only`.
-- Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. Build adds `--write`; review never does (read-only, enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory; never `--resume`.
-- Codex CLI without the plugin: review only, `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`. A CLI build call is unverified: ask the owner.
+- Claude Code subagents: the Agent tool with `model=<opus | fable | sonnet | haiku>`. Write call: a type that can edit, such as `general-purpose`. Read-only call: a type without edit tools, such as `Plan`; it keeps Bash, so `writes: no, instruction only`.
+- Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. The write call adds `--write`; the read-only call never does (enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory; never `--resume`.
+- Codex CLI without the plugin: read-only only, `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`. A CLI write call is unverified: ask the owner.
 - Write paths resolved, the home directory as `$HOME` inside double quotes: a quoted `~` does not expand.
 
 ## 2. The jobs — `~/.config/route/jobs.md`
 
-Each job's builders and reviewers, ranked, and the owner's notes. These four
+Each job's models, ranked to do the work and to review it, and the owner's notes. These four
 rows are the starting jobs; the owner may add rows.
 
 ```markdown
@@ -286,12 +286,12 @@ rows are the starting jobs; the owner may add rows.
 
 Owner: <who rules on these files> · Revised: <date>
 
-| Job | Builders (ranked) | Reviewers (ranked) | Notes |
+| Job | Do (ranked) | Review (ranked) | Notes |
 |---|---|---|---|
 | Small fix — cause known, no design choice, a few files | main session | main session reads its own diff; the failing check now passes | |
 | Build — a feature or change from a clear spec | <name> (<when>) → <name> (<when>) | <name> → <name> | |
-| Money-security build — <the owner's kinds: payments, auth, secrets, access rules, …> | <name> → … | <name> → …; at least one of another family than the builder | a project names its own paths under its pointer |
-| Research — facts from outside the repository | main session's own tools → <reader> | main session checks every cited fact | <what a manual lane never receives> |
+| Money-security build — <the owner's kinds: payments, auth, secrets, access rules, …> | <name> → … | <name> → …; at least one of another family than the builder | |
+| Research — facts from outside the repository | main session's own tools → <reader> (by hand) | main session checks every cited fact | <what a manual lane never receives> |
 
 ## Notes
 
@@ -302,7 +302,7 @@ Owner: <who rules on these files> · Revised: <date>
 
 Reading a row: a cell names models as the dictionary does, `main session`
 (the coordinator does it) or `owner` (a person does it). Reviewers are
-alternatives, the first that fits, unless the cell says cumulative. A rank's
+alternatives, the first that fits, unless the cell says cumulative. A Do rank uses the model's write call, or its read-only call where the job changes no files; a Review rank uses its read-only call. A rank's
 condition sits in brackets, judged from the task. A rule that no longer holds
 is retired with a dated line, never deleted.
 
@@ -318,7 +318,7 @@ Routing: before handing work off, read the `route` skill's rules (`~/.claude/ski
 ## Before writing: the checks
 
 1. Every name a job uses has a dictionary entry, or is `main session` or `owner`.
-2. Every review call is read-only.
+2. Every model a Review rank names has a read-only call.
 3. The money-security row reaches a builder whose reviewers exist and are eligible: at least one of another family than the builder, none of a lower tier, none in the builder's context, no manual lane the notes bar from code, never an advisor.
 4. Every cumulative reviewer list can be satisfied in full.
 5. Every rank naming a gone, stale or unconfirmed model is listed.
@@ -345,14 +345,14 @@ cat > routing-kit/rules.md <<'KITEOF'
 How a session decides who builds and who reviews. Read these rules here, in
 the `route` skill; they use two files the owner keeps on this machine:
 
-- `~/.config/route/jobs.md` — each job's builders and reviewers, ranked, with the owner's notes. The ranks decide.
+- `~/.config/route/jobs.md` — each job's models, ranked to do the work and to review it, with the owner's notes. The ranks decide.
 - `~/.config/route/dictionary.md` — every model this machine can hand work to: how to call it, its family and tier, what it is good for. The context for choosing within the ranks; it never reorders them.
 
 ## Routing
 
 - Match the task to a job in `jobs.md`. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
-- Walk the job's builders in order; the first eligible one wins. Then its reviewers the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
-- Call a model exactly as its dictionary entry says: the build call for a builder, the read-only call for a reviewer.
+- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- Call a model exactly as its dictionary entry says: its write call for work that changes files, its read-only call for a review or a read.
 
 ## Floors
 
@@ -383,14 +383,14 @@ cat > .machine/claude/skills/route/references/rules.md <<'KITEOF'
 How a session decides who builds and who reviews. Read these rules here, in
 the `route` skill; they use two files the owner keeps on this machine:
 
-- `~/.config/route/jobs.md` — each job's builders and reviewers, ranked, with the owner's notes. The ranks decide.
+- `~/.config/route/jobs.md` — each job's models, ranked to do the work and to review it, with the owner's notes. The ranks decide.
 - `~/.config/route/dictionary.md` — every model this machine can hand work to: how to call it, its family and tier, what it is good for. The context for choosing within the ranks; it never reorders them.
 
 ## Routing
 
 - Match the task to a job in `jobs.md`. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
-- Walk the job's builders in order; the first eligible one wins. Then its reviewers the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
-- Call a model exactly as its dictionary entry says: the build call for a builder, the read-only call for a reviewer.
+- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- Call a model exactly as its dictionary entry says: its write call for work that changes files, its read-only call for a review or a read.
 
 ## Floors
 

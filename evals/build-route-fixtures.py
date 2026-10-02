@@ -209,7 +209,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: anthropic · Tier: capable
 - Good for: builds from a clear spec
 - Cost: Claude plan
-- Build call: Agent tool, subagent_type=implementer, model=sonnet, one prompt, no continuation · writes: yes
+- Write call: Agent tool, subagent_type=implementer, model=sonnet, one prompt, no continuation · writes: yes
 - Effort: n/a
 - Confirmed: 2026-09-26 (claude 2.1.247)
 
@@ -219,7 +219,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: anthropic · Tier: strong
 - Good for: reviews, diagnosis
 - Cost: Claude plan
-- Review call: Agent tool, subagent_type=reviewer, model=fable, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
+- Read-only call: Agent tool, subagent_type=reviewer, model=fable, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
 - Effort: n/a
 - Confirmed: 2026-09-26 (claude 2.1.247)
 
@@ -229,7 +229,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: anthropic · Tier: strong
 - Good for: reviews when Fable cannot run
 - Cost: Claude plan
-- Review call: Agent tool, subagent_type=reviewer, model=opus, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
+- Read-only call: Agent tool, subagent_type=reviewer, model=opus, one prompt, no continuation · writes: no, enforced (card tools Read, Grep, Glob)
 - Effort: n/a
 - Confirmed: 2026-09-26 (claude 2.1.247)
 
@@ -239,7 +239,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: openai · Tier: capable
 - Good for: ordinary builds
 - Cost: Codex plan
-- Build call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --write --model gpt-5.6-terra --effort medium "<prompt>" < /dev/null · writes: yes
+- Write call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --write --model gpt-5.6-terra --effort medium "<prompt>" < /dev/null · writes: yes
 - Effort: medium
 - Confirmed: 2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
 
@@ -249,7 +249,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: openai · Tier: strong
 - Good for: audits from another family
 - Cost: Codex plan
-- Review call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --model gpt-6-astra --effort high "<prompt>" < /dev/null · writes: no, enforced (Codex read-only sandbox)
+- Read-only call: node "$ROOT/.machine/plugins/codex/1.0.6/scripts/codex-companion.mjs" task --fresh --model gpt-6-astra --effort high "<prompt>" < /dev/null · writes: no, enforced (Codex read-only sandbox)
 - Effort: high
 - Confirmed: 2026-09-26 (codex-cli 0.154.0, plugin 1.0.6)
 
@@ -259,7 +259,7 @@ Owner: the owner · Revised: 2026-09-26 · Tools seen: claude 2.1.247, codex-cli
 - Family: google · Tier: capable
 - Good for: broad web research
 - Cost: the owner's Gemini plan
-- Review call: manual: print the ask between copy markers; the owner pastes the reply back · writes: no, enforced (no repository access)
+- Read-only call: manual: print the ask between copy markers; the owner pastes the reply back · writes: no, enforced (no repository access)
 - Effort: n/a
 - Confirmed: 2026-09-26 (owner)
 REGEOF
@@ -273,12 +273,12 @@ SHARED_POLICY = """# Jobs — this machine
 
 Owner: the owner · Revised: 2026-09-26
 
-| Job | Builders (ranked) | Reviewers (ranked) | Notes |
+| Job | Do (ranked) | Review (ranked) | Notes |
 |---|---|---|---|
 | Small fix — cause known, no design choice, a few files | main session | main session reads its own diff; the failing check now passes | |
 | Build — a feature or change from a clear spec | Sonnet (the spec pins the work) → Terra (the fallback) | Fable → Opus (when Fable cannot run) | |
-| Money-security build — code that moves money | Terra (every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family) → Sonnet (only if the owner waives the family rule in writing) | Fable → Opus (when Fable cannot run) | a project names its own paths under its pointer |
-| Research — facts from outside the repository | main session's own tools → Gemini web app (broad research) | main session checks every cited fact | the Gemini web app never receives repository code |
+| Money-security build — code that moves money | Terra (every reviewer allowed here is anthropic, so only an openai builder can get a reviewer of another family) → Sonnet (only if the owner waives the family rule in writing) | Fable → Opus (when Fable cannot run) | |
+| Research — facts from outside the repository | main session's own tools → Gemini web app (broad research, by hand) | main session checks every cited fact | the Gemini web app never receives repository code |
 
 ## Notes
 

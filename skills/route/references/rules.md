@@ -3,14 +3,14 @@
 How a session decides who builds and who reviews. Read these rules here, in
 the `route` skill; they use two files the owner keeps on this machine:
 
-- `~/.config/route/jobs.md` — each job's builders and reviewers, ranked, with the owner's notes. The ranks decide.
+- `~/.config/route/jobs.md` — each job's models, ranked to do the work and to review it, with the owner's notes. The ranks decide.
 - `~/.config/route/dictionary.md` — every model this machine can hand work to: how to call it, its family and tier, what it is good for. The context for choosing within the ranks; it never reorders them.
 
 ## Routing
 
 - Match the task to a job in `jobs.md`. A project's own routing lines, under the pointer in its briefing, add to the jobs; where they differ, the project's lines win in that project.
-- Walk the job's builders in order; the first eligible one wins. Then its reviewers the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
-- Call a model exactly as its dictionary entry says: the build call for a builder, the read-only call for a reviewer.
+- Walk the job's Do ranks in order; the first eligible one wins. Then its Review ranks the same way, as the row says: alternatives (the first that fits) or cumulative (every one). Name every rank you skip, and why. Eligible: in the dictionary, not marked `gone`, no call to it has failed this session; a builder only when the reviewers its job needs are eligible too.
+- Call a model exactly as its dictionary entry says: its write call for work that changes files, its read-only call for a review or a read.
 
 ## Floors
 
