@@ -5,9 +5,9 @@ description: 'Carry one task from ask to closed ticket, so what is found on the 
 
 # flow
 
-A finding kept only in the chat dies with the session. The ticket holds the work: each step writes to it when it happens, and the wrap-up checks what was written. A skill called below hands its result back to this list.
+A finding kept only in the chat dies with the session. The ticket holds the work: each step writes to it when it happens, and the wrap-up checks what was written. A skill called below hands its result back to this list. Where the project has its own rule for a step (what is trivial, who approves a commit, what done means), it overrides this list; a skill called below keeps its own rules.
 
-1. **Lane.** A typo, comment or format fix: edit, log it the way the project logs, commit, and stop here. The project's own definition of trivial wins. Unsure means not trivial.
+1. **Lane.** A typo, comment or format fix: edit, log it the way the project logs, commit, and stop here. Unsure means not trivial.
 2. **Open.** Find where this project keeps tickets; its briefing says, and if it does not, ask once. Reuse the ticket that covers the task, or call `intent` and file its body there. Name the id.
 3. **Re-check** the ticket against today's code before building. If the ask no longer holds (already done, superseded, the problem gone), say so on the ticket and stop. A detail that moved, such as a renamed file, gets a dated note naming what differs, and the work goes on.
 4. **Write as you go.** A finding goes on a ticket before your next step; one outside this task gets its own ticket. Read each write back before saying it landed.
