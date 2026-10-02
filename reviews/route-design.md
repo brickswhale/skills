@@ -227,6 +227,15 @@ skill is designed against that record, not against theory.
     models. The registry's and policy's content is re-homed, not dropped; route
     carries its own short guide to Codex calls instead of reading `pair`'s
     catalog, whose advisory rules forbid the write flag a builder needs.
+24. **`/route connect` and `/route disconnect`** (owner, 2026-10-02: "is
+    there a consistent connect and disconnect method that i can quickly enable
+    or disable routing?"; the name left to this session). The pointer line is
+    the switch: `connect` adds it to a project's briefing, word for word;
+    `disconnect` removes exactly that line; nothing else in the project
+    changes, and the dictionary and jobs stay as they are. Named connect and
+    disconnect, not link and unlink, because this repository already uses
+    "link" for its install symlinks. No machine-wide pause: it would add a state
+    every session must check.
 
 ## The plan after the pivot
 
@@ -582,6 +591,8 @@ Neither earns a rule: the repository adds one when a real ticket shows the step 
 **Ruling 23's first batch (`~/.cache/route-eval13/runs/`): update five of five; setup none of five, every failure the new template's.** The real data folders were unchanged. Dictionaries came out at 198 to 231 words, jobs files at 352 to 413. Setup failed clause 6 in all five runs: the template put the web app in the Research row's builder column and named its call a review call, which the clause forbids; the template and the clause contradicted each other. Three setup runs added a second line under the pointer, the project's money path, because the template said a project names its own paths under its pointer, while the owner's design gives a repository only the pointer line. Update 4's fence flag was a fixture path cut off at a folder boundary inside tool output, the third such flag. Fixed, before the re-run: calls are named by what they do, a write call and a read-only call; the job columns are Do and Review, the owner's own words in that project's table; the web app is a read-only reader in the Research row, and clause 6 allows exactly that; the money row describes kinds of work, and `/route` adds the pointer line "and nothing else"; the Contract's two stale words ("registry", "profile") became "dictionary" and "model". In tool output a cut-off piece of an allowed path now passes, while a command naming a folder above one is still flagged, and an outside path in output still is.
 
 **Ruling 23's batch, re-run (`~/.cache/route-eval14/runs/`): ten of ten.** Every run LOADED, FENCE OK and FOOTPRINT OK, and passed the outcome, the money job and the ordinary job; the batch script reported the real data folders unchanged. Dictionaries 355 to 428 words, jobs files 219 to 242. Read by hand (setup 1): the jobs table ranks Do and Review per job with the fixture owner's words credited and the rest `(proposed)`; the money row waits on `<owner to choose …>`, since that owner barred Codex from review; the project gained only the pointer line. Setup five of five, update five of five: green.
+
+**The rule for ruling 24's batch, fixed before it runs.** Two new cases, `route-connect` and `route-disconnect`, five runs each, through `evals/run-route-batch.sh` with the real data folders locked; a run counts when LOADED, FENCE OK, FOOTPRINT OK and its outcome judge passes (these cases have no downstream stage); bar four of five each. The footprint check now judges a briefing's changed lines by content: only blank lines and the route pointer line may be added or removed. Setup and update are not re-run: the new lines are a separate mode their steps never reach.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
