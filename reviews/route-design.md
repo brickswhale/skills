@@ -210,6 +210,23 @@ skill is designed against that record, not against theory.
     owner's: which profiles play each role, ranked, plus risk kinds, quota and
     other obligations. On money and security work the cross-family floor is met
     by at least one reviewer or auditor of another family than the builder.
+23. **Three parts, one-way links** (owner, 2026-10-02: "im still expecting
+    to have a 1. good list of dictionary, 2. the jobs with ranked models, and
+    3. routing rules ... the consumer repo only wire 3 into the claude/agent md
+    ... ideally this is the main 3 things with clear and simple relationship";
+    "dont delete anything just for the sack of deleting"; after pair round 20).
+    1, the dictionary (`~/.config/route/dictionary.md`): every model this
+    machine can hand work to, how it is called, and what it is good for, the
+    context a session ranks with. 2, the jobs (`~/.config/route/jobs.md`):
+    each job's builders and reviewers, ranked, with the owner's notes. 3, the
+    rules (`references/rules.md`): read in place by every session; they name
+    1 and 2, and nothing points back. A consumer repository's one line points
+    at 3. `/route` reads `references/template.md` (the skeletons, the default
+    jobs, how to write a call, the checks, the update steps) and writes 1, 2
+    and the pointer. The role lists of ruling 22 go: each job ranks its own
+    models. The registry's and policy's content is re-homed, not dropped; route
+    carries its own short guide to Codex calls instead of reading `pair`'s
+    catalog, whose advisory rules forbid the write flag a builder needs.
 
 ## The plan after the pivot
 
@@ -557,6 +574,10 @@ Neither earns a rule: the repository adds one when a real ticket shows the step 
 **The rule for ruling 22's batch, fixed before it runs.** `evals/run-route-batch.sh`, five runs per case, the bars and the counting of ruling 20's batches (LOADED, FENCE OK, FOOTPRINT OK, outcome, both downstream stages), the real data folders locked.
 
 **Ruling 22's batch (`~/.cache/route-eval12/runs/`): green at both bars, counted strictly.** The batch script reported the real data folders unchanged; `~/.config/route/` stayed absent. Policies: 218 to 353 words. Setup: every run passed outcome, the money job and the ordinary job; run 3's fence flag is `ls -d ~/.agents`, an existence check of the folder where the policy says Codex finds the rules, with nothing listed inside; counted as a breach: four of five. Update: three of five. Runs 1 and 3 failed clause 4: moving to the new roles, each added an `Auditor` role to the shared policy as an `<owner to choose …>` line naming no profile, which is what `SKILL.md` step 4 asks for a choice about who reviews money work, but which the clause's "none was added" forbids read literally; counted as failures. Run 3's fence flag is a cut-off copy of its own path. For the next batch, not this one, clause 4 now says such an `<owner to choose …>` line is not a reroute.
+
+**Pair round 20 (blind, both partners, claims checked), 2026-10-02: the owner's three parts.** Both endorsed them. Agreed: rank per job, not per role (the role indirection was most of the extra links); one-way links, with the machine files never pointing back; the dictionary gains what each model is good for; floors, the four Contract lines and role behaviour stay in the rules; checks and update steps become setup-time guidance only `/route` reads. Differed: GPT would keep today's file names and drop `pair`'s catalog as a dependency; the strongest-model partner would rename the files and keep reading the catalog. Chosen: the owner's own words as file names, and route's own call guide.
+
+**The rule for ruling 23's batch, fixed before it runs.** `evals/run-route-batch.sh`, five runs per case, bars three of five on update and four of five on setup, a run counting when LOADED, FENCE OK, FOOTPRINT OK, outcome and both downstream stages pass; the real data folders locked.
 
 **Pair round 15 (blind, rung 1, claims checked), 2026-09-30: a switch test.** Asked whether replaying the consuming project's real jobs through its old routing document and through `/route`'s output tests "better". Its verdict: a compliance pilot at most; with no model work run, it cannot show better outcomes, and "less text" alone is not "better". Kept after ruling 17, as they bind any comparison: write the answer key (an atomic duty ledger, with conflicts and retirements settled by the owner) before `/route` generates anything; the consuming project's past jobs shaped `/route`, so replaying them tests regression, not reuse; `/route` writes a machine-wide registry, so a private copy must redirect it too; the decision-only replay cannot see long-session forgetting. Checked in the consuming project's files: its briefing puts review in the main session, where the template asks for a fresh reviewer that runs no tests; its three open routing gaps are the ADR rule for architecture work, the invocation that lets its strongest model build, and which model builds when the main session's model hosts.
 
