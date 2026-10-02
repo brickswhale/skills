@@ -362,7 +362,7 @@ def link_case(name, connected):
             + "set -e\n"
             + "git init -q -b main . && git config user.email t@t && git config user.name t\n"
             + "mkdir -p .machine/route projects/refunds/tests\n"
-            + ROOT_AGENTS
+            + kit_block() + ROOT_AGENTS
             + heredoc(".machine/route/jobs.md", "# Jobs — this machine\n\n(the owner's ranked jobs)")
             + heredoc(".machine/route/dictionary.md", "# Model dictionary — this machine\n\n(the owner's models)")
             + heredoc("projects/refunds/AGENTS.md", briefing)
