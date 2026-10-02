@@ -4,7 +4,7 @@ One place for every custom skill, agent, and hook. Reused across every project, 
 
 ```
 .claude-plugin/plugin.json   the plugin manifest
-skills/<name>/SKILL.md       skills; a user-invoked one is a command (`disable-model-invocation: true`)
+skills/<name>/SKILL.md       skills; an owner-only one is a command (`disable-model-invocation: true`)
 agents/<name>.md             subagent definitions, when earned
 hooks/hooks.json             shared hooks, when earned
 reviews/<topic>.md           what a review left unsettled, when one was run
@@ -60,10 +60,10 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 |---|---|
 | `consult` | an idea gets pressure-tested before anyone builds it — its real terms, the assumptions, the strongest objection, a verdict that may be "don't". Writes nothing, produces no plan. `/consult`, or any "what if we" |
 | `gate` | a phase boundary gets a go or no-go — every criterion labelled against an artifact that was actually run, never a note asserting it, and "not yet" is a real verdict carrying what would flip it. `/gate`, or "are we ready for the next phase" |
-| `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. A command: `/intent <ask>` |
+| `intent` | a raw ask becomes an issue — problem, outcome, affected, constraints, open questions, interrogated until each is concrete. `/intent <ask>`, or a session calls it by name |
 | `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
 | `pair` | a second opinion from another model on one question — your own position written first, the ask put blind, both views attributed and the dissent kept rather than averaged. `/pair`, or "second model opinion" |
-| `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. A command: `/plan <ask>` |
+| `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. `/plan <ask>`, or a session calls it by name |
 | `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
 | `route` | the machine's model dictionary and its jobs with ranked models get written or brought up to date, under `~/.config/route/` and shared by every project — which models this machine has and what each is good for, from its own tools and the owner's answers, and which one builds and which reviews each job. Drafts, checks, then writes on the owner's yes; a project gets one pointer line to the skill's rules, which sessions read in place with the two files. A command: `/route` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |

@@ -1,7 +1,6 @@
 ---
 name: intent
 description: Turn a raw ask into an issue anyone could pick up — problem, outcome, who it affects, constraints, open questions — interrogating until each is concrete. Bug and incident are variants. Use for "/intent", "file this", "write this up as an issue", "capture this idea".
-disable-model-invocation: true
 ---
 
 # intent
