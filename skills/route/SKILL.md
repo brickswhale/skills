@@ -1,12 +1,14 @@
 ---
 name: route
-description: Set up or update model routing — which model builds and which reviews — writing the machine's model dictionary and its ranked jobs on the owner's yes. Run once per machine, and again when a model or subscription changes. A command: "/route", "set up model routing", "update routing".
+description: Set up or update model routing — which model builds and which reviews — writing the machine's model dictionary and its ranked jobs on the owner's yes. Run once per machine, and again when a model or subscription changes. A command: "/route", "set up model routing", "update routing", "/route connect", "/route disconnect".
 disable-model-invocation: true
 ---
 
 # route
 
 Writes this machine's model dictionary and its jobs with ranked models, both under `~/.config/route/` and shared by every project on the machine. Sessions read them through this skill's `references/rules.md`, which a project's agent briefing points at in one line; everything else, other skills included, this command only reads.
+
+**Connect or disconnect** a project (`/route connect [project]`, `/route disconnect [project]`; the current project when none is named): add the pointer line from `references/template.md` once, word for word, or remove the line that begins `Routing:` and names this skill's rules. Change nothing else, report what changed, and stop.
 
 1. **Read** `references/template.md` and `references/rules.md`.
 2. **Setup or update.** No dictionary or jobs means setup; otherwise update them, keeping every owner-written line. For each project the owner names, add the pointer line once, word for word, and nothing else. A project with its own routing document: list what it obliges that the rules and jobs do not, and leave the document to the owner.

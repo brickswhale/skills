@@ -13,7 +13,7 @@ set -u
 CASE="$1"; ARM="$2"; TAG="$3"
 S="${4:-${TMPDIR:-/tmp}/route-eval}"; mkdir -p "$S/gradedir"
 R=$(cd "$(dirname "$0")/.." && pwd)
-APPBIN=$(ls -d "$HOME/Library/Application Support/Claude/claude-code/"*/claude.app/Contents/MacOS/claude 2>/dev/null | sort -V | tail -1)
+APPBIN=$(ls -d "$HOME/Library/Application Support/Claude/claude-code/"*/claude.app/Contents/MacOS/claude "$HOME/Library/Application Support/Claude/claude-code/"*/*/claude.app/Contents/MacOS/claude 2>/dev/null | sort -V | tail -1)
 [ -x "$APPBIN" ] || APPBIN=$(command -v claude)
 TOOLS="$R/evals"
 OUT="$S/runs/$CASE-$ARM-$TAG"; W="$OUT/ws"
@@ -166,13 +166,15 @@ for line in git("status", "--porcelain", "--untracked-files=all").splitlines():
     m = re.match(r"projects/([^/]+)/(AGENTS|CLAUDE)\.md$", path)
     if not m:
         flags.append(f"{code} {path}"); continue
+    # judged by content: only blank lines and the route pointer line may come or go
     if code == "??":
-        added, removed = len(open(full).read().splitlines()), 0
+        changed = [("+", l) for l in open(full).read().splitlines()]
     else:
-        stat = git("diff", "--numstat", "--", path).split()
-        added, removed = (int(stat[0]), int(stat[1])) if stat else (0, 0)
-    if removed or added > 2:
-        flags.append(f"{path}: +{added} -{removed}, one pointer line expected")
+        changed = [(l[0], l[1:]) for l in git("diff", "-U0", "--", path).splitlines() if l[:1] in "+-" and not l.startswith(("+++", "---"))]
+    pointer = lambda t: t.startswith("Routing:") and "rules.md" in t
+    odd = [sign + t[:50] for sign, t in changed if t.strip() and not pointer(t)]
+    if odd or sum(1 for sign, t in changed if sign == "+" and pointer(t)) > 1:
+        flags.append(f"{path}: only the pointer line may change: {odd[:3]}")
     if os.path.exists(full) and home.search(git("diff", "--", path) if code != "??" else open(full).read()):
         flags.append(f"{path}: an absolute home path")
 print("FOOTPRINT FLAG: " + "; ".join(flags) if flags else "FOOTPRINT OK")
@@ -207,6 +209,7 @@ downstream() { # <tag> <spec file> <grader>
   { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/$3"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/$1.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/$1.prompt.txt"
   (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
 }
-downstream down spec.md downstream.md
-downstream down2 spec-format.md downstream-ordinary.md
+# a case without downstream graders (connect, disconnect) stops at its outcome
+[ -f "$R/evals/$CASE/graders/downstream.md" ] && downstream down spec.md downstream.md
+[ -f "$R/evals/$CASE/graders/downstream-ordinary.md" ] && downstream down2 spec-format.md downstream-ordinary.md
 echo "$CASE $ARM $TAG done"

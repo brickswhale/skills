@@ -346,7 +346,35 @@ git init -q -b main . && git config user.email t@t && git config user.name t
 git add -A -- . ":!scaffold.sh" && git commit -qm "machine and project before routing"
 """
 
-for case, body in (("route-update", UPDATE), ("route-setup", SETUP)):
+# ------------------------------------------------- route-connect / disconnect
+# The pointer line exactly as the template gives it, so the cases never drift.
+TPL_POINTER = KIT["template.md"].split("## The pointer line", 1)[1].split("```", 2)[1].strip()
+
+
+def link_case(name, connected):
+    briefing = "# refunds — agent briefing\n\nCommands:\n- test: `python3 -m unittest discover -s tests -q`\n"
+    if connected:
+        briefing += "\n" + TPL_POINTER + "\n"
+    briefing += "\nNever commit. The owner commits.\n"
+    state = "connected" if connected else "not connected"
+    return (HEAD
+            + "# " + name + ": routing already set up on this stand-in machine; refunds is " + state + ".\n"
+            + "set -e\n"
+            + "git init -q -b main . && git config user.email t@t && git config user.name t\n"
+            + "mkdir -p .machine/route projects/refunds/tests\n"
+            + ROOT_AGENTS
+            + heredoc(".machine/route/jobs.md", "# Jobs — this machine\n\n(the owner's ranked jobs)")
+            + heredoc(".machine/route/dictionary.md", "# Model dictionary — this machine\n\n(the owner's models)")
+            + heredoc("projects/refunds/AGENTS.md", briefing)
+            + ": > projects/refunds/tests/__init__.py\n"
+            + "printf '*.log\\n' > .gitignore\n"
+            + 'git add -A -- . ":!scaffold.sh" && git commit -qm "routing set up; refunds ' + state + '"\n')
+
+
+CONNECT = link_case("route-connect", False)
+DISCONNECT = link_case("route-disconnect", True)
+
+for case, body in (("route-update", UPDATE), ("route-setup", SETUP), ("route-connect", CONNECT), ("route-disconnect", DISCONNECT)):
     d = os.path.join(REPO, "evals", case)
     os.makedirs(d, exist_ok=True)
     p = os.path.join(d, "scaffold.sh")
