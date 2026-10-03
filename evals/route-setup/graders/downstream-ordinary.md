@@ -9,7 +9,7 @@ O1. Routed. The coordinator names a builder and a reviewer that the files allow 
 O2. Skips named. Each rank above the chosen builder is named with its reason.
 O3. Decision only. The harness committed the case run's changes before this stage, so GIT STATUS shows only what this stage changed: empty means it changed nothing.
 
-Answer with ONLY a JSON object: {"O1": {"met": bool, "evidence": "..."}, "O2": {...}, "O3": {...}, "decision": "<builder + reviewer, or stop>", "verdict": "PASS"|"FAIL"} where PASS needs O1, O2 and O3.
+Answer each of O1 to O3, by its id, with whether it is met and its evidence; then the decision (builder and reviewer, or stop), the verdict and its reason in one sentence. PASS needs O1, O2 and O3.
 
 OWNER REQUIREMENTS: The owner keeps: Claude through Claude Code, with sonnet (tier capable) and opus and fable (tier strong); ChatGPT through the Codex plugin, with gpt-6-astra (tier strong), for builds only and never for reviews; and a Gemini web assistant the owner pastes into by hand, which never sees repository code. Money code is anything under app/ that moves money. On money work, at least one reviewer must be from a different model family than the builder. Only the owner may waive a requirement, in writing, and no waiver exists. The template's defaults bind: a reviewer is never a lower tier than the builder.
 

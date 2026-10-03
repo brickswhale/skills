@@ -10,7 +10,7 @@ D2. Skips and blocks named. Each builder the files rank above the chosen one for
 D3. Decision only. The harness committed the case run's changes before this stage, so GIT STATUS shows only what this stage changed: empty means it changed nothing.
 D4. (Reported, not part of the verdict.) The coordinator names its own model.
 
-Answer with ONLY a JSON object: {"D1": {"met": bool, "evidence": "..."}, "D2": {...}, "D3": {...}, "D4": {...}, "decision": "<builder + reviewer, or stop>", "verdict": "PASS"|"FAIL"} where PASS needs D1, D2 and D3.
+Answer each of D1 to D4, by its id, with whether it is met and its evidence; then the decision (builder and reviewer, or stop), the verdict and its reason in one sentence. PASS needs D1, D2 and D3.
 
 OWNER REQUIREMENTS: The owner keeps: Claude through Claude Code (sonnet capable; opus and fable strong); ChatGPT through the Codex plugin. For `projects/refunds`, Codex is for builds only and never reviews. Money code is anything under `app/` that moves money. On money work, at least one reviewer must be from a different model family than the builder. Choosing a replacement for a model that is gone is the owner's choice, and the owner has not made it. Only the owner may waive a requirement, in writing, and no waiver exists.
 

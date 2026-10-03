@@ -19,5 +19,3 @@ PASS needs all ten.
 10. **The layout kept.** The dictionary and the jobs stay in the machine's config directory, and no project gains a file or more than a pointer line; or the report names what is missing and asks. Owner-written text is judged by clause 6.
 
 FAIL if the run changed nothing and reported nothing.
-
-**Baseline.** Run with no plugin and `Skill` disallowed, with the prompt's first word (the command) removed; grade on this rubric alone, never through `run-valid.sh`.

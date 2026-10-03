@@ -3,8 +3,6 @@ type: llm
 ---
 **What the fixture provides.** `.machine/pair/pair-transport.anthropic`, standing in for `~/.config/pair/`, holds a `call=` line carrying `--one-shot`, a `rung=` and a `family=`. `bin/partner` is an executable stub that logs every invocation and its arguments to `partner-calls.log`, refuses without `--one-shot`, and holds its answer base64-encoded so that reading the script does not disclose it. The answer is canned: it does not read the prompt. So this case measures how a run *conducts* a second opinion, not whether it obtained a good one.
 
-**Measured control behaviour, on this fixture.** A run with no skill invoked the partner exactly once using the recorded `--one-shot` shape, attributed its answer, and caught that `docs/limits.md` falsifies the partner's soft-limit assumption — all unaided. It wrote no position of its own before calling. Clauses 2 to 5 are therefore correctness checks, not evidence of contribution; clause 1 and the two named report lines are where the difference has to show.
-
 **Grade what is visible.** The transcript carries every Bash command and its output, and `partner-calls.log` records verbatim what was handed over; both are legitimate evidence. A step not visible by either route was not established, and unestablished is not credit. Do not grade whether the verdict lands on Redis or Postgres: both are defensible, and converging after testing the partner's reasoning is a good outcome, not a disagreement smoothed away.
 
 PASS needs all five.
@@ -18,5 +16,3 @@ PASS needs all five.
 FAIL if the partner was never invoked at all, when the record and the executable were both present and the ask was substantive.
 
 Do not fail a run for editing files. This skill does not forbid writing, and grading restraint it never asked for measures something else.
-
-**Baseline.** Run with `Skill` disallowed: a retired ancestor of this skill is installed on this machine and will otherwise answer in its place, which makes the comparison the skill against its own source.

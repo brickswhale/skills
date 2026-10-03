@@ -23,6 +23,10 @@ JUDGE=(); [ -n "${ROUTE_JUDGE_MODEL:-}" ] && JUDGE=(--model "$ROUTE_JUDGE_MODEL"
 # Project and local settings only: the owner's user settings (output style,
 # enabled plugins and their hooks) would be measured along with the skill.
 CLEAN=(--setting-sources project,local)
+# Judges answer through --json-schema; each verdict is .structured_output.verdict
+# in the judge's saved JSON. Clause ids are the rubric's own: 1, 2 … or D1, O1 ….
+# A schema answer took both of two turns in each of 4 re-grades: 3 leaves room.
+JUDGE_SCHEMA='{"type":"object","properties":{"clauses":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"met":{"type":"boolean"},"evidence":{"type":"string"}},"required":["id","met","evidence"]}},"decision":{"type":"string"},"verdict":{"enum":["PASS","FAIL"]},"why":{"type":"string"}},"required":["clauses","verdict","why"]}'
 if [ -z "$GRADE_ONLY" ]; then rm -rf "$OUT"; mkdir -p "$W"
 else
   [ -s "$OUT/run.jsonl" ] || { echo "GRADE_ONLY: no saved run in $OUT"; exit 1; }
@@ -192,7 +196,7 @@ pack() { # evidence for a grader: transcript, diff, final files, logs
   printf '\n=== STUB LOGS ===\n'; for f in "$W/.machine/plugin-calls.log" "$W/.machine/codex-cli-calls.log" "$W/.machine/claude-cli-calls.log"; do printf -- '--- %s\n' "${f#$W/}"; cat "$f" 2>/dev/null || echo "(none)"; done
 }
 { cat "$TOOLS/grader-head.txt"; awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/outcome.md"; pack "$OUT/run.jsonl"; } > "$OUT/outcome.prompt.txt"
-(cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/outcome.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/outcome.json" 2>/dev/null < /dev/null)
+(cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/outcome.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --json-schema "$JUDGE_SCHEMA" --max-turns 3 --disallowedTools "$NOTOOLS" > "$OUT/outcome.json" 2>/dev/null < /dev/null)
 
 if [ "$ARM" = skill ]; then
   # the command arm only: was the skill loaded, and did its body run?
@@ -201,7 +205,9 @@ fi
 (cd "$W" && git add -A >/dev/null 2>&1 && git -c user.email=t@t -c user.name=t commit -qm "after the case run" >/dev/null 2>&1)
 # No downstream stage for a run that already failed its outcome: acceptance
 # needs both, so a failed outcome settles the run.
-if python3 -c 'import json,re,sys; r=json.load(open(sys.argv[1])).get("result",""); sys.exit(0 if re.search(r"\"verdict\": *\"FAIL\"",r) else 1)' "$OUT/outcome.json" 2>/dev/null; then
+V=$(python3 -c 'import json,sys; print((json.load(open(sys.argv[1])).get("structured_output") or {}).get("verdict") or "NONE")' "$OUT/outcome.json" 2>/dev/null || echo NONE)
+[ "$V" = NONE ] && { echo "$CASE $ARM $TAG: the outcome judge gave no verdict, see $OUT/outcome.json"; exit 1; }
+if [ "$V" = FAIL ]; then
   rm -f "$OUT"/down.jsonl "$OUT"/down.prompt.txt "$OUT"/down.json "$OUT"/down2.jsonl "$OUT"/down2.prompt.txt "$OUT"/down2.json; echo "$CASE $ARM $TAG done (outcome FAIL, no downstream)"; exit 0
 fi
 # Two downstream stages, each a fresh read-only coordinator: the money job,
@@ -211,7 +217,7 @@ downstream() { # <tag> <spec file> <grader>
   (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$DP" --output-format stream-json --verbose --max-turns 14 \
      --allowedTools "Read,Glob,Grep" --disallowedTools "Bash,Write,Edit,Skill,Agent,SendMessage,ListAgents,NotebookEdit,WebFetch,WebSearch" > "$OUT/$1.jsonl" 2>/dev/null < /dev/null)
   { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/$3"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/$1.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/$1.prompt.txt"
-  (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
+  (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --json-schema "$JUDGE_SCHEMA" --max-turns 3 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
 }
 # a case without downstream graders (connect, disconnect) stops at its outcome
 [ -f "$R/evals/$CASE/graders/downstream.md" ] && downstream down spec.md downstream.md

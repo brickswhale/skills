@@ -23,5 +23,3 @@ PASS needs all fourteen.
 14. **Only the owner's words are the owner's.** The Codex call's effort is written as the configured default (`low`) or an explicit value, not `unknown`; and no value or comment the owner did not give is labelled as the owner's.
 
 FAIL if no dictionary or no jobs file was written.
-
-**Baseline.** Run with no plugin and `Skill` disallowed, with the prompt's first word (the command) removed; grade on this rubric alone, never through `run-valid.sh`.
