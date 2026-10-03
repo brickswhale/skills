@@ -5,7 +5,8 @@
 # <workdir>/runs/<case>-<arm>-<tag>/. Fence: the desktop app's own Claude Code
 # binary under `env -i`, which also strips the app's messaging socket that a
 # child of an app shell would otherwise inherit; the fixture's bin/ first on
-# PATH for the tested session. Needs a stand-alone sign-in (`claude auth login`).
+# PATH for the tested session, and no user settings (CLEAN). Needs a stand-alone
+# sign-in (`claude auth login`).
 # GRADE_ONLY=1 re-grades a saved run: no scaffold, no tested session.
 # Judges run on the default model and effort; ROUTE_JUDGE_MODEL picks another
 # (at low effort). Cheaper judges were tried and misgraded, see route-design.md.
@@ -19,6 +20,9 @@ TOOLS="$R/evals"
 OUT="$S/runs/$CASE-$ARM-$TAG"; W="$OUT/ws"
 GRADE_ONLY="${GRADE_ONLY:-}"
 JUDGE=(); [ -n "${ROUTE_JUDGE_MODEL:-}" ] && JUDGE=(--model "$ROUTE_JUDGE_MODEL" --effort low)
+# Project and local settings only: the owner's user settings (output style,
+# enabled plugins and their hooks) would be measured along with the skill.
+CLEAN=(--setting-sources project,local)
 if [ -z "$GRADE_ONLY" ]; then rm -rf "$OUT"; mkdir -p "$W"
 else
   [ -s "$OUT/run.jsonl" ] || { echo "GRADE_ONLY: no saved run in $OUT"; exit 1; }
@@ -41,12 +45,12 @@ MAXT=$(sed -n 's/^max_turns: *//p' "$R/evals/$CASE/prompt.md")
 if [ -n "$GRADE_ONLY" ]; then :
 elif [ "$ARM" = base ]; then
   PROMPT="${BODY#/route }"
-  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$PROMPT" --output-format stream-json --verbose --max-turns "$MAXT" \
+  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$PROMPT" --output-format stream-json --verbose --max-turns "$MAXT" \
      --allowedTools "Read,Write,Edit,Bash,Glob,Grep" \
      --disallowedTools "Skill,SendMessage,ListAgents,mcp__ccd_session_mgmt__send_message" > "$OUT/run.jsonl" 2> "$OUT/run.err" < /dev/null)
 else
   PROMPT="$BODY"
-  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$PROMPT" --output-format stream-json --verbose --max-turns "$MAXT" --plugin-dir "$R" \
+  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$PROMPT" --output-format stream-json --verbose --max-turns "$MAXT" --plugin-dir "$R" \
      --allowedTools "Read,Write,Edit,Bash,Glob,Grep,Skill" \
      --disallowedTools "SendMessage,ListAgents,mcp__ccd_session_mgmt__send_message" > "$OUT/run.jsonl" 2> "$OUT/run.err" < /dev/null)
 fi
@@ -188,7 +192,7 @@ pack() { # evidence for a grader: transcript, diff, final files, logs
   printf '\n=== STUB LOGS ===\n'; for f in "$W/.machine/plugin-calls.log" "$W/.machine/codex-cli-calls.log" "$W/.machine/claude-cli-calls.log"; do printf -- '--- %s\n' "${f#$W/}"; cat "$f" 2>/dev/null || echo "(none)"; done
 }
 { cat "$TOOLS/grader-head.txt"; awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/outcome.md"; pack "$OUT/run.jsonl"; } > "$OUT/outcome.prompt.txt"
-(cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/outcome.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/outcome.json" 2>/dev/null < /dev/null)
+(cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/outcome.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/outcome.json" 2>/dev/null < /dev/null)
 
 if [ "$ARM" = skill ]; then
   # the command arm only: was the skill loaded, and did its body run?
@@ -204,10 +208,10 @@ fi
 # and an ordinary job that must be routed, not stopped.
 downstream() { # <tag> <spec file> <grader>
   local DP='A job arrives in `projects/refunds`: build what its `docs/'"$2"'` asks for. Before anything is handed off, decide who builds it and who reviews it, the way the project'"'"'s routing files ask. Do not dispatch anything and do not change any file: state your decision and stop.'
-  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" -p "$DP" --output-format stream-json --verbose --max-turns 14 \
+  (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$DP" --output-format stream-json --verbose --max-turns 14 \
      --allowedTools "Read,Glob,Grep" --disallowedTools "Bash,Write,Edit,Skill,Agent,SendMessage,ListAgents,NotebookEdit,WebFetch,WebSearch" > "$OUT/$1.jsonl" 2>/dev/null < /dev/null)
   { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/$3"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/$1.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/$1.prompt.txt"
-  (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
+  (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --max-turns 2 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
 }
 # a case without downstream graders (connect, disconnect) stops at its outcome
 [ -f "$R/evals/$CASE/graders/downstream.md" ] && downstream down spec.md downstream.md
