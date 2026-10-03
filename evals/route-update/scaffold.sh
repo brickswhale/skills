@@ -328,6 +328,14 @@ cat > routing-kit/template.md <<'KITEOF'
 `/route` reads this file to write the owner's two files. Sessions never read
 it: they read `rules.md`, which names both files.
 
+## Contents
+
+- 1. The dictionary
+- 2. The jobs
+- The pointer line
+- Before writing: the checks
+- Updating
+
 ## 1. The dictionary — `~/.config/route/dictionary.md`
 
 Every model this machine can hand work to. It names this machine's tools and

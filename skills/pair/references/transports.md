@@ -8,6 +8,19 @@ recognise a candidate, to write a transport record, and to repair one that has
 gone stale. An entry without a verified date is a candidate, not a
 recommendation.
 
+## Contents
+
+- Limits that bind every transport here
+- Why a record is not enough on its own
+- Codex plugin for Claude Code — verified
+- Codex CLI — verified, field use
+- Codex over MCP — removed
+- Claude Code advisor tool — ineligible
+- Claude Code CLI — unverified as a partner
+- In-process subagent, same family — rung 2, candidate
+- Gemini CLI — unverified
+- Adding an entry
+
 ## Limits that bind every transport here
 
 These hold whatever partner you reach for, and they are the reason this file is

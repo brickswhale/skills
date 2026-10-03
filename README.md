@@ -24,7 +24,7 @@ Symlinks, so `git pull` updates every skill everywhere. Re-run the loop when a s
 
 Flat. One folder per skill under `skills/`, holding `SKILL.md` and, where a skill needs reference data too long to inline, a `references/` beside it — the hook word-caps and genericity-checks `SKILL.md` alone, so anything else there is scrubbed by hand or not committed. No category folders: the plugin manifest can list several skill directories, and the install loop reads one level, so a category, when there are enough skills to need one, becomes a second directory listed in `plugin.json`, never a nested path. Until then the table below groups skills by SDLC stage. A command is a skill with `disable-model-invocation: true`; there is no `commands/` folder.
 
-Frontmatter keys Claude Code reads: `name`, `description`, `disable-model-invocation`, `user-invocable`, `allowed-tools`, `context: fork`, `arguments`. Nothing else.
+Frontmatter keys: only those in Claude Code's [frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference), which is the list, not a copy here. `model` and `effort` are among them and switch the model and effort while the skill runs, so neither ever labels the model a skill was written for.
 
 ## Evals
 
