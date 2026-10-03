@@ -39,9 +39,9 @@ if [ "$scaf" != "0" ]; then
   echo "INVALID: fixture scaffold exited $scaf — the repo under test was not fully built"; exit 1
 fi
 
-python3 - "$name" "$run" <<'PY'
-import json, sys
-name, path = sys.argv[1], sys.argv[2]
+python3 - "$name" "$run" "$(cd "$(dirname "$0")/.." && pwd)" <<'PY'
+import json, os, sys
+name, path, repo = sys.argv[1], sys.argv[2], sys.argv[3]
 init = None; result = None; assistant = 0
 for line in open(path):
     try: d = json.loads(line)
@@ -55,6 +55,13 @@ if init is None:
 errs = init.get("plugin_errors") or []
 if errs:
     print(f"INVALID: plugin_errors {errs[0][:90]} — a rejected manifest loads zero skills"); sys.exit(1)
+# A plugin that declares no hooks cannot have run one, so a hook that ran came
+# from the owner's own settings, and the run measured them along with the skill.
+try: own_hooks = json.load(open(os.path.join(repo, "hooks/hooks.json"))).get("hooks") or {}
+except Exception: own_hooks = {}
+ran = sum(1 for line in open(path) if '"hook_response"' in line)
+if ran and not own_hooks:
+    print(f"INVALID: {ran} hook runs — the owner's settings loaded; run with --setting-sources project,local"); sys.exit(1)
 skills = init.get("skills") or []
 # exact match, or the plugin-namespaced form. A substring test certifies a
 # baseline as loaded off code-review, writing-plans or a stale kit-consult
