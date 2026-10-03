@@ -49,11 +49,11 @@ a catalog of recognised surfaces rather than a licence to go looking.
 A transport record caches one entry from this file. The cache is what gets read
 later, so a partial cache is what will actually be believed.
 
-The expensive case: an entry had carried a mandatory redirection for months,
-while the record stored only the binary, the family and the read-only flag. A
-later session reused the record, rebuilt the rest of the command from memory,
-omitted the redirection, and hung with no bound at all. The knowledge was never
-missing. The lossy copy is what was reused.
+An entry can carry a mandatory part, such as a redirection, that a record
+storing only the binary, the family and the read-only flag drops. A session
+that reuses such a record rebuilds the rest of the command from memory, omits
+that part, and can hang with no bound. The knowledge is in this file; the lossy
+copy is what gets reused.
 
 So a record must carry the whole `call=` line, verbatim, and reuse must invoke
 that line rather than reconstruct one. If the record has no `call=`, or its

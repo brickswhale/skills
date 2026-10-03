@@ -8,7 +8,6 @@ mkdir -p tool tests && : > tool/__init__.py
 printf 'def add(a, b):\n    return a + b\n' > tool/core.py
 printf 'import unittest\nfrom tool.core import add\nclass T(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(add(1, 2), 3)\n' > tests/test_core.py
 printf '# Plan: tool verify\n\n### Task 1\n- [x] write failing test\n- [x] make it pass\n- [x] commit\n\n### Task 2\n- [ ] write failing test\n- [ ] make it pass\n- [ ] commit\n' > plan.md
-date -v+14d +%s > .v0-deadline 2>/dev/null || date -d '+14 days' +%s > .v0-deadline
 git add -A -- . ":!scaffold.sh" && git commit -qm "Task 1 done"
 # the bare origin goes somewhere unique: writing to ../ collides with the
 # previous run when several runs share a parent, and set -e then aborts the

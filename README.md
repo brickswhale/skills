@@ -105,7 +105,7 @@ or deliberately retired.
 Trigger-based, never scheduled. One skill at a time.
 
 1. **Trigger.** A real ticket shows that judgment step done badly twice. Note the ticket in the commit message.
-2. **Rewrite.** Under 300 words, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
+2. **Rewrite.** To the word target under Rules, generic, no kit vocabulary, no project names. The old skill is source material, not text to copy.
 3. **Test.** Five runs on a scaffolded fixture, green three of five. Keep it only if it changed the outcome against a bare-model run on the same fixture.
 4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 

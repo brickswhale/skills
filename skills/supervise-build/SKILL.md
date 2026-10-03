@@ -22,7 +22,7 @@ Read disk, not the session.
 2. **Repo.** `git status -sb`, `git log --oneline main..HEAD`, origin, last commit. Untracked means a half-done step; clean isn't proof.
 3. **Tests.** `AGENTS.md`'s command, in a temp copy, never the worker's tree.
 4. **Position.** Ticked, unticked in `plan.md`: last task, untracked step.
-5. **Caps.** Code lines, README words vs limits. `test "$(date +%s)" -lt "$(cat .v0-deadline)"` if present.
+5. **Caps.** Code lines, README words and a deadline, each against the limit the repo declares for it.
 6. **Compare.** Step match disk? Off plan, over cap, unpushed?
 7. **Report** six rows: session, last task, current step, tests, caps, push. One line: on plan, or drifted, why.
 8. **Correct** only if drifted, idle mid-step, or unpushed, and only to the session whose `cwd` matches: `send_message` position and next action, no plan, no praise. **Callback,** any hand-off, send instead: "when this is done, or when you stop with 'waiting for: X', send_message to session <supervisor's session id> with five lines: DONE or BLOCKED: <what> / head: <sha> on <branch>, pushed yes/no / lines, tests, verify / findings: open, ruled / waiting for: <X or none>. Send once per stop, before your final line, then keep going if you can." Reply triggers the next pass; disk decides.
