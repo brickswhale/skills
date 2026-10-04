@@ -15,7 +15,7 @@ A finding you have not reproduced is a rumor.
    - **plan** — does the diff do what the plan says, all of it?
    - **scope** — what is in the diff nobody asked for.
 4. **Verify.** Read the cited lines and state the concrete failure: inputs → wrong outcome. Cannot state it, drop it — a false important costs more than a missed nit.
-5. **Class.** Every survivor names its class, then one command counts its siblings and reports that number. Two or more, the class is the finding and the fix sweeps all of them.
+5. **Class.** Every survivor names its class by its cause — what makes it happen, not what it looks like — then one command counts its siblings and reports that number. Two or more, the class is the finding and the fix sweeps all of them.
 6. **Report** JSON and nothing else — a house style preferring prose does not apply, the caller parses this:
 
 ```json
