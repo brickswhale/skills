@@ -7,7 +7,8 @@
 # child of an app shell would otherwise inherit; the fixture's bin/ first on
 # PATH for the tested session, and no user settings (CLEAN). Needs a stand-alone
 # sign-in (`claude auth login`).
-# GRADE_ONLY=1 re-grades a saved run: no scaffold, no tested session.
+# GRADE_ONLY=1 re-grades a saved run: no scaffold and no session of any kind;
+# the saved transcripts, downstream ones included, are graded and kept.
 # Judges run on the default model and effort; ROUTE_JUDGE_MODEL picks another
 # (at low effort). Cheaper judges were tried and misgraded, see route-design.md.
 set -u
@@ -208,14 +209,20 @@ fi
 V=$(python3 -c 'import json,sys; print((json.load(open(sys.argv[1])).get("structured_output") or {}).get("verdict") or "NONE")' "$OUT/outcome.json" 2>/dev/null || echo NONE)
 [ "$V" = NONE ] && { echo "$CASE $ARM $TAG: the outcome judge gave no verdict, see $OUT/outcome.json"; exit 1; }
 if [ "$V" = FAIL ]; then
+  # a re-grade keeps the saved downstream transcripts: they are evidence, not output
+  [ -n "$GRADE_ONLY" ] && { echo "$CASE $ARM $TAG done (outcome FAIL, no downstream; saved transcripts kept)"; exit 0; }
   rm -f "$OUT"/down.jsonl "$OUT"/down.prompt.txt "$OUT"/down.json "$OUT"/down2.jsonl "$OUT"/down2.prompt.txt "$OUT"/down2.json; echo "$CASE $ARM $TAG done (outcome FAIL, no downstream)"; exit 0
 fi
 # Two downstream stages, each a fresh read-only coordinator: the money job,
 # and an ordinary job that must be routed, not stopped.
 downstream() { # <tag> <spec file> <grader>
   local DP='A job arrives in `projects/refunds`: build what its `docs/'"$2"'` asks for. Before anything is handed off, decide who builds it and who reviews it, the way the project'"'"'s routing files ask. Do not dispatch anything and do not change any file: state your decision and stop.'
+  if [ -n "$GRADE_ONLY" ]; then # grade the saved coordinator, never start a new one
+    [ -s "$OUT/$1.jsonl" ] || { echo "$CASE $ARM $TAG: GRADE_ONLY: no saved $1.jsonl to grade"; exit 1; }
+  else
   (cd "$W" && "${RUNFENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$DP" --output-format stream-json --verbose --max-turns 14 \
      --allowedTools "Read,Glob,Grep" --disallowedTools "Bash,Write,Edit,Skill,Agent,SendMessage,ListAgents,NotebookEdit,WebFetch,WebSearch" > "$OUT/$1.jsonl" 2>/dev/null < /dev/null)
+  fi
   { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$R/evals/$CASE/graders/$3"; printf '\n=== TRANSCRIPT ===\n'; python3 "$TOOLS/condense-transcript.py" "$OUT/$1.jsonl"; printf '\n=== GIT STATUS (porcelain) ===\n'; (cd "$W" && git status --porcelain); } > "$OUT/$1.prompt.txt"
   (cd "$S/gradedir" && "${FENCE[@]}" "$APPBIN" "${CLEAN[@]}" -p "$(cat "$OUT/$1.prompt.txt")" ${JUDGE[@]+"${JUDGE[@]}"} --output-format json --json-schema "$JUDGE_SCHEMA" --max-turns 3 --disallowedTools "$NOTOOLS" > "$OUT/$1.json" 2>/dev/null < /dev/null)
 }
