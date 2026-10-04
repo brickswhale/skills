@@ -5,17 +5,6 @@ description: Read another session's build position from disk, compare with its p
 
 # supervise-build
 
-**Role lifetime.** Once invoked, supervising that worker is **this session's standing role** until
-the owner releases or changes it. A later "check the build session", "did it drift", or the worker's
-own callback is the **same assignment continuing** — repeat the procedure below; do not wait to be
-re-invoked, and never answer from the last pass. **The role persists; findings never do** — every
-pass re-reads disk.
-
-Stated so nobody relies on more than exists: this lives in conversation context. It does not survive
-compaction, does not reach a new session, and enforces nothing. A successor session is **handed the
-assignment explicitly** — worker session, repo, boundaries, what is outstanding — or it is not
-supervising.
-
 Read disk, not the session.
 
 1. **Session.** `get_session` by title: running or idle, `cwd`. Wrong `cwd`: stop, report, nothing sent. No session: same.
