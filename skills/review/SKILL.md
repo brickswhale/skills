@@ -7,9 +7,9 @@ description: Review uncommitted work before it lands — four lenses (bugs, secu
 
 A finding you have not reproduced is a rumor.
 
-1. **Read.** `git diff`, `git status`. Name the plan it claims to follow — ticket, plan file, the ask in thread. None named: say so, review the diff alone.
+1. **Read.** `git status --untracked-files=all`; `git diff HEAD`, which carries staged and unstaged changes alike; each untracked file the status lists. Name the plan it claims to follow — ticket, plan file, the ask in thread. None named: say so, review the diff alone.
 2. **Run.** The declared test command. Record count and failures. A layer you cannot run here is reported not run, with its command.
-3. **Lenses.** Four passes, each blind to the last:
+3. **Lenses.** Four passes, one lens at a time:
    - **bugs** — inputs and state reaching a wrong result or crash.
    - **security** — untrusted input, secrets, permissions, injection.
    - **plan** — does the diff do what the plan says, all of it?

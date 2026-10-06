@@ -11,8 +11,7 @@ The bar: confidence to invest the next phase's cost. Not perfection, not polish 
 
 - [ ] The written criteria — issue, plan, whatever exists. None: ask what done means, stop.
 - [ ] Per criterion: the artifact that shows it — command output, a file, a diff. Run it.
-- [ ] `grep -ri` each declaration **name** — version, package name, entry points — never the value you hold: a value search returns only copies that agree. Paste every hit.
-- [ ] Each function touched this phase: `grep` its bare name, count the hits.
+- [ ] Debt the notes do not name. `grep -ri` each declared fact by its **name** — version, package name, entry point — never by the value you hold: a value search finds only the copies that agree. Paste the declarations that disagree. `grep` the bare name of each function this phase added or changed; paste the ones nothing calls.
 - [ ] In the notes: every TODO's revisit condition; the test or run behind each "handled" or "works".
 
 **Not evidence:** a note asserting it · absence of a test · a file standing in for one you cannot get · your own bar.
