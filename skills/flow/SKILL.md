@@ -19,3 +19,4 @@ A finding kept only in the chat dies with the session. The ticket holds the work
    - receipt: who built, who reviewed, at what effort
    - not fixed: each finding in this task left open, and its reason
    - log: the line written, or the commit that carries it
+   - next: `fresh session` — the owner starts the next task in a new session from its own ticket — or `here, because <what the next task needs from this session that its ticket cannot carry>`; never `not done`
