@@ -48,7 +48,7 @@ How to write a call:
 
 - Each call names the host that makes it — the agent app a session runs in, not the tools one session has switched on: `Claude Code` (its Agent tool), `any` (any app with a shell), `manual` (a person carries it). A session on a host a call does not name cannot make that call.
 - Claude Code subagents: the Agent tool with `model=<opus | fable | sonnet | haiku>`. Write call: a type that can edit, such as `general-purpose`. Read-only call: a type without edit tools, such as `Plan`; it keeps Bash, so `writes: no, instruction only`.
-- Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. The write call adds `--write`; the read-only call never does (enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory; never `--resume`.
+- Codex through its Claude Code plugin: `node "<installPath>/scripts/codex-companion.mjs" task --fresh --model <m> --effort <e> "<prompt>" < /dev/null`, with `installPath` taken from `claude plugin list --json` for `codex@openai-codex`. The write call adds `--write`; the read-only call never does (enforced by the Codex sandbox). Efforts: `none` to `xhigh`. `< /dev/null` is mandatory. Keep `--fresh`: `rules.md` sends every round to a fresh call, so no call carries `--resume`.
 - Codex CLI without the plugin: read-only only, `codex exec --sandbox read-only --skip-git-repo-check "<prompt>" < /dev/null`. A CLI write call is unverified: ask the owner.
 - Write paths resolved, the home directory as `$HOME` inside double quotes: a quoted `~` does not expand.
 
