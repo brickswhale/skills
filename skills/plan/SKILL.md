@@ -5,7 +5,7 @@ description: Turn a settled ask into an ordered implementation plan — the file
 
 # plan
 
-Nothing is built this turn. Open with `PLAN ONLY — nothing will be changed` and keep it true: read, search, ask — write nothing.
+Nothing is built this turn. Open with `PLAN ONLY — nothing will be changed` and keep it true until the asker picks: read, search, ask — write nothing.
 
 1. **Interrogate.** Restate the ask, name the goal under the proposed solution. What the repo can answer, look up. What only the asker can, ask now — one question, your recommended answer attached. A plan on a guess is expensive to unwind.
 2. **Steps.** Ordered. Each names the files it changes and the test that proves it, and lands green on its own. A step with no test says why none can exist.
@@ -13,5 +13,6 @@ Nothing is built this turn. Open with `PLAN ONLY — nothing will be changed` an
 4. **Riskiest step.** Name the one most likely to fail or be costly to undo, and the cheapest probe that tells you early.
 5. **Alternatives.** Numbered, the asker's among them, plus `0) do nothing — <what we keep paying>`. One line for and against each. Rank them, recommend one, and say which trade-off that accepts.
 6. **Decision record.** Only when the plan forecloses an alternative or reverses a recorded one: context, decision, consequences, alternatives rejected. Otherwise say why not — recording routine choices buries the load-bearing ones. Never overwrite a record; supersede it, link both ways.
+7. **On the pick,** before anything is built: write the picked option's steps into the work's ticket, or the list file it points to, under `## Plan`, one `- [ ] <step> — proof: <what shows it done>` line each, then read it back. A list already there keeps its items and ticks. No ticket: show the list and propose one.
 
-End with the plan, the number you recommend, and the open question.
+End with the plan, the number you recommend, the open question, and the ticket the picked steps will go to.
