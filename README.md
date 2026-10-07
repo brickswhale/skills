@@ -67,6 +67,7 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | `learn` | a mistake becomes one rule on the highest rung that can catch it — test, hook, skill line, briefing — replacing a line, never adding one. `/learn`, or when a lesson needs to stick |
 | `pair` | a second opinion from another model on one question — your own position written first, the ask put blind, both views attributed and the dissent kept rather than averaged. `/pair`, or "second model opinion" |
 | `plan` | an ask becomes ordered steps — files, the test per step, blast radius, riskiest step, numbered alternatives. `/plan <ask>`, or a session calls it by name |
+| `progress` | the list re-checked against its proofs before any report — found in the ticket, or drafted from evidence as a DRAFT with a source per item; state changes need proof, scope changes are proposed; then what changed, what waits on the owner, the list, the next step. `/progress`, or "what's the progress" |
 | `review` | four lenses over a diff — bugs, security, does it match the plan, scope creep — every finding verified against the code and given a counted class, verdict as JSON. `/review` |
 | `route` | the machine's model dictionary and its jobs with ranked models get written or brought up to date, under `~/.config/route/` and shared by every project — which models this machine has and what each is good for, from its own tools and the owner's answers, and which one builds and which reviews each job. Drafts, checks, then writes on the owner's yes; a project gets one pointer line to the skill's rules, which sessions read in place with the two files. A command: `/route` |
 | `supervise-build` | read a build session's position from disk, compare with its plan, send one correction. `/supervise-build "build driver"`, or unattended: `/loop 20m /supervise-build "build driver"` |
@@ -82,7 +83,8 @@ Two repo-local skills in `.claude/skills/`, not installed globally: `/new-skill 
 | kit-doc-sync | `learn` — judgment only; the per-commit sweep over every doc surface did not come across |
 | kit-milestone-gate | `gate` — done |
 | kit-recenter | attempted, rejected — see below |
-| kit-report, kit-problem-log, kit-pause | wrappers round a CLI that does not exist here |
+| kit-report | `progress` — judgment only: what waits on the owner comes first, and every state is re-checked on disk before it is shown; the CLI did not come across |
+| kit-problem-log, kit-pause | wrappers round a CLI that does not exist here |
 | kit-log, kit-phase-map | git and the issue tracker already hold this |
 | kit-batch, kit-prompt-cycle, kit-inline | the framework's own orchestration; it retires with it |
 | kit-pair | `pair` — done, on the owner's word; the catalog came too, the machine-local record did not |
@@ -109,7 +111,7 @@ Trigger-based, never scheduled. One skill at a time.
 3. **Test.** Five runs on a scaffolded fixture, green three of five. Keep it only if it changed the outcome against a bare-model run on the same fixture.
 4. **Retire.** Remove that `kit-*` symlink when the last project using it migrates to the driver. Projects still on the old name keep working until then; the new name differs, so the two coexist without colliding. One copy of each thing, once nothing reads the old one.
 
-**Seven, after one reopening.** `review`, `plan`, `intent`, `learn`, `consult` and `gate` came
+**Eight, after two reopenings.** `review`, `plan`, `intent`, `learn`, `consult` and `gate` came
 across, and the migration was declared closed at six. `pair` reopened it on the owner's word,
 against the line this file used to carry — that its value was a machine-local transport record and
 a catalog of sharp edges, with no home here. Half of that objection held. The record is genuinely
@@ -117,11 +119,13 @@ machine-local and stays there, at `~/.config/pair/` (rule 9); the skill names th
 lines the file must carry. The catalog was the half that did not hold: it is generic knowledge about public
 CLIs, it costs nothing against the word cap because the hook reads only `SKILL.md`, and a skill
 pointing at a catalog it cannot name is worse than either keeping it out or bringing it in. It was
-rewritten, scrubbed and now sits at `skills/pair/references/transports.md`. Of the eighteen kit
-skills, nine were absorbed into these seven and the other nine are not coming: three are wrappers
-round a CLI this repo does not have, two are document layouts git and the issue tracker already
-hold, three are the old framework's own orchestration and retire with it, and one was attempted and
-rejected.
+rewritten, scrubbed and now sits at `skills/pair/references/transports.md`. `progress` reopened it
+a second time (#21): `kit-report` was filed as a wrapper, but only its CLI was; its judgment — what
+waits on the owner first, every state re-checked on disk before it is shown — is what the owner kept
+asking sessions for. Of the eighteen kit skills, ten were absorbed into these eight and the other
+eight are not coming: two are wrappers round a CLI this repo does not have, two are document layouts
+git and the issue tracker already hold, three are the old framework's own orchestration and retire
+with it, and one was attempted and rejected.
 
 `kit-recenter` is the one that was attempted and rejected, and the reason is worth keeping. It audits a session's own recent turns against its standing rules. Built here and evaluated, it twice raised a drift finding against a rule that appeared nowhere in its context, and when the rubric was tightened to demand a source, it invented the source too. A session cannot reliably tell a rule it was given from one it believes it was given, and the eval regime makes it worse: a fresh subprocess has no prior turns, so the fixture must hand it a transcript, which is a different skill from the one intended. Do not rebuild it without a way to verify a cited rule against a file the run actually read.
 
