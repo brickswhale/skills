@@ -20,6 +20,8 @@ for d in ~/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skill
 
 Symlinks, so `git pull` updates every skill everywhere. Re-run the loop when a skill is added. When one is removed, the loop leaves its old link behind: delete it from both folders by hand. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
 
+Optional, Claude Code only: `hooks/fresh-call-guard.py` refuses a SendMessage to a finished subagent, so `route`'s fresh-call floor holds at the call rather than only in text (#28). Symlinks load no hooks, so enable it in the user settings as a `PreToolUse` command hook with the matcher `SendMessage`, pointing at the file in the clone. Its test: `bash hooks/fresh-call-guard.test.sh`.
+
 ## Structure
 
 Flat. One folder per skill under `skills/`, holding `SKILL.md` and, where a skill needs reference data too long to inline, a `references/` beside it — the hook word-caps and genericity-checks `SKILL.md` alone, so anything else there is scrubbed by hand or not committed. No category folders: the plugin manifest can list several skill directories, and the install loop reads one level, so a category, when there are enough skills to need one, becomes a second directory listed in `plugin.json`, never a nested path. Until then the table below groups skills by SDLC stage. A command is a skill with `disable-model-invocation: true`; there is no `commands/` folder.
