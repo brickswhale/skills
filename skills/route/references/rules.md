@@ -15,6 +15,7 @@ the `route` skill; they use two files the owner keeps on this machine:
 ## Floors
 
 - A reviewer works in a context other than the builder's and is never a lower tier, as the owner set the tiers.
+- A round handed off goes to a fresh call, routed by the same ranks: a fix round to a fresh builder whose prompt says it is a fix round and carries the spec, the findings to fix and the current diff; a re-review to a fresh reviewer, its prompt as the Contract says. Never carry a handed-off builder's or reviewer's conversation into another round, by any host's means: Claude Code's `SendMessage` to an earlier agent, Codex's `--resume`, or their like.
 - Money and security work: at least one reviewer is from another family than the builder, unless the owner waives that in writing.
 - A `<owner to choose …>` cell blocks the jobs that need it until the owner answers. A `(proposed)` cell may be followed, and a model whose `confirmed` says `no` may be used: the decision line says which.
 - Every builder prompt carries the Builder role's lines, whatever tool runs it; when the builder returns, check it left no commit, staged change, push, branch, worktree, stash or pull request.
