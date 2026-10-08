@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: supervise-build-fires
+name: supervise-dispatch
 context:
   scaffold_script: scaffold.sh
