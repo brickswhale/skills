@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review uncommitted work before it lands — four lenses (bugs, security, does the diff match the plan, scope creep), every finding verified against the code and given a counted class, returned as JSON. Use whenever someone asks you to look over a diff or changes: "/review", "review my changes", "audit this before I commit", "is this safe to land".
+description: 'Review uncommitted work before it lands — four lenses (bugs, security, does the diff match the plan, scope creep), every finding verified against the code and given a counted class, returned as JSON. Use whenever someone asks you to look over a diff or changes: "/review", "review my changes", "audit this before I commit", "is this safe to land".'
 ---
 
 # review

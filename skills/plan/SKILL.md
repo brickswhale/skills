@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Turn a settled ask into an ordered implementation plan — the files each step changes, the test that proves it, the blast radius, the riskiest step, and numbered alternatives with one recommended. Use whenever someone wants the approach before any code is written: "/plan", "how should we build this", "what is the implementation plan", "which files would change".
+description: 'Turn a settled ask into an ordered implementation plan — the files each step changes, the test that proves it, the blast radius, the riskiest step, and numbered alternatives with one recommended. Use whenever someone wants the approach before any code is written: "/plan", "how should we build this", "what is the implementation plan", "which files would change".'
 ---
 
 # plan

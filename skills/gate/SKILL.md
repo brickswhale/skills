@@ -1,6 +1,6 @@
 ---
 name: gate
-description: At a phase boundary, has the work earned the next phase's cost? Every criterion answered against an artifact, with "not yet" a real answer. Use before the next chunk of investment: "/gate", "are we ready for the next phase", "phase checkpoint".
+description: 'At a phase boundary, has the work earned the next phase''s cost? Every criterion answered against an artifact, with "not yet" a real answer. Use before the next chunk of investment: "/gate", "are we ready for the next phase", "phase checkpoint".'
 ---
 
 # gate

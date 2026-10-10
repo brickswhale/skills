@@ -1,6 +1,6 @@
 ---
 name: route
-description: Set up or update model routing — which model builds and which reviews — writing the machine's model dictionary and its ranked jobs on the owner's yes. Run once per machine, and again when a model or subscription changes. A command: "/route", "set up model routing", "update routing", "/route connect", "/route disconnect".
+description: 'Set up or update model routing — which model builds and which reviews — writing the machine''s model dictionary and its ranked jobs on the owner''s yes. Run once per machine, and again when a model or subscription changes. A command: "/route", "set up model routing", "update routing", "/route connect", "/route disconnect".'
 disable-model-invocation: true
 ---
 

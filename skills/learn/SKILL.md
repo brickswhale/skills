@@ -1,6 +1,6 @@
 ---
 name: learn
-description: Turn a mistake or a batch of review findings into one rule that stops it recurring — the highest rung that can actually catch it, without accumulating instructions. Use whenever someone wants a lesson to stick: "/learn", "make sure this doesn't happen again", "what should we change so we catch this next time", "write this up as a rule".
+description: 'Turn a mistake or a batch of review findings into one rule that stops it recurring — the highest rung that can actually catch it, without accumulating instructions. Use whenever someone wants a lesson to stick: "/learn", "make sure this doesn''t happen again", "what should we change so we catch this next time", "write this up as a rule".'
 ---
 
 # learn

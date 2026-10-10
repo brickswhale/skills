@@ -1,6 +1,6 @@
 ---
 name: consult
-description: Pressure-test an idea before anyone builds it — its real terms, the assumptions it rests on, the strongest objection, and a verdict that may be "don't". Nothing gets written, no plan produced. Reach for it whenever someone floats an idea, proposal or design rather than ordering work — even phrased as a quick sanity check: "/consult", "idea for you", "sound right?", "I have an idea", "what if we", "is this the right approach", "thoughts on this", "second opinion".
+description: 'Pressure-test an idea before anyone builds it — its real terms, the assumptions it rests on, the strongest objection, and a verdict that may be "don''t". Nothing gets written, no plan produced. Reach for it whenever someone floats an idea, proposal or design rather than ordering work — even phrased as a quick sanity check: "/consult", "idea for you", "sound right?", "I have an idea", "what if we", "is this the right approach", "thoughts on this", "second opinion".'
 ---
 
 # consult
