@@ -98,7 +98,7 @@ Added once to a project's agent briefing (`AGENTS.md`, or `CLAUDE.md` where
 that is the briefing; once where one links to the other), word for word:
 
 ```
-Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
+Routing: before each hand-off (every fix round and re-review included) and before editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 ```
 
 ## Before writing: the checks
@@ -230,7 +230,7 @@ cat > projects/refunds/AGENTS.md <<'KITEOF'
 Commands:
 - test: `python3 -m unittest discover -s tests -q`
 
-Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
+Routing: before each hand-off (every fix round and re-review included) and before editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 
 Never commit. The owner commits.
 KITEOF

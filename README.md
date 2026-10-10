@@ -20,7 +20,7 @@ for d in ~/skills/skills/*/; do n=$(basename "$d"); ln -sfn "$d" ~/.claude/skill
 
 Symlinks, so `git pull` updates every skill everywhere. Re-run the loop when a skill is added. When one is removed, the loop leaves its old link behind: delete it from both folders by hand. Claude Code can also install it as a plugin from this git URL; the symlink path is the one that serves Codex too.
 
-Optional, Claude Code only: `hooks/fresh-call-guard.py` refuses a SendMessage to a finished subagent, so `route`'s fresh-call floor holds at the call rather than only in text (#28). Symlinks load no hooks, so enable it in the user settings as a `PreToolUse` command hook with the matcher `SendMessage`, pointing at the file in the clone. Its test: `bash hooks/fresh-call-guard.test.sh`.
+Off by default, Claude Code only: `hooks/fresh-call-guard.py` refuses a SendMessage to a finished subagent's raw id, a backstop for `route`'s fresh-call floor (#28). The cause it met was a session that read the rules once, so the pointer line now has a session re-read them before every round; enable the guard only if a session that has read the rules still sends a round to an earlier agent. Symlinks load no hooks, so it would go in the user settings as a `PreToolUse` command hook with the matcher `SendMessage`, pointing at the file in the clone. Its test: `bash hooks/fresh-call-guard.test.sh`.
 
 ## Structure
 
