@@ -18,7 +18,7 @@ Rules:
 
 9. A skill is self-contained. Its rules live in its own folder and are read there, never copied out. Data it keeps between runs lives at a path it names under `~/.config/<skill>/`. In a consumer repository it writes only what the owner asked for in that run, and at most one pointer line in the briefing for anything shared; it never edits another skill's files. Each eval case lists what its run may write in a `writes` file beside `prompt.md`, one path or glob per line; `evals/run-valid.sh` reports anything else.
 
-Routing: before handing work off or editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
+Routing: before each hand-off (every fix round and re-review included) and before editing agent instructions, read the `route` skill's rules (`~/.claude/skills/route/references/rules.md`; Codex: `~/.agents/skills/route/references/rules.md`). If they or the files they name are missing, say so and ask the owner to run `/route`; never guess a model.
 
 Tickets: GitHub Issues in this repository (`gh issue`). Work beyond a typo, comment or format fix follows the `flow` skill: call it before the first edit.
 
